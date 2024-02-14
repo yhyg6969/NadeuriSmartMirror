@@ -45,10 +45,7 @@ INSTALLED_APPS = [
     'inbody',
     'ranking',
     'smartmirror',
-<<<<<<< HEAD
-=======
     'management',
->>>>>>> bfc35c69f6607d1f4e175edad50c18f14c18d037
 ]
 
 MIDDLEWARE = [
