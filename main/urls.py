@@ -27,5 +27,4 @@ urlpatterns = [
     path('smartmirror/', include('smartmirror.urls'), name="smartmirror"),
     path('inbody/', include('inbody.urls'), name="inbody"),
     path('ranking/', include('ranking.urls'), name="ranking"),
-    path('management/', include('management.urls'), name="management"),
 ]
