@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}통합 솔루션{% endblock %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'main.css' %}">
+<link rel="stylesheet" href="{% static 'management.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<body>
+    
+    <header>
+        <!-- Replace 'Your Logo' with the actual path or URL of your logo -->
+        <img src="{% static 'Oikos_logo.png' %}" alt="Oikos_logo" height="100px" style="margin-left: 50px;">
+        <div>
+            {% if student_data %}
+            <p>{{ student_data.school }}</p>
+            <p>{{ student_data.grade }}학년 {{ student_data.class_num }}반 {{ student_data.number }}번</p>
+            <p>{{ student_data.name }}</p>
+            {% else %}
+            <p>No data available</p>
+            {% endif %}
+        </div>
+    </header>
+
+    <nav>
+
+    </nav>
+
+    <main>
+        <h1>학생 정보 수정</h1>
+    
+        <!-- Create Student Form -->
+        <h2>학생 추가</h2>
+        <form method="post">
+            {% csrf_token %}
+            <label for="id_uid">UID:</label><br>
+            <input type="text" id="id_uid" name="uid"><br>
+            <label for="id_name">이름:</label><br>
+            <input type="text" id="id_name" name="name"><br>
+            <label for="id_school">학교:</label><br>
+            <input type="text" id="id_school" name="school"><br>
+            <label for="id_grade">학년:</label><br>
+            <input type="number" id="id_grade" name="grade"><br>
+            <label for="id_class_num">반:</label><br>
+            <input type="number" id="id_class_num" name="class_num"><br>
+            <label for="id_number">번호:</label><br>
+            <input type="number" id="id_number" name="number"><br>
+            <label for="id_gender">성별:</label><br>
+            <input type="checkbox" id="id_gender" name="gender"><br>
+            <button type="submit" name="action" value="create">저장</button>
+        </form>
+    
+        <!-- Student Information Table -->
+        <h2>학생 정보</h2>
+        <table border="1">
+            <tr>
+                <th>UID</th>
+                <th>이름</th>
+                <th>학교</th>
+                <th>학년</th>
+                <th>반</th>
+                <th>번호</th>
+                <th>성별</th>
+                <th>액션</th>
+            </tr>
+            {% for student in students %}
+            <tr>
+                <form method="post">
+                    {% csrf_token %}
+                    <td><input type="text" name="uid" value="{{ student.uid }}"></td>
+                    <td><input type="text" name="name" value="{{ student.name }}"></td>
+                    <td><input type="text" name="school" value="{{ student.school }}"></td>
+                    <td><input type="number" name="grade" value="{{ student.grade }}"></td>
+                    <td><input type="number" name="class_num" value="{{ student.class_num }}"></td>
+                    <td><input type="number" name="number" value="{{ student.number }}"></td>
+                    <td><input type="checkbox" name="gender" {% if student.gender %}checked{% endif %}></td>
+                    <td>
+                        <button type="submit" name="action" value="update">저장</button>
+                        <button type="submit" name="action" value="delete">삭제</button>
+                    </td>
+                </form>
+            </tr>
+            {% endfor %}
+        </table>
+    </main>
+
+
+    <br>
+    <br>
+    <br>
+
+
+</body>
+
+{% endblock %}

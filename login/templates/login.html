@@ -1,0 +1,63 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}통합 솔루션{% endblock %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'login.css' %}">
+
+{% if messages %}
+<div id="alert-messages"
+    data-messages="{% for message in messages %}{{ message|safe }}{% if not forloop.last %}\n{% endif %}{% endfor %}">
+</div>
+<script>
+    // JavaScript to show an alert when there are messages
+    window.onload = function () {
+        var alertDiv = document.getElementById('alert-messages');
+        if (alertDiv) {
+            var messageList = alertDiv.dataset.messages.split('\n');
+            alert(messageList.join('\n'));
+        }
+    };
+</script>
+{% endif %}
+
+{% endblock %}
+
+{% block content %}
+
+
+<body class="login-container">
+    <form method="post" action="{% url 'login' %}">
+
+        <div class="logo">
+            <!-- Updated logo image source -->
+            <img src="{% static 'Oikos_logo.png' %}" alt="Oikos_logo">
+        </div>
+
+        {% csrf_token %}
+
+
+        <div class="form-group">
+            <label for="id_school" class="label">학교 :</label>
+            <select id="id_school" class="dropdown-box" name="school" required>
+                <option value="" disabled selected>학교를 선택해주세요</option>
+                <option value="school1">OO초등학교</option>
+                <option value="school2">ㅁㅁ초등학교</option>
+                <option value="school3">☆☆초등학교</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="id_password" class="label">번호 :</label>
+            <input type="password" id="id_password" class="input-box" name="password" placeholder="번호를 입력해 주세요"
+                required>
+        </div>
+
+        <div class="password-describe">※번호는 학년/반/번호로 조합된 5자리 숫자입니다.<br>ex) 3학년 5반 12번은 30512</div>
+        <button type="submit" class="login-button">로그인</button>
+    </form>
+</body>
+
+{% endblock %}
