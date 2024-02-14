@@ -1,0 +1,30 @@
+{% load static %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'popup_modal.css' %}">
+{% endblock %}
+
+<body>
+    <div class="modal-container" id="modalContainer">
+        <div class="modal-content">
+            {% if error_message %}
+            <p>{{ error_message }}</p>
+            {% else %}
+            <p id="modalContent">
+                <!-- Displayed content goes here -->
+                날짜: {{ year }}-{{ month }}-{{ day }}<br>
+                <br>
+                총 운동 시간: {{ total_hours }}시간 {{ total_minutes }}분 {{ total_seconds }}초<br>
+                <br>
+                총 소모 칼로리: {{ total_calories|floatformat:2 }} kcal
+                <br>
+            </p>
+            {% endif %}
+            <button class="close-modal-btn" onclick="closeModal()">닫기</button>
+        </div>
+    </div>
+
+    <!-- Add your JavaScript file or include the existing one -->
+    <script src="{% static 'main.js' %}"></script>
+
+</body>

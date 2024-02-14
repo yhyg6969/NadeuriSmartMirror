@@ -1,0 +1,170 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    box-sizing: border-box;
+    overflow: hidden;
+    /* Prevent scroll bars */
+}
+
+header {
+    background-color: #fff;
+    color: #333;
+    padding: 10px;
+    text-align: left;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100px;
+    /* Adjust the header height */
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    /* Bottom border */
+}
+
+header div {
+    text-align: right;
+    margin-right: 20px;
+    /* Adjust the right margin for spacing */
+    display: flex;
+    align-items: center;
+}
+
+header div p {
+    margin: 0;
+    padding-right: 10px;
+    /* Adjust the padding between items */
+}
+
+nav {
+    background-color: #f4f4f4;
+    color: #27AE60;
+    /* Default font color changed to #27AE60 */
+    padding: 20px;
+    width: 200px;
+    box-sizing: border-box;
+    float: left;
+    height: calc(100vh - 100px);
+    /* Adjust the height calculation to fit the screen */
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #ccc;
+    /* Right border */
+}
+
+nav a {
+    text-decoration: none;
+    padding: 12px 0;
+    text-align: center;
+    margin-bottom: 10px;
+    /* Adjust the margin between items */
+    transition: color 0.3s, background-color 0.3s, border-radius 0.3s;
+    /* Add transition effect */
+}
+
+nav a:hover {
+    color: #134C4B;
+    /* Change font color to #134C4B on hover */
+    background-color: #27AE60;
+    /* Change background color to #27AE60 on hover */
+    border-radius: 5px;
+    /* Add rounded corners on hover */
+}
+
+nav a:last-child {
+    margin-bottom: 0;
+    /* Remove margin for the last item (Logout) */
+    margin-top: auto;
+    /* Pushes Logout to the bottom */
+}
+
+main {
+    margin-top: 100px;
+    margin-left: 220px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+h1 {
+    color: #333;
+}
+
+
+
+
+
+.calendar-container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    gap: 5px;
+    width: 100%;
+    margin: 0 auto;
+    /* Center the calendar horizontally */
+}
+
+.day {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+.calendar-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    width: 100%;
+    /* Use 100% width within the container */
+    margin: 0 auto;
+    /* Center the calendar top horizontally */
+}
+
+.day a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* Add styles for the modal */
+.modal-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    position: relative;
+    /* Add this to make the button positioning relative to the modal content */
+}
+
+/* Style for the Close Modal button */
+.close-modal-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    cursor: pointer;
+}

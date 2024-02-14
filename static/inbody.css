@@ -1,0 +1,38 @@
+/* inbody.css */
+
+/* Define styles for the main container */
+main {
+    padding: 20px;
+}
+
+/* Define styles for the bubble container */
+.bubble-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 100px;
+    /* Move all bubbles 100px below */
+}
+
+/* Define styles for each bubble */
+.bubble {
+    width: 250px;
+    height: 250px;
+    padding: 20px;
+    border-radius: 50%;
+    background-color: #2FBFDE;
+    color: #ffffff;
+    text-align: center;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Define styles for specific bubbles */
+.bubble:nth-child(2),
+.bubble:nth-child(4) {
+    margin-top: 160px;
+    /* Adjust the top margin for 2nd and 4th bubbles */
+}
