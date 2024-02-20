@@ -40,22 +40,22 @@
 
 
         <div class="form-group">
-            <label for="id_school" class="label">학교 :</label>
+            <label for="id_school" class="label"></label>
             <select id="id_school" class="dropdown-box" name="school" required>
-                <option value="" disabled selected>학교를 선택해주세요</option>
-                <option value="school1">OO초등학교</option>
-                <option value="school2">ㅁㅁ초등학교</option>
-                <option value="school3">☆☆초등학교</option>
+                <option class="option" disabled selected>학교를 선택해 주세요</option>
+                <option class="option" value="school1">서울영남초등학교</option>
+                <option class="option" value="school2">ㅁㅁ초등학교</option>
+                <option class="option" value="school3">☆☆초등학교</option>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="id_password" class="label">번호 :</label>
-            <input type="password" id="id_password" class="input-box" name="password" placeholder="번호를 입력해 주세요"
+            <label for="id_password" class="label"></label>
+            <input type="password" id="id_password" class="input-box" name="password" placeholder="비밀번호를 입력해 주세요"
                 required>
         </div>
 
-        <div class="password-describe">※번호는 학년/반/번호로 조합된 5자리 숫자입니다.<br>ex) 3학년 5반 12번은 30512</div>
+        <div class="password-describe">※ 비밀번호는 5자리 숫자 (학년 + 반 + 번호)입니다.<br>예시 | 3학년 5반 12번은 30512</div>
         <button type="submit" class="login-button">로그인</button>
     </form>
 </body>
