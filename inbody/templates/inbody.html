@@ -7,6 +7,7 @@
 {% block extrahead %}
 <link rel="stylesheet" href="{% static 'main.css' %}">
 <link rel="stylesheet" href="{% static 'inbody.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 {% endblock %}
 
 {% block content %}
@@ -17,6 +18,7 @@
         <!-- Replace 'Your Logo' with the actual path or URL of your logo -->
         <img src="{% static 'Oikos_logo.png' %}" alt="Oikos_logo" height="100px" style="margin-left: 50px;">
         <div>
+            <i class="fa-solid fa-hat-cowboy"></i>
             {% if student_data %}
             <p>{{ student_data.school }}</p>
             <p>{{ student_data.grade }}학년 {{ student_data.class_num }}반 {{ student_data.number }}번</p>
@@ -28,55 +30,126 @@
     </header>
 
     <nav>
-        <a href="{% url 'main' %}">메인 화면</a>
-        <a href="{% url 'Xplaywall' %}">엑스 플레이 월</a>
-        <a href="{% url 'Xfloor' %}">엑스 플로어</a>
-        <a href="{% url 'smartmirror' %}">스마트 미러</a>
-        <a href="{% url 'inbody' %}">체성분 관리</a>
-        <a href="{% url 'ranking' %}">랭킹</a>
-        <a href="{% url 'login' %}">로그아웃</a>
+        <p>카테고리</p>
+        <a href="{% url 'main' %}">
+            <span><i class="fa-solid fa-house"></i></span>
+            <span>
+                <div class="Title">메인 화면</div>
+                <div class="subTitle">Main</div>
+            </span>
+        </a>
+        <a href="{% url 'Xplaywall' %}">
+            <span><i class="fa fa-solid fa-person-running"></i></span>
+            <span>
+                <div class="Title">엑스 플레이 월</div>
+                <div class="subTitle">X-PLAYWALL</div>
+            </span>
+        </a>
+
+        <a href="{% url 'Xfloor' %}">
+            <span><i class="fa-solid fa-people-line"></i></span>
+            <span>
+                <div class="Title">엑스 플로어</div>
+                <div class="subTitle">X-FLOOR</div>
+            </span>
+        </a>
+
+        <a href="{% url 'inbody' %}">
+            <span><i class="fa-solid fa-person"></i></span>
+            <span>
+                <div class="Title">체성분 관리</div>
+                <div class="subTitle">Body composition management</div>
+            </span>
+        </a>
+
+        <a href="{% url 'ranking' %}">
+            <span><i class="fa-solid fa-ranking-star"></i></span>
+            <span>
+                <div class="Title">랭킹</div>
+                <div class="subTitle">Ranking</div>
+            </span>
+        </a>
+
+        <a href="{% url 'login' %}">
+            <span><i class="fa-solid fa-arrow-right-from-bracket"></i></span>
+            <span>
+                <div class="Title">로그아웃</div>
+                <div class="subTitle">LogOut</div>
+            </span>
+        </a>
     </nav>
 
     <main>
-        <h1>체성분 관리</h1>
+        <div class="title">
+            <h2>체지방 측정 결과</h2>
+            <p>현재 나의 몸 상태는?</p>
+        </div>
+        <div class="img"></div>
     
         <div class="bubble-container">
-            <div class="bubble">
-                <h2>키 & 몸무게</h2>
-                {% for record in inbody_records %}
-                <p>키: {{ record.height }}</p>
-                <p>몸무게: {{ record.weight }}</p>
-                {% endfor %}
+            <div>
+                <div class="bubble bubble1">
+                    <h2>키와 몸무게</h2>
+                    {% for record in inbody_records %}
+                    <div>
+                        <div class="modal-title">키</div>
+                        <div class="modal-inner" >{{ record.height }}</div>
+                    </div>
+                    <div>
+                        <div class="modal-title">몸무게</div>
+                        <div class="modal-inner" >{{ record.weight }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="bubble bubble2">
+                    <h2>체지방량과 체지방률</h2>
+                    {% for record in inbody_records %}
+                    <div>
+                        <div class="modal-title">체지방량</div>
+                        <div class="modal-inner" >{{ record.fat }}</div>
+                    </div>
+                    <div>
+                        <div class="modal-title">체지방률</div>
+                        <div class="modal-inner" >{{ record.fat_ratio }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="bubble bubble3">
+                    <h2>근육량과 골격근량</h2>
+                    {% for record in inbody_records %}
+                    <div>
+                        <div class="modal-title">근육량</div>
+                        <div class="modal-inner" >{{ record.muscle }}</div>
+                    </div>
+                    <div>
+                        <div class="modal-title">골격근량</div>
+                        <div class="modal-inner" >{{ record.skeletal_muscle }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+
             </div>
-    
-            <div class="bubble">
-                <h2>체지방량 & 체지방률</h2>
-                {% for record in inbody_records %}
-                <p>체지방량: {{ record.fat }}</p>
-                <p>체지방률: {{ record.fat_ratio }}</p>
-                {% endfor %}
-            </div>
-    
-            <div class="bubble">
-                <h2>근육량 & 골격근량</h2>
-                {% for record in inbody_records %}
-                <p>근육량: {{ record.muscle }}</p>
-                <p>골격근량: {{ record.skeletal_muscle }}</p>
-                {% endfor %}
-            </div>
-    
-            <div class="bubble">
-                <h2>체수분량</h2>
-                {% for record in inbody_records %}
-                <p>체수분량: {{ record.water_content }}</p>
-                {% endfor %}
-            </div>
-    
-            <div class="bubble">
-                <h2>BMI</h2>
-                {% for record in inbody_records %}
-                <p>BMI: {{ record.bmi }}</p>
-                {% endfor %}
+            <div>
+                <div class="bubble bubble4">
+                    <h2>체수분량</h2>
+                    {% for record in inbody_records %}
+                    <div>
+                        <div class="modal-title">체수분량</div>
+                        <div class="modal-inner" >{{ record.water_content }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="bubble bubble5">
+                    <h2>BMI</h2>
+                    {% for record in inbody_records %}
+                    <div>
+                        <div class="modal-title">BMI</div>
+                        <div class="modal-inner" >{{ record.bmi }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </main>
