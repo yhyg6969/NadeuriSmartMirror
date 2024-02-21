@@ -125,11 +125,11 @@
                     {% for record in inbody_records %}
                     <div>
                         <div class="modal-title">키</div>
-                        <div class="modal-inner" >{{ record.height }}</div>
+                        <div class="modal-inner">{{ most_recent_record.height }} ({{ difference.height }})</div>
                     </div>
                     <div>
                         <div class="modal-title">몸무게</div>
-                        <div class="modal-inner" >{{ record.weight }}</div>
+                        <div class="modal-inner">{{ most_recent_record.weight }} ({{ difference.weight }})</div>
                     </div>
                     {% endfor %}
                 </div>
@@ -141,11 +141,11 @@
                     {% for record in inbody_records %}
                     <div>
                         <div class="modal-title">체지방량</div>
-                        <div class="modal-inner" >{{ record.fat }}</div>
+                        <div class="modal-inner">{{ most_recent_record.fat }} ({{ difference.fat }})</div>
                     </div>
                     <div>
                         <div class="modal-title">체지방률</div>
-                        <div class="modal-inner" >{{ record.fat_ratio }}</div>
+                        <div class="modal-inner">{{ most_recent_record.fat_ratio }} ({{ difference.fat_ratio }})</div>
                     </div>
                     {% endfor %}
                 </div>
@@ -157,11 +157,11 @@
                     {% for record in inbody_records %}
                     <div>
                         <div class="modal-title">근육량</div>
-                        <div class="modal-inner" >{{ record.muscle }}</div>
+                        <div class="modal-inner">{{ most_recent_record.muscle }} ({{ difference.muscle }})</div>
                     </div>
                     <div>
                         <div class="modal-title">골격근량</div>
-                        <div class="modal-inner" >{{ record.skeletal_muscle }}</div>
+                        <div class="modal-inner">{{ most_recent_record.skeletal_muscle }} ({{ difference.skeletal_muscle }})</div>
                     </div>
                     {% endfor %}
                 </div>
@@ -175,7 +175,7 @@
                     {% for record in inbody_records %}
                     <div>
                         <div class="modal-title">체수분량</div>
-                        <div class="modal-inner" >{{ record.water_content }}</div>
+                        <div class="modal-inner">{{ most_recent_record.water_content }} ({{ difference.water_content }})</div>
                     </div>
                     {% endfor %}
                 </div>
@@ -186,7 +186,7 @@
                     {% for record in inbody_records %}
                     <div>
                         <div class="modal-title">BMI</div>
-                        <div class="modal-inner" >{{ record.bmi }}</div>
+                        <div class="modal-inner">{{ most_recent_record.bmi }} ({{ difference.bmi }})</div>
                     </div>
                     {% endfor %}
                 </div>
