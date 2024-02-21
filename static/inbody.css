@@ -66,6 +66,7 @@ main {
 
 /* Define styles for each bubble */
 .bubble {
+    position: relative;
     font-family: 'Pretendard-Regular';
     color: #fff;
     display: flex;
@@ -80,13 +81,18 @@ main {
     /* doubled the size */
     border-radius: 50%;
     /* ensure border-radius creates a circle */
-    background-color: #ffffff;
-    box-shadow: 0 1px 1px rgba(0,0,0,0.15), 
+/*     box-shadow: 0 1px 1px rgba(0,0,0,0.15), 
               0 2px 2px rgba(0,0,0,0.15), 
               0 4px 4px rgba(0,0,0,0.15), 
-              0 8px 8px rgba(0,0,0,0.15);
+              0 8px 8px rgba(0,0,0,0.15); */
 }
 
+.bubble img {
+    z-index: -2;
+    position: absolute;
+    width: 95%;
+    height: 95%;
+}
 /* Define styles for specific bubbles */
 .bubble:nth-child(2),
 .bubble:nth-child(4) {

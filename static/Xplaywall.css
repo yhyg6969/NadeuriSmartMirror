@@ -14,7 +14,9 @@
     width: 100%;
 }
 
+
 .bubble {
+    position: relative;
     font-family: 'Pretendard-Regular';
     color: #fff;
     display: flex;

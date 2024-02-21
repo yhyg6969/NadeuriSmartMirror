@@ -9,8 +9,8 @@ function generateCalendar() {
     const currentMonth = currentDate.getMonth();
 
     // Set the header to display the current month and year
-    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    header.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+    const monthNames = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
+    header.textContent = `${currentYear + "년"} ${monthNames[currentMonth]}`;
 
     // Get the first day of the month and total days in the month
     const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
@@ -20,10 +20,10 @@ function generateCalendar() {
     calendarContainer.innerHTML = '';
 
     // Display days of the week (Mon to Sun) at the top starting with Sunday
-    const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
     for (const day of daysOfWeek) {
         const dayElement = document.createElement('div');
-        dayElement.className = 'day';
+        dayElement.className = 'day day-name';
         dayElement.textContent = day;
         calendarContainer.appendChild(dayElement);
     }
@@ -38,7 +38,7 @@ function generateCalendar() {
     // Display days of the month as clickable links
     for (let dayCount = 1; dayCount <= totalDays; dayCount++) {
         const dayElement = document.createElement('div');
-        dayElement.className = 'day';
+        dayElement.className = 'day day-number';
 
         // Create a link for each day
         const dayLink = document.createElement('a');

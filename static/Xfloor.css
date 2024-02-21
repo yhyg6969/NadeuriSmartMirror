@@ -16,6 +16,7 @@
 
 
 .bubble {
+    position: relative;
     font-family: 'Pretendard-Regular';
     color: #fff;
     display: flex;
@@ -33,41 +34,39 @@
     /* ensure border-radius creates a circle */
 }
 
+
 .bubble:nth-child(1) h2{
-    margin-top: 70px;
-    margin-left: 80px;
+    margin-top: 40px;
+    margin-left: 20px;
 }
 
 .bubble:nth-child(1) p{
-    margin-left: 80px;
+    margin-left: 20px;
 }
 
+
 .bubble:nth-child(2) h2{
-    margin-top: 20px;
-    margin-left: 20px;
+    margin-top: 80px;
+    margin-left: 100px;
 }
 
 .bubble:nth-child(2) p{
-    margin-left: 20px;
+    margin-left: 100px;
 }
 
 
 .bubble:nth-child(3) h2{
     margin-top: 50px;
-    margin-left: 20px;
+    margin-left: 30px;
 }
 
 .bubble:nth-child(3) p{
-    margin-left: 20px;
+    margin-left: 30px;
 }
 
 
 .bubble:nth-child(4) h2{
     margin-top: 60px;
-    margin-left: 70px;
-}
-.bubble:nth-child(4) p{
-    margin-left: 70px;
 }
 
 .bubble:hover {
