@@ -1,18 +1,22 @@
 .info-bubble {
+    font-family: 'Pretendard-Regular';
+    position: absolute;
+    top: 0;
+    left: 10%;
     height: 100%;
     margin: 0;
     font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #f2f2f2;
     display: flex;
-    justify-content: space-around;
     align-items: center;
     width: 100%;
 }
 
+
 .bubble {
+    font-family: 'Pretendard-Regular';
     color: #fff;
     display: flex;
     flex-direction: column;
@@ -20,36 +24,61 @@
     align-items: center;
     text-align: center;
     cursor: pointer;
-    width: 250px;
+    width: 350px;
     /* doubled the size */
-    height: 250px;
+    height: 350px;
+    margin-right: 10px;
     /* doubled the size */
     border-radius: 50%;
     /* ensure border-radius creates a circle */
 }
 
-.bubble:nth-child(1) {
-    background-color: #2FBFDE;
+.bubble:nth-child(1) h2{
+    margin-top: 70px;
+    margin-left: 80px;
 }
 
-.bubble:nth-child(2) {
-    background-color: #5A6ACF;
-    width: 300px;
-    height: 300px;
-    margin-top: 200px;
+.bubble:nth-child(1) p{
+    margin-left: 80px;
 }
 
-.bubble:nth-child(3) {
-    background-color: #F99C30;
+.bubble:nth-child(2) h2{
+    margin-top: 20px;
+    margin-left: 20px;
 }
 
-.bubble:nth-child(4) {
-    background-color: #FF6B4A;
-    width: 300px;
-    height: 300px;
-    margin-top: 200px;
+.bubble:nth-child(2) p{
+    margin-left: 20px;
+}
+
+
+.bubble:nth-child(3) h2{
+    margin-top: 50px;
+    margin-left: 20px;
+}
+
+.bubble:nth-child(3) p{
+    margin-left: 20px;
+}
+
+
+.bubble:nth-child(4) h2{
+    margin-top: 60px;
+    margin-left: 70px;
+}
+.bubble:nth-child(4) p{
+    margin-left: 70px;
 }
 
 .bubble:hover {
     filter: brightness(90%);
+}
+
+.bubble h2 {
+    letter-spacing: 1px;
+}
+
+.bubble p {
+    font-size: 20px;
+    letter-spacing: 0.5px;
 }

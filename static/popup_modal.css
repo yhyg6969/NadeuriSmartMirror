@@ -1,5 +1,24 @@
- .modal-container {
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    }
+
+    :root {
+    --bg-color: #ffffff;
+    --primary-bg-color: #333740;
+    --bg-subcolor: #FAFAFA;
+    --primary-color: #289E90;
+    --text-color: #AABDBF;
+    --text-active: #ffffff;
+    --border-color: #86b8bd;
+    }
+
+.modal-container {
+    color: var(--primary-color);
      display: flex;
+     font-family: 'Pretendard-Regular';
      align-items: center;
      justify-content: center;
      position: fixed;
@@ -7,22 +26,79 @@
      left: 0;
      width: 100%;
      height: 100%;
-     background-color: rgba(0, 0, 0, 0.5);
      /* Semi-transparent background */
      z-index: 1;
+    background-color: var(--bg-subcolor);
+
  }
 
  .modal-content {
-     background-color: #fefefe;
-     padding: 20px;
-     border: 1px solid #888;
-     width: 80%;
-     max-width: 600px;
-     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-     display: flex;
-     flex-direction: column;
+    text-align: center;
+    background-color: #fefefe;
+    padding: 20px;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    border: 2px solid var(--primary-color);
+    border-radius: 15px;
+    font-size: 18px;
  }
+
+ .modal-date{
+    color: var(--primary-color);
+ }
+ .modal-Con{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 20px;
+    color: var(--primary-color);
+    font-weight: 800;
+    border: 1px solid var(--primary-color);
+    background-color: var(--bg-color);
+    border-radius: 10px;
+    width: 100%;
+}
+
+#modalContent:nth-child(1){
+    margin-top: 20px;
+}
+
+.modal-title{
+    font-size: 16px;
+    opacity: 0.8;
+}
+
+.modal-inner {
+    font-size: 24px;
+    color: var(--primary-color);
+    padding: 20px;
+    font-weight: 600;
+    margin-left: -150px;
+}
 
 .close-modal-btn {
     align-self: flex-end;
+    font-family: 'Pretendard-Regular';
+    width: 108px;
+    height: 50px;
+    /* Adjust the width as needed (1/3 of the original size) */
+    padding: 10px;
+    /* Adjust the padding as needed */
+    color: var(--primary-color);
+    font-size: 18px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.close-modal-btn:hover
+{
+    background-color: var(--primary-color);
+    color: #fff;
 }
