@@ -47,9 +47,6 @@ def main(request):
     # Extract total_activity_time in minutes and seconds
     total_activity_time_minutes, total_activity_time_seconds = divmod(total_activity_time.seconds, 60)
 
-    # Calculate total calories
-    total_calories = (total_activity_time_seconds / 60) * 7
-
     # Pass the data to the template
     context = {
         'user_info': user_info,
@@ -57,7 +54,6 @@ def main(request):
         'records': records,
         'total_activity_time_minutes': total_activity_time_minutes,
         'total_activity_time_seconds': total_activity_time_seconds,
-        'total_calories': total_calories,
     }
 
     return render(request, 'main.html', context)
@@ -97,9 +93,6 @@ def popup_modal(request):
             error_message = "해당 날짜에 기록된 데이터가 없습니다."
             return render(request, 'popup_modal.html', {'error_message': error_message})
 
-        # Pass the first InBodyRecord to the template
-        inbody_record = inbody_records.first()
-
         # Calculate total activity time in seconds
         total_activity_time_seconds = records.aggregate(total_time=Sum(F('finish_ts') - F('start_ts')))['total_time'] or 0
 
@@ -118,7 +111,8 @@ def popup_modal(request):
             'year': year,
             'month': month,
             'day': day,
-            'inbody_record': inbody_record,
+            'inbody_records': inbody_records,
+            'records': records,
             'total_hours': total_hours,
             'total_minutes': total_minutes,
             'total_seconds': total_seconds,
