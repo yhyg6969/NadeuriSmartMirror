@@ -9,38 +9,32 @@
 <link rel="stylesheet" href="{% static 'inbody.css' %}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
-    .img{
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-image: url("{% static 'Line 35.png' %}");
+    .img, .background-img{
+        position: absolute;
+    width: 80%;
+    height: 50%;
     background-size: 1800px;
     background-repeat: no-repeat;
     border: 0px;
-    top: 40%;
+    top: 30%;
     opacity: 0.5;
-    left: 15%;
-    z-index: -1;
+    left: 20%;
+    z-index: -3;
     }
 
     .bubble1 {
-        background-image: url("{% static 'green.png' %}");
         background-size: cover;
     }
     .bubble2 {
-        background-image: url("{% static 'blue.png' %}");
         background-size: cover;
     }
     .bubble3 {
-        background-image: url("{% static 'orange.png' %}");
         background-size: cover;
     }
     .bubble4 {
-        background-image: url("{% static 'purple.png' %}");
         background-size: cover;
     }
     .bubble5 {
-        background-image: url("{% static 'babypink.png' %}");
         background-size: cover;
     }
 </style>
@@ -120,11 +114,13 @@
             <h2>체지방 측정 결과</h2>
             <p>현재 나의 몸 상태는?</p>
         </div>
-        <div class="img"></div>
+        <img class = "background-img" src="{% static 'Line 35.png' %}">
     
         <div class="bubble-container">
             <div>
                 <div class="bubble bubble1">
+                    <img src="{% static 'green.png' %}">
+                    
                     <h2>키와 몸무게</h2>
                     {% for record in inbody_records %}
                     <div>
@@ -137,8 +133,10 @@
                     </div>
                     {% endfor %}
                 </div>
-
+                
                 <div class="bubble bubble2">
+                    <img src="{% static 'blue.png' %}">
+                    
                     <h2>체지방량과 체지방률</h2>
                     {% for record in inbody_records %}
                     <div>
@@ -153,6 +151,8 @@
                 </div>
 
                 <div class="bubble bubble3">
+                    <img src="{% static 'orange.png' %}">
+
                     <h2>근육량과 골격근량</h2>
                     {% for record in inbody_records %}
                     <div>
@@ -169,6 +169,8 @@
             </div>
             <div>
                 <div class="bubble bubble4">
+                    <img src="{% static 'purple.png' %}">
+
                     <h2>체수분량</h2>
                     {% for record in inbody_records %}
                     <div>
@@ -178,6 +180,8 @@
                     {% endfor %}
                 </div>
                 <div class="bubble bubble5">
+                    <img src="{% static 'babypink.png' %}">
+
                     <h2>BMI</h2>
                     {% for record in inbody_records %}
                     <div>
