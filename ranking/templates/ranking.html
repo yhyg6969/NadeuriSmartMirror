@@ -8,6 +8,28 @@
 <link rel="stylesheet" href="{% static 'main.css' %}">
 <link rel="stylesheet" href="{% static 'ranking.css' %}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+    .top3-item:nth-child(1) div{
+    width: 60px;
+    height: 60px;
+    background-image: url("{% static 'slivermedal.png' %}");
+    background-size: cover;
+}
+
+.top3-item:nth-child(2) div{
+    width: 60px;
+    height: 60px;
+    background-image: url("{% static 'goldmedal.png' %}");
+    background-size: cover;
+}
+
+.top3-item:nth-child(3) div{
+    width: 60px;
+    height: 60px;
+    background-image: url("{% static 'bronzemedal.png' %}");
+    background-size: cover;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
