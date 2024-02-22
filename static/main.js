@@ -1,4 +1,3 @@
-// Function to generate the calendar
 function generateCalendar() {
     const calendarContainer = document.getElementById('calendar');
     const header = document.getElementById('currentMonthYear');
@@ -50,7 +49,6 @@ function generateCalendar() {
     }
 }
 
-// Function to open the modal in a new popup window with only the date in the URL
 function openModalPopup(year, month, day) {
     console.log(`openModalPopup called with year=${year}, month=${month}, day=${day}`);
 
@@ -63,10 +61,8 @@ function openModalPopup(year, month, day) {
     window.open(url, 'Modal', `height=400,width=600,left=${leftPosition},top=${topPosition}`);
 }
 
-// Function to close the modal
 function closeModal() {
     window.close();
 }
 
-// Call the function to generate the initial calendar
 generateCalendar();

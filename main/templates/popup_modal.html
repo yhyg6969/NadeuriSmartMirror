@@ -11,47 +11,13 @@
             <p>{{ error_message }}</p>
             {% else %}
             <p id="modalContent">
-                <div>
-                    <div class="modal-date">[ 날짜 ]</div>
-                    <div class="modal-date">{{ year }}-{{ month }}-{{ day }}</div>
-                </div>
-                <div class="modal-Con">
-                    <div class="modal-title">총 운동 시간</div>
-                    <div class="modal-inner">{{ total_hours }}시간 {{ total_minutes }}분 {{ total_seconds }}초</div>
-                </div>
-                <div class="modal-Con">
-                    <div class="modal-title">총 소모 칼로리</div>
-                    <div class="modal-inner">{{ total_calories|floatformat:2 }} kcal</div>
-                </div>
-                <div class="modal-Con">
-                    <div class="modal-title">키와 몸무게</div>
-                    <div class="modal-inner">
-                        <p>키: {{ inbody_record.height }} cm</p>
-                        <p>몸무게: {{ inbody_record.weight }} kg</p>
-                    </div>
-                </div>
-                <div class="modal-Con">
-                    <div class="modal-title">체지방량과 체지방률</div>
-                    <div class="modal-inner">
-                        <p>체지방량: {{ inbody_record.fat }} kg</p>
-                        <p>체지방률: {{ inbody_record.fat_ratio }} %</p>
-                    </div>
-                </div>
-                <div class="modal-Con">
-                    <div class="modal-title">근육량과 골격근량</div>
-                    <div class="modal-inner">
-                        <p>근육량: {{ inbody_record.muscle }} kg</p>
-                        <p>골격근량: {{ inbody_record.skeletal_muscle }} kg</p>
-                    </div>
-                </div>
-                <div class="modal-Con">
-                    <div class="modal-title">체수분량</div>
-                    <div class="modal-inner">체수분량: {{ inbody_record.water_content }} %</div>
-                </div>
-                <div class="modal-Con">
-                    <div class="modal-title">BMI</div>
-                    <div class="modal-inner">BMI: {{ inbody_record.bmi }}</div>
-                </div>
+                <!-- Displayed content goes here -->
+                날짜: {{ year }}-{{ month }}-{{ day }}<br>
+                <br>
+                총 운동 시간: {{ total_hours }}시간 {{ total_minutes }}분 {{ total_seconds }}초<br>
+                <br>
+                총 소모 칼로리: {{ total_calories|floatformat:2 }} kcal
+                <br>
             </p>
             {% endif %}
             <button class="close-modal-btn" onclick="closeModal()">닫기</button>
