@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.db.models import Sum, F
 from datetime import datetime, timedelta
 from django.utils import timezone
-from .models import GameRecord, Student
+from .models import GameRecord, Student, InBodyRecord
 from django.http import HttpResponse
 
 def main(request):
@@ -87,7 +87,7 @@ def popup_modal(request):
         # Check if there are matching records
         if not records.exists():
             # No records found for the specified date, render a response with an error message
-            error_message = "해당 날짜에 기록된 활동이 없습니다"
+            error_message = "No activity records found for the specified date."
             return render(request, 'popup_modal.html', {'error_message': error_message})
 
         # Calculate total activity time in seconds
