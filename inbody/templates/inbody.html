@@ -9,8 +9,9 @@
 <link rel="stylesheet" href="{% static 'inbody.css' %}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
-    .img, .background-img{
-        position: absolute;
+    .img,
+    .background-img{
+    position: absolute;
     width: 80%;
     height: 50%;
     background-size: 1800px;
@@ -122,48 +123,42 @@
                     <img src="{% static 'green.png' %}">
                     
                     <h2>키와 몸무게</h2>
-                    {% for record in inbody_records %}
-                    <div>
-                        <div class="modal-title">키</div>
-                        <div class="modal-inner">{{ most_recent_record.height }} ({{ difference.height }})</div>
-                    </div>
-                    <div>
-                        <div class="modal-title">몸무게</div>
-                        <div class="modal-inner">{{ most_recent_record.weight }} ({{ difference.weight }})</div>
-                    </div>
-                    {% endfor %}
+                        <div>
+                            <div class="modal-title">키</div>
+                            <div class="modal-inner">{{ most_recent_record.height }} ({{ difference.height }})</div>
+                        </div>
+                        <div>
+                            <div class="modal-title">몸무게</div>
+                            <div class="modal-inner">{{ most_recent_record.weight }} ({{ difference.weight }})</div>
+                        </div>
                 </div>
                 
                 <div class="bubble bubble2">
                     <img src="{% static 'blue.png' %}">
                     
                     <h2>체지방량과 체지방률</h2>
-                    {% for record in inbody_records %}
-                    <div>
-                        <div class="modal-title">체지방량</div>
-                        <div class="modal-inner">{{ most_recent_record.fat }} ({{ difference.fat }})</div>
-                    </div>
-                    <div>
-                        <div class="modal-title">체지방률</div>
-                        <div class="modal-inner">{{ most_recent_record.fat_ratio }} ({{ difference.fat_ratio }})</div>
-                    </div>
-                    {% endfor %}
+                        <div>
+                            <div class="modal-title">체지방량</div>
+                            <div class="modal-inner">{{ most_recent_record.fat }} ({{ difference.fat }})</div>
+                        </div>
+                        <div>
+                            <div class="modal-title">체지방률</div>
+                            <div class="modal-inner">{{ most_recent_record.fat_ratio }} ({{ difference.fat_ratio }})</div>
+                        </div>
                 </div>
 
                 <div class="bubble bubble3">
                     <img src="{% static 'orange.png' %}">
 
                     <h2>근육량과 골격근량</h2>
-                    {% for record in inbody_records %}
-                    <div>
-                        <div class="modal-title">근육량</div>
-                        <div class="modal-inner">{{ most_recent_record.muscle }} ({{ difference.muscle }})</div>
-                    </div>
-                    <div>
-                        <div class="modal-title">골격근량</div>
-                        <div class="modal-inner">{{ most_recent_record.skeletal_muscle }} ({{ difference.skeletal_muscle }})</div>
-                    </div>
-                    {% endfor %}
+                        <div>
+                            <div class="modal-title">근육량</div>
+                            <div class="modal-inner">{{ most_recent_record.muscle }} ({{ difference.muscle }})</div>
+                        </div>
+                        <div>
+                            <div class="modal-title">골격근량</div>
+                            <div class="modal-inner">{{ most_recent_record.skeletal_muscle }} ({{ difference.skeletal_muscle }})</div>
+                        </div>
                 </div>
 
             </div>
@@ -172,23 +167,19 @@
                     <img src="{% static 'purple.png' %}">
 
                     <h2>체수분량</h2>
-                    {% for record in inbody_records %}
-                    <div>
-                        <div class="modal-title">체수분량</div>
-                        <div class="modal-inner">{{ most_recent_record.water_content }} ({{ difference.water_content }})</div>
-                    </div>
-                    {% endfor %}
+                        <div>
+                            <div class="modal-title">체수분량</div>
+                            <div class="modal-inner">{{ most_recent_record.water_content }} ({{ difference.water_content }})</div>
+                        </div>
                 </div>
                 <div class="bubble bubble5">
                     <img src="{% static 'babypink.png' %}">
 
                     <h2>BMI</h2>
-                    {% for record in inbody_records %}
-                    <div>
-                        <div class="modal-title">BMI</div>
-                        <div class="modal-inner">{{ most_recent_record.bmi }} ({{ difference.bmi }})</div>
-                    </div>
-                    {% endfor %}
+                        <div>
+                            <div class="modal-title">BMI</div>
+                            <div class="modal-inner">{{ most_recent_record.bmi }} ({{ difference.bmi }})</div>
+                        </div>
                 </div>
             </div>
         </div>
