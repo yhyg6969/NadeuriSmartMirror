@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.db.models import Sum, F
 from datetime import datetime, timedelta
 from django.utils import timezone
-from .models import GameRecord, Student, InBodyRecord
+from .models import GameRecord, Student
 from django.http import HttpResponse
 
 def main(request):
@@ -81,16 +81,13 @@ def popup_modal(request):
         # Retrieve UID from the session
         uid = user_info.get('uid')
 
-        # Query the InBodyRecord for the specified date and UID
-        inbody_records = InBodyRecord.objects.filter(uid=uid, timestamp__gte=start_timestamp, timestamp__lte=end_timestamp)
-
-        # Query the game records for the specified date and UID
+        # Query the database using timestamp range and UID
         records = GameRecord.objects.filter(uid=uid, start_ts__gte=start_timestamp, finish_ts__lte=end_timestamp)
 
         # Check if there are matching records
-        if not inbody_records.exists() or not records.exists():
+        if not records.exists():
             # No records found for the specified date, render a response with an error message
-            error_message = "해당 날짜에 기록된 데이터가 없습니다."
+            error_message = "해당 날짜에 기록된 활동이 없습니다"
             return render(request, 'popup_modal.html', {'error_message': error_message})
 
         # Calculate total activity time in seconds
@@ -111,7 +108,6 @@ def popup_modal(request):
             'year': year,
             'month': month,
             'day': day,
-            'inbody_records': inbody_records,
             'records': records,
             'total_hours': total_hours,
             'total_minutes': total_minutes,

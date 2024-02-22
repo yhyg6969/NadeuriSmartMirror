@@ -5,8 +5,6 @@
 
 {% block extrahead %}
 <link rel="stylesheet" href="{% static 'main.css' %}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
 {% endblock %}
 
 {% block content %}
@@ -18,7 +16,6 @@
         <img src="{% static 'Oikos_logo.png' %}" alt="Oikos_logo" height="100px" style="margin-left: 50px;">
         <div>
             {% if student_data %}
-            <i class="fa-solid fa-hat-cowboy"></i>
             <p>{{ student_data.school }}</p>
             <p>{{ student_data.grade }}학년 {{ student_data.class_num }}반 {{ student_data.number }}번</p>
             <p>{{ student_data.name }}</p>
@@ -29,63 +26,17 @@
     </header>
 
     <nav>
-        <p>카테고리</p>
-        <a href="{% url 'main' %}">
-            <span><i class="fa-solid fa-house"></i></span>
-            <span>
-                <div class="Title">메인 화면</div>
-                <div class="subTitle">Main</div>
-            </span>
-        </a>
-        <a href="{% url 'Xplaywall' %}">
-            <span><i class="fa fa-solid fa-person-running"></i></span>
-            <span>
-                <div class="Title">엑스 플레이 월</div>
-                <div class="subTitle">X-PLAYWALL</div>
-            </span>
-        </a>
-
-        <a href="{% url 'Xfloor' %}">
-            <span><i class="fa-solid fa-people-line"></i></span>
-            <span>
-                <div class="Title">엑스 플로어</div>
-                <div class="subTitle">X-FLOOR</div>
-            </span>
-        </a>
-
-        <a href="{% url 'inbody' %}">
-            <span><i class="fa-solid fa-person"></i></span>
-            <span>
-                <div class="Title">체성분 관리</div>
-                <div class="subTitle">Body composition management</div>
-            </span>
-        </a>
-
-        <a href="{% url 'ranking' %}">
-            <span><i class="fa-solid fa-ranking-star"></i></span>
-            <span>
-                <div class="Title">랭킹</div>
-                <div class="subTitle">Ranking</div>
-            </span>
-        </a>
-
-        <a href="{% url 'login' %}">
-            <span><i class="fa-solid fa-arrow-right-from-bracket"></i></span>
-            <span>
-                <div class="Title">로그아웃</div>
-                <div class="subTitle">LogOut</div>
-            </span>
-        </a>
-
-<!--         <a href="{% url 'smartmirror' %}">스마트 미러</a>
- -->    </nav>
+        <a href="{% url 'main' %}">메인 화면</a>
+        <a href="{% url 'Xplaywall' %}">엑스 플레이 월</a>
+        <a href="{% url 'Xfloor' %}">엑스 플로어</a>
+        <a href="{% url 'smartmirror' %}">스마트 미러</a>
+        <a href="{% url 'inbody' %}">체성분 관리</a>
+        <a href="{% url 'ranking' %}">랭킹</a>
+        <a href="{% url 'login' %}">로그아웃</a>
+    </nav>
 
     <main>
-<!--         <p>오늘 날짜 | </p>
- -->    <div class="title">
-            <h2>이번 달 운동 기록</h2>
-            <p>이번 달 운동 기록을 살펴보아요</p>
-        </div>
+        <h1>메인 화면</h1>
 
         <input type="hidden" id="totalActivityTimeMinutes" value="{{ total_activity_time_minutes }}">
         <input type="hidden" id="totalActivityTimeSeconds" value="{{ total_activity_time_seconds }}">
