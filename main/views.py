@@ -87,7 +87,7 @@ def popup_modal(request):
         # Check if there are matching records
         if not records.exists():
             # No records found for the specified date, render a response with an error message
-            error_message = "No activity records found for the specified date."
+            error_message = "해당 날짜에 기록된 데이터가 없습니다."
             return render(request, 'popup_modal.html', {'error_message': error_message})
 
         # Calculate total activity time in seconds
