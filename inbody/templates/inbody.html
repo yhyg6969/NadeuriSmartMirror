@@ -127,13 +127,13 @@
                     <h2>키와 몸무게</h2>
                     <div>
                         <div class="modal-title">키</div>
-                        <div class="modal-inner">{{ most_recent_record.height|floatformat:2 }} {{
-                            difference.height|floatformat:2 }}</div>
+                        <div class="modal-inner">{{ most_recent_record.height|default:"측정된 기록이 없습니다." }} {{
+                            difference.height|default_if_none:"측정된 기록이 없습니다." }}</div>
                     </div>
                     <div>
                         <div class="modal-title">몸무게</div>
-                        <div class="modal-inner">{{ most_recent_record.weight|floatformat:2 }} {{
-                            difference.weight|floatformat:2 }}</div>
+                        <div class="modal-inner">{{ most_recent_record.weight|default:"측정된 기록이 없습니다." }} {{
+                            difference.weight|default_if_none:"측정된 기록이 없습니다." }}</div>
                     </div>
                 </div>
 
@@ -143,13 +143,13 @@
                     <h2>체지방량과 체지방률</h2>
                     <div>
                         <div class="modal-title">체지방량</div>
-                        <div class="modal-inner">{{ most_recent_record.fat|floatformat:2 }} {{
-                            difference.fat|floatformat:2 }}</div>
+                        <div class="modal-inner">{{ most_recent_record.fat|default:"측정된 기록이 없습니다." }} {{
+                            difference.fat|default_if_none:"측정된 기록이 없습니다." }}</div>
                     </div>
                     <div>
                         <div class="modal-title">체지방률</div>
-                        <div class="modal-inner">{{ most_recent_record.fat_ratio|floatformat:2 }} {{
-                            difference.fat_ratio|floatformat:2 }}</div>
+                        <div class="modal-inner">{{ most_recent_record.fat_ratio|default:"측정된 기록이 없습니다." }} {{
+                            difference.fat_ratio|default_if_none:"측정된 기록이 없습니다." }}</div>
                     </div>
                 </div>
 
@@ -159,13 +159,13 @@
                     <h2>근육량과 골격근량</h2>
                     <div>
                         <div class="modal-title">근육량</div>
-                        <div class="modal-inner">{{ most_recent_record.muscle|floatformat:2 }} {{
-                            difference.muscle|floatformat:2 }}</div>
+                        <div class="modal-inner">{{ most_recent_record.muscle|default:"측정된 기록이 없습니다." }} {{
+                            difference.muscle|default_if_none:"측정된 기록이 없습니다." }}</div>
                     </div>
                     <div>
                         <div class="modal-title">골격근량</div>
-                        <div class="modal-inner">{{ most_recent_record.skeletal_muscle|floatformat:2 }} {{
-                            difference.skeletal_muscle|floatformat:2 }}</div>
+                        <div class="modal-inner">{{ most_recent_record.skeletal_muscle|default:"측정된 기록이 없습니다." }} {{
+                            difference.skeletal_muscle|default_if_none:"측정된 기록이 없습니다." }}</div>
                     </div>
                 </div>
 
@@ -177,8 +177,8 @@
                     <h2>체수분량</h2>
                     <div>
                         <div class="modal-title">체수분량</div>
-                        <div class="modal-inner">{{ most_recent_record.water_content|floatformat:2 }} {{
-                            difference.water_content|floatformat:2 }}</div>
+                        <div class="modal-inner">{{ most_recent_record.water_content|default:"측정된 기록이 없습니다." }} {{
+                            difference.water_content|default_if_none:"측정된 기록이 없습니다." }}</div>
                     </div>
                 </div>
                 <div class="bubble bubble5">
@@ -187,8 +187,8 @@
                     <h2>BMI</h2>
                     <div>
                         <div class="modal-title">BMI</div>
-                        <div class="modal-inner">{{ most_recent_record.bmi|floatformat:2 }} {{
-                            difference.bmi|floatformat:2 }}</div>
+                        <div class="modal-inner">{{ most_recent_record.bmi|default:"측정된 기록이 없습니다." }} {{
+                            difference.bmi|default_if_none:"측정된 기록이 없습니다." }}</div>
                     </div>
                 </div>
             </div>
@@ -200,14 +200,4 @@
         </div>
     </main>
 </body>
-{% endblock %}
-
-
-
-
-
-
-
-</body>
-
 {% endblock %}
