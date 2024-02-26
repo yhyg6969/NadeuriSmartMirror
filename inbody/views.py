@@ -20,6 +20,10 @@ def inbody(request):
     # Fetch the most recent inbody record for the user
     most_recent_record = InBodyRecord.objects.filter(uid=str(uid)).order_by('-timestamp').first()
 
+    if most_recent_record is None:
+        messages.error(request, '측정된 기록이 없습니다.')
+        return render(request, 'inbody.html', {'student_data': student_data, 'most_recent_record': None, 'difference': None})
+
     # Fetch the second most recent inbody record for the user
     second_recent_record = InBodyRecord.objects.filter(uid=str(uid)).order_by('-timestamp').exclude(record_id=most_recent_record.record_id).first()
 
@@ -34,7 +38,7 @@ def inbody(request):
             if diff > 0:
                 difference[field] = f'({diff} ▲)'
             elif diff < 0:
-                difference[field] = f'({abs(diff)} ▼)'
+                difference[field] = f'({abs(diff)} ▼)   '
             else:
                 difference[field] = '차이가 없습니다'
 
