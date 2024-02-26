@@ -38,11 +38,6 @@ def inbody(request):
             else:
                 difference[field] = '(차이가 없습니다)'
 
-    if most_recent_record:
-        messages.success(request, '측정된 기록이 있습니다.')
-    else:
-        messages.info(request, '측정된 기록이 없습니다.')
-
     # Pass the data to the template
     context = {
         'student_data': student_data,
