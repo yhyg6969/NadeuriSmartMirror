@@ -23,9 +23,11 @@ def inbody(request):
     # Fetch the second most recent inbody record for the user
     second_recent_record = InBodyRecord.objects.filter(uid=str(uid)).order_by('-timestamp').exclude(record_id=most_recent_record.record_id).first()
 
-    # Calculate the difference between most recent and second most recent data
-    difference = None
-    if most_recent_record and second_recent_record:
+    # If there is no inbody data, set the difference to display the message
+    if most_recent_record is None or second_recent_record is None:
+        difference = {field: "측정된 기록이 없습니다." for field in ['height', 'weight', 'fat', 'fat_ratio', 'muscle', 'skeletal_muscle', 'water_content', 'bmi']}
+    else:
+        # Calculate the difference between most recent and second most recent data
         difference = {}
         for field in ['height', 'weight', 'fat', 'fat_ratio', 'muscle', 'skeletal_muscle', 'water_content', 'bmi']:
             recent_value = getattr(most_recent_record, field)

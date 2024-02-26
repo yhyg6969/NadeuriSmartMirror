@@ -46,7 +46,6 @@
 
 {% block content %}
 
-
 <body>
     <header>
         <!-- Replace 'Your Logo' with the actual path or URL of your logo -->
@@ -120,6 +119,7 @@
         <img class="background-img" src="{% static 'Line 35.png' %}">
 
         <div class="bubble-container">
+            {% if most_recent_record %}
             <div>
                 <div class="bubble bubble1">
                     <img src="{% static 'green.png' %}">
@@ -159,7 +159,8 @@
                     </div>
                     <div>
                         <div class="modal-title">골격근량</div>
-                        <div class="modal-inner">{{ most_recent_record.skeletal_muscle }} {{ difference.skeletal_muscle }}</div>
+                        <div class="modal-inner">{{ most_recent_record.skeletal_muscle }} {{ difference.skeletal_muscle
+                            }}</div>
                     </div>
                 </div>
 
@@ -171,12 +172,13 @@
                     <h2>체수분량</h2>
                     <div>
                         <div class="modal-title">체수분량</div>
-                        <div class="modal-inner">{{ most_recent_record.water_content }} {{ difference.water_content }}</div>
+                        <div class="modal-inner">{{ most_recent_record.water_content }} {{ difference.water_content }}
+                        </div>
                     </div>
                 </div>
                 <div class="bubble bubble5">
                     <img src="{% static 'babypink.png' %}">
- 
+
                     <h2>BMI</h2>
                     <div>
                         <div class="modal-title">BMI</div>
@@ -184,6 +186,11 @@
                     </div>
                 </div>
             </div>
+            {% else %}
+            <p>측정된 기록이 없습니다.</p>
+            {% endif %}
         </div>
     </main>
-    {% endblock %}
+</body>
+
+{% endblock %}
