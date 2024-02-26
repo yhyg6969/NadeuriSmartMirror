@@ -50,3 +50,4 @@ def inbody(request):
     return render(request, 'inbody.html', context)
 
 
+
