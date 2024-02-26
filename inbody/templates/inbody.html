@@ -149,20 +149,6 @@
                     </div>
                 </div>
 
-                <div class="bubble bubble3">
-                    <img src="{% static 'orange.png' %}">
-
-                    <h2>근육량과 골격근량</h2>
-                    <div>
-                        <div class="modal-title">근육량</div>
-                        <div class="modal-inner">{{ most_recent_record.muscle }} {{ difference.muscle }}</div>
-                    </div>
-                    <div>
-                        <div class="modal-title">골격근량</div>
-                        <div class="modal-inner">{{ most_recent_record.skeletal_muscle }} {{ difference.skeletal_muscle }}</div>
-                    </div>
-                </div>
-
             </div>
             <div>
                 <div class="bubble bubble4">
@@ -182,6 +168,22 @@
                     <div>
                         <div class="modal-title">BMI</div>
                         <div class="modal-inner">{{ most_recent_record.bmi }} {{ difference.bmi }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="bubble bubble3">
+                    <img src="{% static 'orange.png' %}">
+
+                    <h2>근육량과 골격근량</h2>
+                    <div>
+                        <div class="modal-title">근육량</div>
+                        <div class="modal-inner">{{ most_recent_record.muscle }} {{ difference.muscle }}</div>
+                    </div>
+                    <div>
+                        <div class="modal-title">골격근량</div>
+                        <div class="modal-inner">{{ most_recent_record.skeletal_muscle }} {{ difference.skeletal_muscle }}</div>
                     </div>
                 </div>
             </div>
