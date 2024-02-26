@@ -21,7 +21,7 @@ def inbody(request):
     most_recent_record = InBodyRecord.objects.filter(uid=str(uid)).order_by('-timestamp').first()
 
     if most_recent_record is None:
-        messages.warning(request, 'No inbody record found for this student.')
+        messages.error(request, 'No inbody record found for this student.')
         return render(request, 'inbody.html', {'student_data': student_data, 'most_recent_record': None, 'difference': None})
 
     # Fetch the second most recent inbody record for the user
@@ -40,7 +40,7 @@ def inbody(request):
             elif diff < 0:
                 difference[field] = f'({abs(diff):.2f} ▼)'
             else:
-                difference[field] = '(No difference)'
+                difference[field] = '(차이가 없습니다)'
     else:
         messages.warning(request, 'Only one inbody record found for this student.')
 
