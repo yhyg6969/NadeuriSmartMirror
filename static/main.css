@@ -153,6 +153,7 @@ main {
     margin-left: 220px;
     padding: 20px;
     box-sizing: border-box;
+    position: relative;
 }
 
 .title{
@@ -172,9 +173,12 @@ main {
 
 
 .calendar-container {
-    width: 80%;
-    margin: 0 300px;
+    width: 90%;
+    margin: 0 80px;
     font-family: 'Pretendard-Regular';
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .calendar {
@@ -184,7 +188,7 @@ main {
     gap: 0px;
     width: 70%;
     margin: 0 auto;
-    margin-top: 70px;
+    margin-top: 30px;
 
     /* Center the calendar horizontally */
 }
@@ -212,9 +216,6 @@ main {
 
 #currentMonthYear{
     color: var(--primary-color);
-    position: absolute;
-    top: 50%;
-    left: 22%;
     padding: 20px;
     font-size: 26px;
     border: 2px solid var(--primary-color);
@@ -222,11 +223,10 @@ main {
 }
 
 .calendar-top {
-    display: flex;
-    justify-content: space-between;
     margin-bottom: 10px;
-    width: 100%;
-    
+    width: 150px;
+    text-align: center;
+    font-size: 18px;
     /* Use 100% width within the container */
     margin: 0 auto;
     /* Center the calendar top horizontally */

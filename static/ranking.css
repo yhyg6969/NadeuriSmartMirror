@@ -18,12 +18,12 @@
 
 .table {
     display: flex;
+    flex-direction : column;
     justify-content: space-between;
     align-items: center;
     padding: 20px;
     margin-left: 50px;
-    margin-right: 300px;
-    margin-top: 0px;
+    margin-top: 80px;
     background-color: #fff;
     width: 90%;
     height: 600px;
@@ -32,7 +32,6 @@
 #top3 {
     display: flex;
     align-items: flex-end;
-    margin-left: 100px;
 }
 
 .top3-item {
@@ -73,8 +72,8 @@
     max-width: 100%;
     border-collapse: collapse;
     background-color: #fff;
-    margin-right: 100px;
     height: 400px;
+    margin-top: 50px;
 }
 
 th,
