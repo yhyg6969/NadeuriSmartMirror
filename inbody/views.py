@@ -20,12 +20,16 @@ def inbody(request):
     # Fetch the most recent inbody record for the user
     most_recent_record = InBodyRecord.objects.filter(uid=str(uid)).order_by('-timestamp').first()
 
+    if most_recent_record is None:
+        messages.warning(request, 'No inbody record found for this student.')
+        return render(request, 'inbody.html', {'student_data': student_data, 'most_recent_record': None, 'difference': None})
+
     # Fetch the second most recent inbody record for the user
     second_recent_record = InBodyRecord.objects.filter(uid=str(uid)).order_by('-timestamp').exclude(record_id=most_recent_record.record_id).first()
 
     # Calculate the difference between most recent and second most recent data
     difference = None
-    if most_recent_record and second_recent_record:
+    if second_recent_record:
         difference = {}
         for field in ['height', 'weight', 'fat', 'fat_ratio', 'muscle', 'skeletal_muscle', 'water_content', 'bmi']:
             recent_value = getattr(most_recent_record, field)
@@ -37,7 +41,7 @@ def inbody(request):
                 difference[field] = f'({abs(diff):.2f} ▼)'
             else:
                 difference[field] = '(차이가 없습니다)'
-    elif most_recent_record:
+    else:
         messages.warning(request, 'Only one inbody record found for this student.')
 
     # Pass the data to the template
@@ -48,6 +52,3 @@ def inbody(request):
     }
 
     return render(request, 'inbody.html', context)
-
-
-
