@@ -36,7 +36,6 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-right: 30px;
 }
 
 .bubble > div {
@@ -46,7 +45,7 @@ main {
 }
 
 .modal-title{
-    width: 100%;
+    width: 30%;
     font-size: 16px;
     opacity: 0.8;
     text-align: center;
@@ -54,12 +53,12 @@ main {
 
 .modal-inner {
     width: 100%;
-    font-size: 24px;
+    font-size: 18px;
     color: #fff;
-    padding: 20px;
+    padding: 20px 1px;
     font-weight: 600;
-    margin-left: -150px;
     text-align: center;
+    margin-left: -70px;
 
 }
 

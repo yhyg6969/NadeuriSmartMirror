@@ -69,10 +69,10 @@
     margin-top: 60px;
 }
 
-.bubble:hover {
+/* .bubble:hover {
     filter: brightness(90%);
 }
-
+ */
 .bubble h2 {
     letter-spacing: 1px;
 }

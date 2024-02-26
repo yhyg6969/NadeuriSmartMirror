@@ -9,7 +9,7 @@
     --bg-color: #ffffff;
     --primary-bg-color: #333740;
     --primary-color: #289E90;
-    --text-color: #AABDBF;
+    --text-color: #6ab1b9;
     --text-active: #ffffff;
     --border-color: #86b8bd;
     }
@@ -45,7 +45,7 @@
         width: 500px;
         height: 70px;
         font-family: 'Pretendard-Regular';
-        color: var(--text-color);
+        color: var(--border-color);
         font-size: 22px;
         letter-spacing: -1px;
         background-color: #F6F7F5;

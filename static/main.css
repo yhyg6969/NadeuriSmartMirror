@@ -119,6 +119,20 @@ nav a:last-child {
     /* Pushes Logout to the bottom */
 }
 
+.nav-hover {
+    font-size: 18px;
+    color: var(--primary-color);
+    /* Change font color to #134C4B on hover */
+    background-color: var(--light-color);
+    /* Change background color to #27AE60 on hover */
+    border-radius: 15px;
+    /* Add rounded corners on hover */
+}
+
+.nav-hover .Title {
+    font-weight: 600;
+}
+
 i{
     font-family: 'Font Awesom Free', 'Font Awesom 5 Brands';
     height: 1rem;
