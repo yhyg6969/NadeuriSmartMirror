@@ -159,8 +159,7 @@
                     </div>
                     <div>
                         <div class="modal-title">골격근량</div>
-                        <div class="modal-inner">{{ most_recent_record.skeletal_muscle }} {{ difference.skeletal_muscle
-                            }}</div>
+                        <div class="modal-inner">{{ most_recent_record.skeletal_muscle }} {{ difference.skeletal_muscle }}</div>
                     </div>
                 </div>
 
@@ -186,8 +185,10 @@
                     </div>
                 </div>
             </div>
-            {% else %}
-            <p>측정된 기록이 없습니다.</p>
+            {% if messages %}
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
             {% endif %}
         </div>
     </main>
