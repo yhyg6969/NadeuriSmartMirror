@@ -28,7 +28,6 @@
     width: 350px;
     /* doubled the size */
     height: 350px;
-    margin-right: 10px;
     /* doubled the size */
     border-radius: 50%;
     /* ensure border-radius creates a circle */
@@ -47,12 +46,8 @@
 
 .bubble:nth-child(2) h2{
     margin-top: 80px;
-    margin-left: 100px;
 }
 
-.bubble:nth-child(2) p{
-    margin-left: 100px;
-}
 
 
 .bubble:nth-child(3) h2{
