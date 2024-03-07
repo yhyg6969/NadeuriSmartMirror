@@ -116,7 +116,11 @@
             <h2>체지방 측정 결과</h2>
             <p>현재 나의 몸 상태는?</p>
         </div>
+<<<<<<< Updated upstream
         <img class="background-img" src="{% static 'Line 35.png' %}">
+=======
+        <div class="img"></div>
+>>>>>>> Stashed changes
 
         <div class="bubble-container">
             {% if most_recent_record %}
@@ -127,11 +131,19 @@
                     <h2>키와 몸무게</h2>
                     <div>
                         <div class="modal-title">키</div>
+<<<<<<< Updated upstream
                         <div class="modal-inner">{{ most_recent_record.height }} {{ difference.height }}</div>
                     </div>
                     <div>
                         <div class="modal-title">몸무게</div>
                         <div class="modal-inner">{{ most_recent_record.weight }} {{ difference.weight }}</div>
+=======
+                        <div class="modal-inner">{{ most_recent_record.height }} ({{ difference.height }})</div>
+                    </div>
+                    <div>
+                        <div class="modal-title">몸무게</div>
+                        <div class="modal-inner">{{ most_recent_record.weight }} ({{ difference.weight }})</div>
+>>>>>>> Stashed changes
                     </div>
                 </div>
 
@@ -141,12 +153,33 @@
                     <h2>체지방량과 체지방률</h2>
                     <div>
                         <div class="modal-title">체지방량</div>
+<<<<<<< Updated upstream
                         <div class="modal-inner">{{ most_recent_record.fat }} {{ difference.fat }}</div>
                     </div>
                     <div>
                         <div class="modal-title">체지방률</div>
                         <div class="modal-inner">{{ most_recent_record.fat_ratio }} {{ difference.fat_ratio }}</div>
                     </div>
+=======
+                        <div class="modal-inner">{{ most_recent_record.fat }} ({{ difference.fat }})</div>
+                    </div>
+                    <div>
+                        <div class="modal-title">체지방률</div>
+                        <div class="modal-inner">{{ most_recent_record.fat_ratio }} ({{ difference.fat_ratio }})</div>
+                    </div>
+                </div>
+
+                <div class="bubble bubble3">
+                    <h2>근육량과 골격근량</h2>
+                    <div>
+                        <div class="modal-title">근육량</div>
+                        <div class="modal-inner">{{ most_recent_record.muscle }} ({{ difference.muscle }})</div>
+                    </div>
+                    <div>
+                        <div class="modal-title">골격근량</div>
+                        <div class="modal-inner">{{ most_recent_record.skeletal_muscle }} ({{ difference.skeletal_muscle }})</div>
+                    </div>
+>>>>>>> Stashed changes
                 </div>
 
             </div>
@@ -157,7 +190,11 @@
                     <h2>체수분량</h2>
                     <div>
                         <div class="modal-title">체수분량</div>
+<<<<<<< Updated upstream
                         <div class="modal-inner">{{ most_recent_record.water_content }} {{ difference.water_content }}
+=======
+                        <div class="modal-inner">{{ most_recent_record.water_content }} ({{ difference.water_content }})
+>>>>>>> Stashed changes
                         </div>
                     </div>
                 </div>
@@ -167,7 +204,11 @@
                     <h2>BMI</h2>
                     <div>
                         <div class="modal-title">BMI</div>
+<<<<<<< Updated upstream
                         <div class="modal-inner">{{ most_recent_record.bmi }} {{ difference.bmi }}</div>
+=======
+                        <div class="modal-inner">{{ most_recent_record.bmi }} ({{ difference.bmi }})</div>
+>>>>>>> Stashed changes
                     </div>
                 </div>
             </div>
@@ -192,6 +233,10 @@
             {% endif %}
         </div>
     </main>
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 </body>
 
 {% endblock %}
