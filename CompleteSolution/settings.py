@@ -93,7 +93,7 @@ DATABASES = {
         'NAME': 'oikos-db',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': '54.180.90.10',
+        'HOST': '52.79.228.4',
         'PORT': '5432',
     }
 }
