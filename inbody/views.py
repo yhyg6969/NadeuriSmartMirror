@@ -36,7 +36,7 @@ def inbody(request):
             elif diff < 0:
                 difference[field] = f'( {abs(diff)} ▼ )'
             else:
-                difference[field] = '차이가 없습니다'
+                difference[field] = '(차이가 없습니다)'
 
     # Pass the data to the template
     context = {
