@@ -32,9 +32,9 @@ def inbody(request):
             second_recent_value = getattr(second_recent_record, field)
             diff = recent_value - second_recent_value
             if diff > 0:
-                difference[field] = f'({diff} ▲)'
+                difference[field] = f'( {diff} ▲ )'
             elif diff < 0:
-                difference[field] = f'({abs(diff)} ▼)'
+                difference[field] = f'( {abs(diff)} ▼ )'
             else:
                 difference[field] = '차이가 없습니다'
 
