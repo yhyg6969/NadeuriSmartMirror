@@ -13,6 +13,7 @@ def inbody(request):
         return render(request, 'inbody.html', {'student_data': None, 'most_recent_record': None, 'difference': None})
 
     most_recent_record = InBodyRecord.objects.filter(uid=str(uid)).order_by('-timestamp').first()
+    print("Most recent record:", most_recent_record)  # Add this line for debugging
     second_recent_record = InBodyRecord.objects.filter(uid=str(uid)).order_by('-timestamp').exclude(record_id=most_recent_record.record_id).first()
 
     difference = None
