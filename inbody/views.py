@@ -29,4 +29,6 @@ def inbody(request):
             else:
                 difference[field] = '(차이가 없습니다)'
 
-    return render(request, 'inbody.html', {'student_data': student_data, 'most_recent_record': most_recent_record, 'difference': difference})
+    no_data = most_recent_record is None  # Flag indicating no data available
+
+    return render(request, 'inbody.html', {'student_data': student_data, 'most_recent_record': most_recent_record, 'difference': difference, 'no_data': no_data})
