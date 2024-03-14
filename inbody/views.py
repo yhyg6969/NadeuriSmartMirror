@@ -32,11 +32,14 @@ def inbody(request):
             second_recent_value = getattr(second_recent_record, field)
             diff = recent_value - second_recent_value
             if diff > 0:
-                difference[field] = f'( {diff} ▲ )'
+                difference[field] = f'( {diff:.2f} ▲ )'
             elif diff < 0:
-                difference[field] = f'( {abs(diff)} ▼ )'
+                difference[field] = f'( {abs(diff):.2f} ▼ )'
             else:
                 difference[field] = '(차이가 없습니다)'
+
+    if most_recent_record is None or difference is None:
+        messages.info(request, '측정된 기록이 없습니다.')
 
     # Pass the data to the template
     context = {
