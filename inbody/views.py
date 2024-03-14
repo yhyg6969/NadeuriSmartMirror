@@ -32,4 +32,15 @@ def inbody(request):
                 else:
                     difference[field] = '(차이가 없습니다)'
 
+    
+     # Divide each attribute by 10
+    if most_recent_record:
+        most_recent_record.height /= 10
+        most_recent_record.weight /= 10
+        most_recent_record.fat /= 10
+        most_recent_record.muscle /= 10
+        most_recent_record.skeletal_muscle /= 10
+        most_recent_record.water_content /= 10
+        most_recent_record.bmi /= 10
+
     return render(request, 'inbody.html', {'student_data': student_data, 'most_recent_record': most_recent_record, 'difference': difference})
