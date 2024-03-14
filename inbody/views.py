@@ -29,7 +29,7 @@ def inbody(request):
             else:
                 difference[field] = '(차이가 없습니다)'
 
-    if not most_recent_record:
+    if most_recent_record is None:
         return render(request, 'inbody.html', {'student_data': student_data, 'most_recent_record': None, 'difference': None})
 
     return render(request, 'inbody.html', {'student_data': student_data, 'most_recent_record': most_recent_record, 'difference': difference})
