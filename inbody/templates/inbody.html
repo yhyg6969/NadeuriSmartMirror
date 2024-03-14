@@ -119,7 +119,9 @@
         <img class="background-img" src="{% static 'Line 35.png' %}">
 
         <div class="bubble-container">
-            {% if most_recent_record %}
+            {% if no_data %}
+            <p>측정된 기록이 없습니다.</p>
+            {% elif most_recent_record %}
             <div>
                 <div class="bubble bubble1">
                     <img src="{% static 'green.png' %}">
@@ -187,8 +189,6 @@
                     </div>
                 </div>
             </div>
-            {% else %}
-            <p>측정된 기록이 없습니다.</p>
             {% endif %}
         </div>
     </main>
