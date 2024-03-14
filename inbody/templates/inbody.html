@@ -119,13 +119,10 @@
         <img class="background-img" src="{% static 'Line 35.png' %}">
 
         <div class="bubble-container">
-            {% if no_data %}
-            <p>측정된 기록이 없습니다.</p>
-            {% elif most_recent_record %}
+            {% if most_recent_record %}
             <div>
                 <div class="bubble bubble1">
                     <img src="{% static 'green.png' %}">
-
                     <h2>키와 몸무게</h2>
                     <div>
                         <div class="modal-title">키</div>
@@ -189,6 +186,8 @@
                     </div>
                 </div>
             </div>
+            {% else %}
+                <p>측정된 기록이 없습니다.</p>
             {% endif %}
         </div>
     </main>

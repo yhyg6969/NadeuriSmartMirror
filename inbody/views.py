@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
+from django.core.exceptions import ObjectDoesNotExist
 from .models import Student, InBodyRecord
 
 def inbody(request):
@@ -13,23 +14,22 @@ def inbody(request):
         return render(request, 'inbody.html', {'student_data': None, 'most_recent_record': None, 'difference': None})
 
     most_recent_record = InBodyRecord.objects.filter(uid=str(uid)).order_by('-timestamp').first()
-    print("Most recent record:", most_recent_record)  # Add this line for debugging
-    second_recent_record = InBodyRecord.objects.filter(uid=str(uid)).order_by('-timestamp').exclude(record_id=most_recent_record.record_id).first()
 
     difference = None
-    if most_recent_record and second_recent_record:
-        difference = {}
-        for field in ['height', 'weight', 'fat', 'fat_ratio', 'muscle', 'skeletal_muscle', 'water_content', 'bmi']:
-            recent_value = getattr(most_recent_record, field)
-            second_recent_value = getattr(second_recent_record, field)
-            diff = recent_value - second_recent_value
-            if diff > 0:
-                difference[field] = f'( {diff:.2f} ▲ )'
-            elif diff < 0:
-                difference[field] = f'( {abs(diff):.2f} ▼ )'
-            else:
-                difference[field] = '(차이가 없습니다)'
+    if most_recent_record:
+        second_recent_record = InBodyRecord.objects.filter(uid=str(uid)).order_by('-timestamp').exclude(record_id=most_recent_record.record_id).first()
+        
+        if second_recent_record:
+            difference = {}
+            for field in ['height', 'weight', 'fat', 'fat_ratio', 'muscle', 'skeletal_muscle', 'water_content', 'bmi']:
+                recent_value = getattr(most_recent_record, field)
+                second_recent_value = getattr(second_recent_record, field)
+                diff = recent_value - second_recent_value
+                if diff > 0:
+                    difference[field] = f'( {diff:.2f} ▲ )'
+                elif diff < 0:
+                    difference[field] = f'( {abs(diff):.2f} ▼ )'
+                else:
+                    difference[field] = '(차이가 없습니다)'
 
-    no_data = most_recent_record is None  # Flag indicating no data available
-
-    return render(request, 'inbody.html', {'student_data': student_data, 'most_recent_record': most_recent_record, 'difference': difference, 'no_data': no_data})
+    return render(request, 'inbody.html', {'student_data': student_data, 'most_recent_record': most_recent_record, 'difference': difference})
