@@ -42,5 +42,6 @@ def inbody(request):
         most_recent_record.skeletal_muscle /= 10
         most_recent_record.water_content /= 10
         most_recent_record.bmi /= 10
+        most_recent_record.fat_ratio /= 10
 
     return render(request, 'inbody.html', {'student_data': student_data, 'most_recent_record': most_recent_record, 'difference': difference})

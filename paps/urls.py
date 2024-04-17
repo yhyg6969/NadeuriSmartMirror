@@ -20,12 +20,5 @@ from . import views
 
 
 urlpatterns = [
-    path('main/', views.main, name='main'),
-    path('popup_modal/', views.popup_modal, name='popup_modal'),
-    path('Xplaywall/', include('Xplaywall.urls'), name="Xplaywall"),
-    path('Xfloor/', include('Xfloor.urls'), name="Xfloor"),
-    path('smartmirror/', include('smartmirror.urls'), name="smartmirror"),
-    path('inbody/', include('inbody.urls'), name="inbody"),
-    path('ranking/', include('ranking.urls'), name="ranking"),
-    path('paps/', include('paps.urls'), name="paps"),
+    path('', views.paps, name='paps'),
 ]
