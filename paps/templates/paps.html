@@ -5,7 +5,7 @@
 
 {% block extrahead %}
 <link rel="stylesheet" href="{% static 'main.css' %}">
-<link rel="stylesheet" href="{% static 'paps.css' %}">
+<link rel="stylesheet" href="paps.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
     .img,
@@ -125,35 +125,37 @@
             <h2>팝스 기록</h2>
             <p>운동실력이 얼마나 늘었을까?</p>
         </div>
-
-        <!-- Display records for each game type -->
-        {% for game in games %}
-        <div class="bubble">
-            <h2>{{ game.game_type }}</h2>
-        
-            <!-- Display today's record -->
-            {% if game.today_record %}
-            <p>Today's record: {{ game.today_record.score }}</p>
-            {% else %}
-            <p>No record for today</p>
-            {% endif %}
-        
-            <!-- Display highest record -->
-            {% if game.highest_record %}
-            <p>Highest record: {{ game.highest_record.score }}</p>
-            {% else %}
-            <p>No record found</p>
-            {% endif %}
-        
-            <!-- Display 3 recent records -->
-            <p>Recent records:
-                {% for record in game.recent_records %}
-                {{ record.score }}{% if not forloop.last %}, {% endif %}
-                {% endfor %}
-            </p>
+    
+        <!-- Wrap the bubbles inside a parent div with the class "bubble-container" -->
+        <div class="bubble-container">
+            <!-- Display records for each game type -->
+            {% for game in games %}
+            <div class="bubble">
+                <h2>{{ game.game_type }}</h2>
+    
+                <!-- Display today's record -->
+                {% if game.today_record %}
+                <p>Today's record: {{ game.today_record.score }}</p>
+                {% else %}
+                <p>No record for today</p>
+                {% endif %}
+    
+                <!-- Display highest record -->
+                {% if game.highest_record %}
+                <p>Highest record: {{ game.highest_record.score }}</p>
+                {% else %}
+                <p>No record found</p>
+                {% endif %}
+    
+                <!-- Display 3 recent records -->
+                <p>Recent records:
+                    {% for record in game.recent_records %}
+                    {{ record.score }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-
     </main>
    
 </body>
