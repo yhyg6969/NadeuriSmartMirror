@@ -22,7 +22,6 @@ main {
     padding: 20px;
 }
 
-/* Define styles for the bubble container */
 .bubble-container {
     display: flex;
     flex-direction: row;
@@ -33,11 +32,11 @@ main {
     margin-top: 30px;
 }
 
-/* Define styles for each bubble */
 .bubble {
     position: relative;
     font-family: 'Pretendard-Regular';
-    color: #fff;
+    color: #000;
+    /* Change text color to black for better contrast with white background */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -53,25 +52,32 @@ main {
     /* Add a border */
     border-radius: 15px;
     /* Make the border round-cornered */
+    background-color: #fff;
+    /* Fill the bubbles with white color */
 }
 
-/* Add different background colors to each bubble */
+/* Add different border colors to each bubble */
 .bubble:nth-child(1) {
-    background-color: #f00;
+    border-color: #8d6e63;
+    /* Brown */
 }
 
 .bubble:nth-child(2) {
-    background-color: #0f0;
+    border-color: #7e57c2;
+    /* Deep purple */
 }
 
 .bubble:nth-child(3) {
-    background-color: #00f;
+    border-color: #26a69a;
+    /* Teal */
 }
 
 .bubble:nth-child(4) {
-    background-color: #ff0;
+    border-color: #ff7043;
+    /* Deep orange */
 }
 
 .bubble:nth-child(5) {
-    background-color: #f0f;
+    border-color: #78909c;
+    /* Blue grey */
 }

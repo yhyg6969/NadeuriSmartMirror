@@ -135,20 +135,20 @@
     
                 <!-- Display today's record -->
                 {% if game.today_record %}
-                <p>Today's record: {{ game.today_record.score }}</p>
+                <p>오늘의 기록: {{ game.today_record.score }}</p>
                 {% else %}
-                <p>No record for today</p>
+                <p>오늘은 기록된게 없네요</p>
                 {% endif %}
     
                 <!-- Display highest record -->
                 {% if game.highest_record %}
-                <p>Highest record: {{ game.highest_record.score }}</p>
+                <p>최고 기록: {{ game.highest_record.score }}</p>
                 {% else %}
-                <p>No record found</p>
+                <p>기록이 없네요</p>
                 {% endif %}
     
                 <!-- Display 3 recent records -->
-                <p>Recent records:
+                <p>최근 기록:
                     {% for record in game.recent_records %}
                     {{ record.score }}{% if not forloop.last %}, {% endif %}
                     {% endfor %}
