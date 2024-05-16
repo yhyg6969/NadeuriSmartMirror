@@ -6,24 +6,21 @@
 {% block extrahead %}
 <link rel="stylesheet" href="{% static 'main.css' %}">
 <link rel="stylesheet" href="{% static 'management.css' %}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 {% endblock %}
 
 {% block content %}
 
 <body>
-    
     <header>
-        <!-- Replace 'Your Logo' with the actual path or URL of your logo -->
         <img src="{% static 'Oikos_logo.png' %}" alt="Oikos_logo" height="100px" style="margin-left: 50px;">
     </header>
 
-
-    <!-- Add this section for school selection and password -->
     <h2>학교 선택 후 비밀번호를 입력해주세요</h2>
     <form method="post" class="school_password_form">
         {% csrf_token %}
         <div>
-            <select name="school">
+            <select name="school" id="school_select">
                 <option value="" selected disabled>학교를 선택해 주세요</option>
                 <option value="서울영남초등학교">서울영남초등학교</option>
                 <option value="서울백석초등학교">서울백석초등학교</option>
@@ -34,19 +31,15 @@
         </div>
     </form>
 
-
-
-    <main class="studentData">
+    <main id="studentData" class="studentData" style="display:none;">
         <h2>학생 정보 추가</h2>
-    
-        <!-- Create Student Form -->
         <p>학생을 추가해 주세요</p>
         <form method="post" class="student_table">
             {% csrf_token %}
             <div>
                 <div>
                     <label for="id_uid"></label><br>
-                    <input type="text" id="id_uid" name="uid" placeholder = "UID (8자리)"><br>
+                    <input type="text" id="id_uid" name="uid" placeholder="UID (8자리)"><br>
                     <label for="id_name"></label><br>
                     <label for="id_school"></label><br>
                     <input type="text" id="id_school" name="school" placeholder="학교"><br>
@@ -68,10 +61,8 @@
                 </span>
                 <button type="submit" name="action" value="create" class="save_btn">저장</button>
             </div>
-            
         </form>
-    
-        <!-- Student Information Table -->
+
         <h2>학생 정보 수정</h2>
         <p>학생 정보를 수정할 수 있습니다</p>
         <table border="1">
@@ -106,11 +97,15 @@
         </table>
     </main>
 
+    <br><br><br>
 
-    <br>
-    <br>
-    <br>
-
-
+    {% if students %}
+    <script>
+        $(document).ready(function() {
+            $('#studentData').show();
+        });
+    </script>
+    {% endif %}
 </body>
 {% endblock %}
+

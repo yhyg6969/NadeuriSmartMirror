@@ -1,8 +1,7 @@
 from django.contrib import messages
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from .models import Student
 
-# Define passwords for each school
 school_passwords = {
     "서울영남초등학교": "0000",
     "서울백석초등학교": "0000",
@@ -10,19 +9,25 @@ school_passwords = {
 }
 
 def management(request):
+    context = {'students': [], 'error_message': None, 'show_data': False}
+    
     if request.method == 'POST':
         action = request.POST.get('action')
         if action == 'filter_students':
             school = request.POST.get('school')
             password = request.POST.get('password')
-            # Check if password is correct for the selected school
+            
             if school not in school_passwords or password != school_passwords[school]:
-                messages.error(request, '비밀번호가 일치하지 않습니다')
-                return redirect('management')
-            # Filter students based on school
+                context['error_message'] = 'Invalid password for the selected school.'
+                return render(request, 'management.html', context)
+            
             students = Student.objects.filter(school=school)
-            return render(request, 'management.html', {'students': students, 'error_message': None})
+            context['students'] = students
+            context['show_data'] = True
+            return render(request, 'management.html', context)
+        
         elif action == 'create':
+            uid = request.POST.get('uid')
             name = request.POST.get('name')
             school = request.POST.get('school')
             grade = request.POST.get('grade')
@@ -30,14 +35,15 @@ def management(request):
             number = request.POST.get('number')
             gender = bool(request.POST.get('gender'))
             Student.objects.create(uid=uid, name=name, school=school, grade=grade, class_num=class_num, number=number, gender=gender)
+        
         elif action == 'update':
             uid = request.POST.get('uid')
             try:
                 student = Student.objects.get(uid=uid)
             except Student.DoesNotExist:
-                # Handle case when student with given UID doesn't exist
+                context['error_message'] = 'Student with given UID does not exist.'
                 return redirect('management')
-            student.uid = request.POST.get('uid')
+            
             student.name = request.POST.get('name')
             student.school = request.POST.get('school')
             student.grade = request.POST.get('grade')
@@ -45,16 +51,17 @@ def management(request):
             student.number = request.POST.get('number')
             student.gender = bool(request.POST.get('gender'))
             student.save()
+        
         elif action == 'delete':
             uid = request.POST.get('uid')
             try:
                 student = Student.objects.get(uid=uid)
             except Student.DoesNotExist:
-                # Handle case when student with given UID doesn't exist
+                context['error_message'] = 'Student with given UID does not exist.'
                 return redirect('management')
             student.delete()
+        
         return redirect('management')
+    
     else:
-        students = Student.objects.all()
-        return render(request, 'management.html', {'students': students, 'error_message': None})
-
+        return render(request, 'management.html', context)
