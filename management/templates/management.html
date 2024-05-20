@@ -6,6 +6,7 @@
 {% block extrahead %}
 <link rel="stylesheet" href="{% static 'main.css' %}">
 <link rel="stylesheet" href="{% static 'management.css' %}">
+<link rel="stylesheet" href="{% static 'login.css' %}">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 {% endblock %}
 
@@ -21,13 +22,13 @@
     <form method="post" class="school_password_form">
         {% csrf_token %}
         <div>
-            <select name="school" id="school_select">
-                <option value="" selected disabled>학교를 선택해 주세요</option>
-                <option value="서울영남초등학교">서울영남초등학교</option>
-                <option value="서울백석초등학교">서울백석초등학교</option>
+            <select name="school" id="school_select" class= "dropdown-box">
+                <option class="option" value="" selected disabled>학교를 선택해 주세요</option>
+                <option class="option" value="서울영남초등학교">서울영남초등학교</option>
+                <option class="option" value="서울백석초등학교">서울백석초등학교</option>
                 <!-- Add other school options as needed -->
             </select>
-            <input type="password" name="password" placeholder="비밀번호를 입력해주세요">
+            <input type="password" class="input-box" name="password" placeholder="비밀번호를 입력해주세요">
             <button type="submit" name="action" value="filter_students">조회</button>
         </div>
     </form>
