@@ -18,26 +18,26 @@
     </header>
 
     <main style="margin-top: 150px;">
-    <h2>학교 선택 후 비밀번호를 입력해주세요</h2>
-    <form method="post" class="school_password_form">
-        {% csrf_token %}
-        <div>
-            <select name="school" id="school_select" class= "dropdown-box">
-                <option class="option" value="" selected disabled>학교를 선택해 주세요</option>
-                <option class="option" value="서울영남초등학교">서울영남초등학교</option>
-                <option class="option" value="서울백석초등학교">서울백석초등학교</option>
-                <!-- Add other school options as needed -->
-            </select>
-            <input type="password" class="input-box" name="password" placeholder="비밀번호를 입력해주세요">
-            <button type="submit" name="action" value="filter_students">조회</button>
-        </div>
-    </form>
+        <h2>학교 선택 후 비밀번호를 입력해주세요</h2>
+        <form method="post" class="school_password_form" id="schoolPasswordForm">
+            {% csrf_token %}
+            <div>
+                <select name="school" id="school_select" class="dropdown-box">
+                    <option class="option" value="" selected disabled>학교를 선택해 주세요</option>
+                    <option class="option" value="서울영남초등학교">서울영남초등학교</option>
+                    <option class="option" value="서울백석초등학교">서울백석초등학교</option>
+                    <!-- Add other school options as needed -->
+                </select>
+                <input type="password" class="input-box" name="password" placeholder="비밀번호를 입력해주세요">
+                <button type="submit">조회</button>
+            </div>
+        </form>
     </main>
 
     <main id="studentData" class="studentData" style="display:none;">
         <h2>학생 정보 추가</h2>
         <p>학생을 추가해 주세요</p>
-        <form method="post" class="student_table">
+        <form method="post" class="student_table" id="studentForm">
             {% csrf_token %}
             <div>
                 <div>
@@ -62,13 +62,13 @@
                     <input id="check_btn" type="checkbox" id="id_gender" name="gender"><br>
                     <p class="gender_into">※ 여자는 체크해 주세요!</p>
                 </span>
-                <button type="submit" name="action" value="create" class="save_btn">저장</button>
+                <button type="submit" id="createStudent">저장</button>
             </div>
         </form>
 
         <h2>학생 정보 수정</h2>
         <p>학생 정보를 수정할 수 있습니다</p>
-        <table border="1">
+        <table border="1" id="studentTable">
             <tr>
                 <th>UID</th>
                 <th>이름</th>
@@ -79,36 +79,102 @@
                 <th>성별</th>
                 <th>액션</th>
             </tr>
-            {% for student in students %}
-            <tr>
-                <form method="post">
-                    {% csrf_token %}
-                    <td><input type="text" name="uid" value="{{ student.uid }}"></td>
-                    <td><input type="text" name="name" value="{{ student.name }}"></td>
-                    <td><input type="text" name="school" value="{{ student.school }}"></td>
-                    <td><input type="number" name="grade" value="{{ student.grade }}"></td>
-                    <td><input type="number" name="class_num" value="{{ student.class_num }}"></td>
-                    <td><input type="number" name="number" value="{{ student.number }}"></td>
-                    <td><input id="check_btn" type="checkbox" name="gender" {% if student.gender %}checked{% endif %}></td>
-                    <td>
-                        <button type="submit" name="action" value="update" class="btn">저장</button>
-                        <button type="submit" name="action" value="delete" class="btn">삭제</button>
-                    </td>
-                </form>
-            </tr>
-            {% endfor %}
+            <!-- Student rows will be appended here by JavaScript -->
         </table>
     </main>
 
     <br><br><br>
 
-    {% if students %}
     <script>
-        $(document).ready(function() {
-            $('#studentData').show();
+        $(document).ready(function () {
+            $('#schoolPasswordForm').on('submit', function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: "{% url 'management' %}",
+                    type: "POST",
+                    data: $(this).serialize() + '&action=filter_students',
+                    success: function (response) {
+                        $('#studentData').show();
+                        $('#schoolPasswordForm').hide();
+                        $('#studentTable tr:not(:first)').remove();
+                        response.students.forEach(function (student) {
+                            var gender = student.gender ? 'checked' : '';
+                            var row = `<tr>
+                                <form method="post" class="studentForm">
+                                    {% csrf_token %}
+                                    <td><input type="text" name="uid" value="${student.uid}"></td>
+                                    <td><input type="text" name="name" value="${student.name}"></td>
+                                    <td><input type="text" name="school" value="${student.school}"></td>
+                                    <td><input type="number" name="grade" value="${student.grade}"></td>
+                                    <td><input type="number" name="class_num" value="${student.class_num}"></td>
+                                    <td><input type="number" name="number" value="${student.number}"></td>
+                                    <td><input type="checkbox" name="gender" ${gender}></td>
+                                    <td>
+                                        <button type="submit" class="updateStudent">저장</button>
+                                        <button type="submit" class="deleteStudent">삭제</button>
+                                    </td>
+                                </form>
+                            </tr>`;
+                            $('#studentTable').append(row);
+                        });
+                    },
+                    error: function (response) {
+                        alert(response.responseJSON.error);
+                    }
+                });
+            });
+
+            $('#studentTable').on('submit', '.studentForm', function (e) {
+                e.preventDefault();
+                var action = $(this).find('.updateStudent').length ? 'update' : 'delete';
+                $.ajax({
+                    url: "{% url 'management' %}",
+                    type: "POST",
+                    data: $(this).serialize() + `&action=${action}`,
+                    success: function (response) {
+                        if (action === 'delete') {
+                            $(`input[value="${response.uid}"]`).closest('tr').remove();
+                        }
+                    },
+                    error: function (response) {
+                        alert(response.responseJSON.error);
+                    }
+                });
+            });
+
+            $('#studentForm').on('submit', function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: "{% url 'management' %}",
+                    type: "POST",
+                    data: $(this).serialize() + '&action=create',
+                    success: function (response) {
+                        var student = response.student;
+                        var gender = student.gender ? 'checked' : '';
+                        var row = `<tr>
+                            <form method="post" class="studentForm">
+                                {% csrf_token %}
+                                <td><input type="text" name="uid" value="${student.uid}"></td>
+                                <td><input type="text" name="name" value="${student.name}"></td>
+                                <td><input type="text" name="school" value="${student.school}"></td>
+                                <td><input type="number" name="grade" value="${student.grade}"></td>
+                                <td><input type="number" name="class_num" value="${student.class_num}"></td>
+                                <td><input type="number" name="number" value="${student.number}"></td>
+                                <td><input type="checkbox" name="gender" ${gender}></td>
+                                <td>
+                                    <button type="submit" class="updateStudent">저장</button>
+                                    <button type="submit" class="deleteStudent">삭제</button>
+                                </td>
+                            </form>
+                        </tr>`;
+                        $('#studentTable').append(row);
+                    },
+                    error: function (response) {
+                        alert(response.responseJSON.error);
+                    }
+                });
+            });
         });
     </script>
-    {% endif %}
 </body>
 {% endblock %}
-
