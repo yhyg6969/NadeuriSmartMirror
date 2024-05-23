@@ -1,4 +1,3 @@
-from django.contrib import messages
 from django.shortcuts import render, redirect
 from .models import Student
 
@@ -63,5 +62,5 @@ def management(request):
         
         return redirect('management')
     
-    else:
-        return render(request, 'management.html', context)
+    return render(request, 'management.html', context)
+
