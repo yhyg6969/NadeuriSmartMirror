@@ -82,10 +82,16 @@ def management(request):
             students = Student.objects.filter(school=school)
             context['students'] = students
             context['show_data'] = True
-        
-        return render(request, 'management.html', context)
     
+    # Handle GET request
+    if request.user.is_authenticated:
+        school = request.user.username
+        students = Student.objects.filter(school=school)
+        context['students'] = students
+        context['show_data'] = True
+
     return render(request, 'management.html', context)
+
 
 
 
