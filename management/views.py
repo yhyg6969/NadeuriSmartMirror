@@ -52,6 +52,7 @@ def management(request):
                 number = request.POST.get('number')
                 gender = bool(request.POST.get('gender'))
                 Student.objects.create(uid=uid, name=name, school=school, grade=grade, class_num=class_num, number=number, gender=gender)
+                return redirect('management')  # Redirect after successful creation
             
             elif action == 'update':
                 uid = request.POST.get('uid')
@@ -68,6 +69,7 @@ def management(request):
                 student.number = request.POST.get('number')
                 student.gender = bool(request.POST.get('gender'))
                 student.save()
+                return redirect('management')  # Redirect after successful update
             
             elif action == 'delete':
                 uid = request.POST.get('uid')
@@ -77,6 +79,7 @@ def management(request):
                     context['error_message'] = 'Student with given UID does not exist.'
                     return redirect('management')
                 student.delete()
+                return redirect('management')  # Redirect after successful delete
 
             # After performing any CRUD operation, fetch the updated list of students
             students = Student.objects.filter(school=school)
