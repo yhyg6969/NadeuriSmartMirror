@@ -1,10 +1,8 @@
-# main/models.py
-
 from django.db import models
 
 class Student(models.Model):
     uid = models.CharField(primary_key=True, max_length=255, db_column='uid')
-    name = models.CharField(db_column='name')
+    name = models.CharField(max_length=255, db_column='name')
     school = models.CharField(max_length=255, db_column='school')
     grade = models.IntegerField(db_column='grade')
     class_num = models.IntegerField(db_column='class_num')
@@ -17,9 +15,6 @@ class Student(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.school} - {self.grade}/{self.class_num}/{self.number}"
-    
-
-
 
 class GameRecord(models.Model):
     record_id = models.AutoField(primary_key=True)
@@ -31,3 +26,4 @@ class GameRecord(models.Model):
     class Meta:
         managed = False
         db_table = 'game_records'
+
