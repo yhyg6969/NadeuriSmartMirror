@@ -204,6 +204,7 @@ tr {
 
 tr input {
     border: none;
+    width: 130px;
 }
 
 tr input:focus {
