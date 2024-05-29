@@ -11,6 +11,7 @@
 {% endblock %}
 
 {% block content %}
+
 <body>
     <header>
         <img src="{% static 'Oikos_logo.png' %}" alt="Oikos_logo" height="100px" style="margin-left: 50px;">
@@ -24,28 +25,27 @@
                 {% csrf_token %}
                 <div>
                     <div>
-                        <label for="id_uid">UID (8자리):</label><br>
+                        <label for="id_uid"></label><br>
                         <input type="text" id="id_uid" name="uid" placeholder="UID (8자리)"><br>
-                        <label for="id_school">학교:</label><br>
-                        <input type="text" id="id_school" name="school" placeholder="학교"><br>
-                        <label for="id_name">이름:</label><br>
+                        <label for="id_name"></label><br>
                         <input type="text" id="id_name" name="name" placeholder="이름"><br>
+                        <label for="id_school"></label><br>
+                        <input type="text" id="id_school" name="school" placeholder="학교"><br>
+                        <label for="id_grade"></label><br>
+                        <input type="number" id="id_grade" name="grade" placeholder="학년"><br>
+                        <label for="id_class_num"></label><br>
+                        <input type="number" id="id_class_num" name="class_num" placeholder="반"><br>
+                        <label for="id_number"></label><br>
+                        <input type="number" id="id_number" name="number" placeholder="번호"><br>
+                        <span class="gender">
+                            <label for="id_gender">성별:</label><br>
+                            <input type="radio" id="male" name="gender" value="남자">
+                            <label for="male">남자</label>
+                            <input type="radio" id="female" name="gender" value="여자">
+                            <label for="female">여자</label>
+                        </span>
+                        <button type="submit" name="action" value="create" class="save_btn">저장</button>
                     </div>
-                </div>
-                <div class="last-data">
-                    <label for="id_grade">학년:</label><br>
-                    <input type="number" id="id_grade" name="grade" placeholder="학년"><br>
-                    <label for="id_class_num">반:</label><br>
-                    <input type="number" id="id_class_num" name="class_num" placeholder="반"><br>
-                    <label for="id_number">번호:</label><br>
-                    <input type="number" id="id_number" name="number" placeholder="번호"><br>
-
-                    <span class="gender">
-                        <label for="id_gender">성별:</label><br>
-                        <input id="check_btn" type="checkbox" id="id_gender" name="gender" value="1"> 남성<br>
-                        <input type="checkbox" id="id_gender" name="gender" value="0"> 여성<br>
-                    </span>
-                    <button type="submit" name="action" value="create" class="save_btn">저장</button>
                 </div>
             </form>
 
@@ -72,7 +72,10 @@
                         <td><input type="number" name="grade" value="{{ student.grade }}"></td>
                         <td><input type="number" name="class_num" value="{{ student.class_num }}"></td>
                         <td><input type="number" name="number" value="{{ student.number }}"></td>
-                        <td><input id="check_btn" type="checkbox" name="gender" {% if student.gender %}checked{% endif %}></td>
+                        <td>
+                            <input type="radio" name="gender" value="남자" {% if student.gender %}checked{% endif %}> 남자
+                            <input type="radio" name="gender" value="여자" {% if not student.gender %}checked{% endif %}> 여자
+                        </td>
                         <td>
                             <button type="submit" name="action" value="update" class="btn">저장</button>
                             <button type="submit" name="action" value="delete" class="btn">삭제</button>
@@ -98,11 +101,10 @@
                     <button type="submit" name="action" value="filter_students">조회</button>
                 </div>
             </form>
-            {% if error_message %}
-                <p>{{ error_message }}</p>
-            {% endif %}
         </main>
     {% endif %}
+
+    <br><br><br>
 
     <script>
         $(document).ready(function() {
@@ -113,6 +115,7 @@
             }
         });
     </script>
+    
+
 </body>
 {% endblock %}
-

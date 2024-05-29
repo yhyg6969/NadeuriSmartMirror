@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Student
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
+from django.views.decorators.csrf import requires_csrf_token
 
 school_passwords = {
     "서울영남초등학교": "0000",
@@ -50,7 +51,7 @@ def management(request):
                 grade = request.POST.get('grade')
                 class_num = request.POST.get('class_num')
                 number = request.POST.get('number')
-                gender = bool(request.POST.get('gender'))
+                gender = request.POST.get('gender') == '남자'
                 Student.objects.create(uid=uid, name=name, school=school, grade=grade, class_num=class_num, number=number, gender=gender)
                 return redirect('management')  # Redirect after successful creation
             
@@ -67,7 +68,7 @@ def management(request):
                 student.grade = request.POST.get('grade')
                 student.class_num = request.POST.get('class_num')
                 student.number = request.POST.get('number')
-                student.gender = bool(request.POST.get('gender'))
+                student.gender = request.POST.get('gender') == '남자'
                 student.save()
                 return redirect('management')  # Redirect after successful update
             
@@ -94,6 +95,11 @@ def management(request):
         context['show_data'] = True
 
     return render(request, 'management.html', context)
+
+@requires_csrf_token
+def custom_csrf_failure(request, reason=""):
+    return redirect(request.META.get('HTTP_REFERER', '/'))
+
 
 
 

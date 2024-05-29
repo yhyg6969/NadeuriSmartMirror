@@ -148,3 +148,6 @@ STATIC_ROOT = '/home/ubuntu/OikosCompleteSolution/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+CSRF_FAILURE_VIEW = 'management.views.custom_csrf_failure'
+
