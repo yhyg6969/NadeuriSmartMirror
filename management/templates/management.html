@@ -42,8 +42,10 @@
 
                     <span class="gender">
                         <label for="id_gender">성별:</label><br>
-                        <input id="check_btn" type="checkbox" id="id_gender" name="gender" value="1"> 남성<br>
-                        <input type="checkbox" id="id_gender" name="gender" value="0"> 여성<br>
+                        <input type="radio" id="male" name="gender" value="남자">
+                        <label for="male">남자</label>
+                        <input type="radio" id="female" name="gender" value="여자">
+                        <label for="female">여자</label>
                     </span>
                     <button type="submit" name="action" value="create" class="save_btn">저장</button>
                 </div>
