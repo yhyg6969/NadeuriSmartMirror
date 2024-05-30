@@ -12,7 +12,7 @@
 
 {% block content %}
 
-<body>
+<body style="display: none !important;>
     <header>
         <img src="{% static 'Oikos_logo.png' %}" alt="Oikos_logo" height="100px" style="margin-left: 50px;">
     </header>
@@ -31,6 +31,8 @@
                         <input type="text" id="id_name" name="name" placeholder="이름"><br>
                         <label for="id_school"></label><br>
                         <input type="text" id="id_school" name="school" placeholder="학교"><br>
+                    </div>
+                    <div>
                         <label for="id_grade"></label><br>
                         <input type="number" id="id_grade" name="grade" placeholder="학년"><br>
                         <label for="id_class_num"></label><br>
