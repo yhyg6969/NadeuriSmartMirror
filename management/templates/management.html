@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-<body style="display: none" !important;>
+<body>
     <header>
         <img src="{% static 'Oikos_logo.png' %}" alt="Oikos_logo" height="100px" style="margin-left: 50px;">
     </header>
@@ -18,7 +18,7 @@
         <main id="studentData" class="studentData" style="padding-top: 300px;">
             <h2>학생 정보 추가</h2>
             <p>학생을 추가해 주세요</p>
-            <form method="post" class="student_table">
+            <form method="post">
                 {% csrf_token %}
                 <table border="1">
                     <tr>
