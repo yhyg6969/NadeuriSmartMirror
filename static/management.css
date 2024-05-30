@@ -226,3 +226,99 @@ input[type="checkbox"]{
     width: 20px;
     height: 20px;
 }
+
+.dropdown-box,
+    .input-box {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        width: 500px;
+        height: 70px;
+        font-family: 'Pretendard-Regular';
+        color: var(--border-color);
+        font-size: 22px;
+        letter-spacing: -1px;
+        background-color: #F6F7F5;
+        font-weight: 500;        
+        /* Adjust the width as needed */
+        padding: 10px 30px;
+        margin: 10px 0;
+        /* Adjust the margin as needed */
+        border: none;
+        border-radius: 15px;
+        box-sizing: border-box;
+        transition: border-color 0.3s ease;
+    }
+
+    .password-describe {
+        font-size: 16px;
+        text-align: left;
+        color: var(--text-color);
+        font-family: 'Pretendard-Regular';
+        margin: 10px;
+        line-height: 24px;
+    }
+
+
+    select:focus {
+        background-color: #F6F7F5;
+        margin: 40px;
+    }
+
+    .option{
+        line-height: 50px;
+        font-size: 25px;
+        display: inline-block;
+        height: 50px;
+    }
+
+
+    select:focus,
+    input:focus {
+        outline: 2px solid var(--border-color);
+        color: var(--primary-color);
+    }
+
+    input::placeholder{
+        color: var(--text-color);
+    }
+
+
+    .login-button {
+        font-family: 'Pretendard-Regular';
+        width: 108px;
+        height: 50px;
+        /* Adjust the width as needed (1/3 of the original size) */
+        padding: 10px;
+        /* Adjust the padding as needed */
+        background-color: var(--border-color);
+        color: #fff;
+        font-size: 18px;
+        border: none;
+        border-radius: 15px;
+        cursor: pointer;
+        margin-top: 50px;
+    }
+
+    .login-button:hover
+    {
+        background-color: var(--primary-color);
+    }
+
+    .dropdown-box:focus {
+        border-color: #007bff;
+    }
+
+    .dropdown-list-container {
+        display: none;
+        position: absolute;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        z-index: 1;
+    }
+
+    .dropdown-box:focus + .dropdown-list-container {
+        display: block;
+    }
