@@ -9,18 +9,18 @@
 {% endblock %}
 
 {% block content %}
-<body>
+<body style="display: none" !important;>
     <header>
         <img src="{% static 'Oikos_logo.png' %}" alt="Oikos_logo" height="100px" style="margin-left: 50px;">
     </header>
 
     {% if user.is_authenticated %}
-        <main id="studentData" class="studentData" style="padding-top: 300px;">
+        <main id="studentData" class="studentData">
             <h2>학생 정보 추가</h2>
             <p>학생을 추가해 주세요</p>
-            <form method="post">
+            <form method="post" class="student_table">
                 {% csrf_token %}
-                <table border="1">
+                <table>
                     <tr>
                         <th>UID</th>
                         <th>이름</th>
@@ -39,10 +39,10 @@
                         <td><input type="number" id="id_class_num" name="class_num" placeholder="반"></td>
                         <td><input type="number" id="id_number" name="number" placeholder="번호"></td>
                         <td>
-                            <input type="radio" id="male" name="gender" value="남자">
                             <label for="male">남자</label>
-                            <input type="radio" id="female" name="gender" value="여자">
+                            <input type="radio" id="male" name="gender" value="남자">
                             <label for="female">여자</label>
+                            <input type="radio" id="female" name="gender" value="여자">
                         </td>
                         <td><button type="submit" name="action" value="create" class="save_btn">저장</button></td>
                     </tr>
@@ -113,8 +113,8 @@
             if (showData === 'True') {
                 $('#studentData').show();
             }
+            $('body').show();  // Ensure body is shown after the page is ready
         });
     </script>
 </body>
 {% endblock %}
-
