@@ -175,12 +175,11 @@ header {
 th,
 td {
     border-bottom: 1px solid #ddd;
-    padding: 20px;
+    padding: 10px;
     text-align: center;
     font-size: 18px;
     color: var(--primary-color);
     text-align: center;
-    border: 1px solid var(--border-color);
 }
 
 th {
@@ -212,7 +211,7 @@ tr input:focus {
     color: var(--primary-color);
 }
 
-table {
+.table {
     border: #289E90 1.8px solid;
     margin-top: 40px;
 }
