@@ -31,26 +31,30 @@
                         <th>액션</th>
                     </tr>
                     <tr>
-                        <td><input type="text" id="id_uid" name="uid" placeholder="UID (8자리)"></td>
-                        <td><input type="text" id="id_name" name="name" placeholder="이름"></td>
-                        <td><input type="text" id="id_school" name="school" placeholder="학교"></td>
-                        <td><input type="number" id="id_grade" name="grade" placeholder="학년"></td>
-                        <td><input type="number" id="id_class_num" name="class_num" placeholder="반"></td>
-                        <td><input type="number" id="id_number" name="number" placeholder="번호"></td>
-                        <td>
-                            <label for="male">남자</label>
-                            <input type="radio" id="male" name="gender" value="남자">
-                            <label for="female">여자</label>
-                            <input type="radio" id="female" name="gender" value="여자">
-                        </td>
-                        <td><button type="submit" name="action" value="create" class="save_btn">저장</button></td>
+                        <div>
+                            <td><input type="text" id="id_uid" name="uid" placeholder="UID (8자리)"></td>
+                            <td><input type="text" id="id_name" name="name" placeholder="이름"></td>
+                            <td><input type="text" id="id_school" name="school" placeholder="학교"></td>    
+                        </div>
+                        <div>
+                            <td><input type="number" id="id_grade" name="grade" placeholder="학년"></td>
+                            <td><input type="number" id="id_class_num" name="class_num" placeholder="반"></td>
+                            <td><input type="number" id="id_number" name="number" placeholder="번호"></td>
+                            <td>
+                                <label for="male">남자</label>
+                                <input type="radio" id="male" name="gender" value="남자">
+                                <label for="female">여자</label>
+                                <input type="radio" id="female" name="gender" value="여자">
+                            </td>
+                            <td><button type="submit" name="action" value="create" class="save_btn">저장</button></td>
+                        </div>
                     </tr>
                 </table>
             </form>
 
             <h2>학생 정보 수정</h2>
             <p>학생 정보를 수정할 수 있습니다</p>
-            <table border="1">
+            <table class = "table" border="1">
                 <tr>
                     <th>UID</th>
                     <th>이름</th>
