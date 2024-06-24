@@ -4,10 +4,47 @@
 
 {% block extrahead %}
 <link rel="stylesheet" href="{% static 'main.css' %}">
-<link rel="stylesheet" href="{% static 'smartmirror.css' %}">
+<link rel="stylesheet" href="{% static 'inbody.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+    .img,
+    .background-img {
+        position: absolute;
+        width: 80%;
+        height: 50%;
+        background-size: 1800px;
+        background-repeat: no-repeat;
+        border: 0px;
+        top: 30%;
+        opacity: 0.5;
+        left: 20%;
+        z-index: -3;
+    }
+
+    .bubble1 {
+        background-size: cover;
+    }
+
+    .bubble2 {
+        background-size: cover;
+    }
+
+    .bubble3 {
+        background-size: cover;
+    }
+
+    .bubble4 {
+        background-size: cover;
+    }
+
+    .bubble5 {
+        background-size: cover;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
+
 
 
 
@@ -18,7 +55,6 @@
         <div>
             {% if student_data %}
             <p>{{ student_data.school }}</p>
-            <p>{{ student_data.grade }}학년 {{ student_data.class_num }}반 {{ student_data.number }}번</p>
             <p>{{ student_data.name }}</p>
             {% else %}
             <p>No data available</p>
@@ -27,42 +63,100 @@
     </header>
 
     <nav>
-        <a href="{% url 'main' %}">메인 화면</a>
-        <a href="{% url 'Xplaywall' %}">엑스 플레이 월</a>
-        <a href="{% url 'Xfloor' %}">엑스 플로어</a>
-        <a href="{% url 'smartmirror' %}">스마트 미러</a>
-        <a href="{% url 'inbody' %}">체성분 관리</a>
-        <a href="{% url 'ranking' %}">랭킹</a>
-        <a href="{% url 'login' %}">로그아웃</a>
+        <p>카테고리</p>
+            <a href="{% url 'main' %}">
+                <span><i class="fa-solid fa-house"></i></span>
+                <span>
+                    <div class="Title">메인 화면</div>
+                    <div class="subTitle">Main</div>
+                </span>
+            </a>
+            <a href="{% url 'login' %}">
+                <span><i class="fa-solid fa-arrow-right-from-bracket"></i></span>
+                <span>
+                    <div class="Title">로그아웃</div>
+                    <div class="subTitle">LogOut</div>
+                </span>
+            </a>
     </nav>
 
     <main>
-        <h1>스마트 미러</h1>
-        <div class="info-bubble">
-            <div class="bubble">
-                {% if total_today_activity_time_hours > 0 %}
-                <h2>{{ total_today_activity_time_hours }}시간 {{ total_today_activity_time_minutes }}분</h2>
-                {% else %}
-                <h2>{{ total_today_activity_time_minutes }}분 {{ total_today_activity_time_seconds }}초</h2>
-                {% endif %}
-                <p>오늘 활동 시간</p>
+        <div class="title">
+            <h2>스마트 미러</h2>
+            <p>나의 뇌 건강과 기록을 확인 해봅시다</p>
+        </div>
+        <img class="background-img" src="{% static 'Line 35.png' %}">
+    
+        <div class="bubble-container">
+            {% if most_recent_record %}
+            <div>
+                <div class="bubble bubble1">
+                    <img src="{% static 'green.png' %}">
+                    <h2>활동 내역</h2>
+                    <div>
+                        <div class="modal-title">주의집중력/지각력 게임</div>
+                        <div class="modal-inner">17 분</div>
+                    </div>
+                    <div>
+                        <div class="modal-title">시각-운동 협응력/기억력 게임</div>
+                        <div class="modal-inner">22 분</div>
+                    </div>
+                </div>
+    
+                <div class="bubble bubble2">
+                    <img src="{% static 'blue.png' %}">
+    
+                    <h2>활동 내역</h2>
+                    <div>
+                        <div class="modal-title">모션게임</div>
+                        <div class="modal-inner">9 분</div>
+                    </div>
+                    <div>
+                        <div class="modal-title">발판게임</div>
+                        <div class="modal-inner">15 분</div>
+                    </div>
+                </div>
+    
             </div>
-            <div class="bubble">
-                <h2>{{ total_today_calories|floatformat:2 }} kcal</h2>
-                <p>오늘 소모한 칼로리</p>
+            <div>
+                <div class="bubble bubble4">
+                    <img src="{% static 'purple.png' %}">
+    
+                    <h2>힐링 걷기</h2>
+                    <div>
+                        <div class="modal-title">걷기 시간</div>
+                        <div class="modal-inner">1 시간 22 분</div>
+                    </div>
+                </div>
+                <div class="bubble bubble5">
+                    <img src="{% static 'babypink.png' %}">
+    
+                    <h2>힐링 걷기</h2>
+                    <div>
+                        <div class="modal-title">소모한 칼로리</div>
+                        <div class="modal-inner">150 kcal</div>
+                    </div>
+                </div>
             </div>
-            <div class="bubble">
-                {% if total_activity_time_hours > 0 %}
-                <h2>{{ total_activity_time_hours }}시간 {{ total_activity_time_minutes }}분</h2>
-                {% else %}
-                <h2>{{ total_activity_time_minutes }}분 {{ total_activity_time_seconds }}초</h2>
-                {% endif %}
-                <p>누적 운동 시간</p>
+    
+            <div>
+                <div class="bubble bubble3">
+                    <img src="{% static 'orange.png' %}">
+    
+                    <h2>설문 내역</h2>
+                    <div>
+                        <div class="modal-title">이전 설문 결과</div>
+                        <div class="modal-inner">14 점</div>
+                    </div>
+                    <div>
+                        <div class="modal-title">최근 설문 결과</div>
+                        <div class="modal-inner">11 점</div>
+                    </div>
+                </div>
             </div>
-            <div class="bubble">
-                <h2>{{ total_calories|floatformat:2 }} kcal</h2>
-                <p>누적 소모 칼로리</p>
-            </div>
+            {% else %}
+            <p>측정된 기록이 없습니다.</p>
+            {% endif %}
         </div>
     </main>
 
