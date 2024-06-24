@@ -17,8 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from . import views
+app_name = 'smartmirror'
 
 
 urlpatterns = [
     path('', views.smartmirror, name='smartmirror'),
+    path('diagnosisresult/', views.diagnosisresult, name='diagnosisresult'),
 ]

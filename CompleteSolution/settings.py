@@ -46,9 +46,9 @@ INSTALLED_APPS = [
     'Xfloor',
     'inbody',
     'ranking',
-    'smartmirror',
     'management',
     'paps',
+    'smartmirror',
 ]
 
 MIDDLEWARE = [

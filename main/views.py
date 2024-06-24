@@ -27,7 +27,7 @@ def main(request):
     request.session['school'] = student_data.get('school', None)
 
     if student_data.get('school') == "서초구 치매안심센터":
-        return redirect('smartmirror')
+        return redirect('smartmirror:smartmirror')
 
     # Query the game records for the specified UID
     start_time = int((timezone.now() - timedelta(days=365)).timestamp())
