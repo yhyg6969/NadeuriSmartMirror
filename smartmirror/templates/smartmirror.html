@@ -88,17 +88,16 @@
         <img class="background-img" src="{% static 'Line 35.png' %}">
     
         <div class="bubble-container">
-            {% if most_recent_record %}
             <div>
                 <div class="bubble bubble1">
                     <img src="{% static 'green.png' %}">
                     <h2>활동 내역</h2>
                     <div>
-                        <div class="modal-title">주의집중력/지각력 게임</div>
+                        <div class="modal-title">주의집중력 / 지각력 게임</div>
                         <div class="modal-inner">17 분</div>
                     </div>
                     <div>
-                        <div class="modal-title">시각-운동 협응력/기억력 게임</div>
+                        <div class="modal-title">시각-운동 / 기억력 게임</div>
                         <div class="modal-inner">22 분</div>
                     </div>
                 </div>
@@ -133,7 +132,7 @@
     
                     <h2>힐링 걷기</h2>
                     <div>
-                        <div class="modal-title">소모한 칼로리</div>
+                        <div class="modal-title">소모 칼로리</div>
                         <div class="modal-inner">150 kcal</div>
                     </div>
                 </div>
@@ -145,18 +144,15 @@
     
                     <h2>설문 내역</h2>
                     <div>
-                        <div class="modal-title">이전 설문 결과</div>
+                        <div class="modal-title">이전 결과</div>
                         <div class="modal-inner">14 점</div>
                     </div>
                     <div>
-                        <div class="modal-title">최근 설문 결과</div>
+                        <div class="modal-title">최근 결과</div>
                         <div class="modal-inner">11 점</div>
                     </div>
                 </div>
             </div>
-            {% else %}
-            <p>측정된 기록이 없습니다.</p>
-            {% endif %}
         </div>
     </main>
 
