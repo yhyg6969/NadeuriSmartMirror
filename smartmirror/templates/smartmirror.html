@@ -1,170 +1,121 @@
 {% extends 'base.html' %}
 {% load static %}
 
-
 {% block extrahead %}
 <link rel="stylesheet" href="{% static 'main.css' %}">
-<link rel="stylesheet" href="{% static 'inbody.css' %}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<style>
-    .img,
-    .background-img {
-        position: absolute;
-        width: 80%;
-        height: 50%;
-        background-size: 1800px;
-        background-repeat: no-repeat;
-        border: 0px;
-        top: 30%;
-        opacity: 0.5;
-        left: 20%;
-        z-index: -3;
-    }
-
-    .bubble1 {
-        background-size: cover;
-    }
-
-    .bubble2 {
-        background-size: cover;
-    }
-
-    .bubble3 {
-        background-size: cover;
-    }
-
-    .bubble4 {
-        background-size: cover;
-    }
-
-    .bubble5 {
-        background-size: cover;
-    }
-</style>
+<link rel="stylesheet" href="{% static 'management.css' %}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 {% endblock %}
 
 {% block content %}
-
-
-
-
 <body>
     <header>
-        <!-- Replace 'Your Logo' with the actual path or URL of your logo -->
         <img src="{% static 'Oikos_logo.png' %}" alt="Oikos_logo" height="100px" style="margin-left: 50px;">
-        <div>
-            {% if student_data %}
-            <p>{{ student_data.school }}</p>
-            <p>{{ student_data.name }}</p>
-            {% else %}
-            <p>No data available</p>
-            {% endif %}
-        </div>
     </header>
 
-    <nav>
-        <p>카테고리</p>
-            <a href="{% url 'main' %}">
-                <span><i class="fa-solid fa-house"></i></span>
-                <span>
-                    <div class="Title">메인 화면</div>
-                    <div class="subTitle">Main</div>
-                </span>
-            </a>
-            <a href="{% url 'smartmirror:diagnosisresult' %}">
-                <span><i class="fa-solid fa-house"></i></span>
-                <span>
-                    <div class="Title">설문 조사 결과</div>
-                    <div class="subTitle">Diagnosis Result</div>
-                </span>
-            </a>
-            <a href="{% url 'login' %}">
-                <span><i class="fa-solid fa-arrow-right-from-bracket"></i></span>
-                <span>
-                    <div class="Title">로그아웃</div>
-                    <div class="subTitle">LogOut</div>
-                </span>
-            </a>
-    </nav>
+    {% if user.is_authenticated %}
+        <main id="studentData" class="studentData">
+            <h2>사용자 정보 추가</h2>
+            <p>사용자를 추가해 주세요</p>
+            <form method="post" class="student_table">
+                {% csrf_token %}
+                <table>
+                    <tr  style="display: none" !important;>
+                        <th>UID</th>
+                        <th>이름</th>
+                        <th>소속기관</th>
+                        <th>생년월일 : 년도</th>
+                        <th>생년월일 : 월</th>
+                        <th>생년월일 : 일</th>
+                        <th>성별</th>
+                        <th>액션</th>
+                    </tr>
+                    <tr>
+                        <div>
+                            <td><input type="text" id="id_uid" name="uid" placeholder="UID (8자리)"></td>
+                            <td><input type="text" id="id_name" name="name" placeholder="이름"></td>
+                            <td><input type="text" id="id_school" name="school" placeholder="소속기관"></td>    
+                        </div>
+                        <div>
+                            <td><input type="number" id="id_grade" name="grade" placeholder="생년월일 : 년도"></td>
+                            <td><input type="number" id="id_class_num" name="class_num" placeholder="생년월일 : 월"></td>
+                            <td><input type="number" id="id_number" name="number" placeholder="생년월일 : 일"></td>
+                            <td>
+                                <label for="male">남자</label>
+                                <input type="radio" id="male" name="gender" value="남자">
+                                <label for="female">여자</label>
+                                <input type="radio" id="female" name="gender" value="여자">
+                            </td>
+                            <td><button type="submit" name="action" value="create" class="save_btn">저장</button></td>
+                        </div>
+                    </tr>
+                </table>
+            </form>
 
-    <main>
-        <div class="title">
-            <h2>스마트 미러</h2>
-            <p>나의 뇌 건강과 기록을 확인 해봅시다</p>
-        </div>
-        <img class="background-img" src="{% static 'Line 35.png' %}">
-    
-        <div class="bubble-container">
-            <div>
-                <div class="bubble bubble1">
-                    <img src="{% static 'green.png' %}">
-                    <h2>활동 내역</h2>
-                    <div>
-                        <div class="modal-title">주의집중력 / 지각력 게임</div>
-                        <div class="modal-inner">17 분</div>
-                    </div>
-                    <div>
-                        <div class="modal-title">시각-운동 / 기억력 게임</div>
-                        <div class="modal-inner">22 분</div>
-                    </div>
+            <h2>사용자 정보 수정</h2>
+            <p>사용자 정보를 수정할 수 있습니다</p>
+            <table class = "table" border="1">
+                <tr>
+                    <th>UID</th>
+                    <th>이름</th>
+                    <th>소속기관</th>
+                    <th>생년월일 : 년도</th>
+                    <th>생년월일 : 월</th>
+                    <th>생년월일 : 일</th>
+                    <th>성별</th>
+                    <th>액션</th>
+                </tr>
+                {% for student in students %}
+                <tr>
+                    <form method="post">
+                        {% csrf_token %}
+                        <td><input type="text" name="uid" value="{{ student.uid }}"></td>
+                        <td><input type="text" name="name" value="{{ student.name }}"></td>
+                        <td><input type="text" name="school" value="{{ student.school }}"></td>
+                        <td><input type="number" name="grade" value="{{ student.grade }}"></td>
+                        <td><input type="number" name="class_num" value="{{ student.class_num }}"></td>
+                        <td><input type="number" name="number" value="{{ student.number }}"></td>
+                        <td>
+                            <input type="radio" name="gender" value="남자" {% if student.gender %}checked{% endif %}> 남자
+                            <input type="radio" name="gender" value="여자" {% if not student.gender %}checked{% endif %}> 여자
+                        </td>
+                        <td>
+                            <button type="submit" name="action" value="update" class="btn">저장</button>
+                            <button type="submit" name="action" value="delete" class="btn">삭제</button>
+                        </td>
+                    </form>
+                </tr>
+                {% endfor %}
+            </table>
+        </main>
+    {% else %}
+        <main style="margin-top: 150px;">
+            <h2>기관명을 선택 후 비밀번호를 입력해주세요</h2>
+            <form method="post" class="school_password_form">
+                {% csrf_token %}
+                <div>
+                    <select name="school" id="school_select" class="dropdown-box">
+                        <option class="option" value="" selected disabled>기관을 선택해 주세요</option>
+                        <option class="option" value="서초구 치매안심센터">서초구 치매안심센터</option>
+                    </select>
+                    <input type="password" class="input-box" name="password" placeholder="비밀번호를 입력해주세요">
+                    <button type="submit" name="action" value="filter_students">조회</button>
                 </div>
-    
-                <div class="bubble bubble2">
-                    <img src="{% static 'blue.png' %}">
-    
-                    <h2>활동 내역</h2>
-                    <div>
-                        <div class="modal-title">모션게임</div>
-                        <div class="modal-inner">9 분</div>
-                    </div>
-                    <div>
-                        <div class="modal-title">발판게임</div>
-                        <div class="modal-inner">15 분</div>
-                    </div>
-                </div>
-    
-            </div>
-            <div>
-                <div class="bubble bubble4">
-                    <img src="{% static 'purple.png' %}">
-    
-                    <h2>힐링 걷기</h2>
-                    <div>
-                        <div class="modal-title">걷기 시간</div>
-                        <div class="modal-inner">1 시간 22 분</div>
-                    </div>
-                </div>
-                <div class="bubble bubble5">
-                    <img src="{% static 'babypink.png' %}">
-    
-                    <h2>힐링 걷기</h2>
-                    <div>
-                        <div class="modal-title">소모 칼로리</div>
-                        <div class="modal-inner">150 kcal</div>
-                    </div>
-                </div>
-            </div>
-    
-            <div>
-                <div class="bubble bubble3">
-                    <img src="{% static 'orange.png' %}">
-    
-                    <h2>설문 내역</h2>
-                    <div>
-                        <div class="modal-title">이전 결과</div>
-                        <div class="modal-inner">14 점</div>
-                    </div>
-                    <div>
-                        <div class="modal-title">최근 결과</div>
-                        <div class="modal-inner">11 점</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
+            </form>
+        </main>
+    {% endif %}
 
+    <br><br><br>
 
-
+    <script>
+        $(document).ready(function() {
+            var showData = "{{ show_data|escapejs }}"; 
+            console.log("Show data: ", showData);  // Debugging log
+            if (showData === 'True') {
+                $('#studentData').show();
+            }
+            $('body').show();  // Ensure body is shown after the page is ready
+        });
+    </script>
 </body>
-
 {% endblock %}

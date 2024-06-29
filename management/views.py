@@ -15,9 +15,14 @@ def management(request):
     
     if request.method == 'POST':
         action = request.POST.get('action')
+        
         if action == 'filter_students':
             school = request.POST.get('school')
             password = request.POST.get('password')
+            
+            if not school or not password:
+                context['error_message'] = '양식에 알맞게 입력해주세요'
+                return render(request, 'management.html', context)
             
             if school not in school_passwords or password != school_passwords[school]:
                 context['error_message'] = 'Invalid password for the selected school.'
@@ -52,11 +57,27 @@ def management(request):
                 class_num = request.POST.get('class_num')
                 number = request.POST.get('number')
                 gender = request.POST.get('gender') == '남자'
+                
+                if not uid or not name or not grade or not class_num or not number:
+                    context['error_message'] = '양식에 알맞게 입력해주세요'
+                    students = Student.objects.filter(school=school)
+                    context['students'] = students
+                    context['show_data'] = True
+                    return render(request, 'management.html', context)
+                
                 Student.objects.create(uid=uid, name=name, school=school, grade=grade, class_num=class_num, number=number, gender=gender)
                 return redirect('management')  # Redirect after successful creation
             
             elif action == 'update':
                 uid = request.POST.get('uid')
+                
+                if not uid:
+                    context['error_message'] = '양식에 알맞게 입력해주세요'
+                    students = Student.objects.filter(school=school)
+                    context['students'] = students
+                    context['show_data'] = True
+                    return render(request, 'management.html', context)
+                
                 try:
                     student = Student.objects.get(uid=uid)
                 except Student.DoesNotExist:
@@ -69,11 +90,27 @@ def management(request):
                 student.class_num = request.POST.get('class_num')
                 student.number = request.POST.get('number')
                 student.gender = request.POST.get('gender') == '남자'
+                
+                if not student.name or not student.grade or not student.class_num or not student.number:
+                    context['error_message'] = '양식에 알맞게 입력해주세요'
+                    students = Student.objects.filter(school=school)
+                    context['students'] = students
+                    context['show_data'] = True
+                    return render(request, 'management.html', context)
+                
                 student.save()
                 return redirect('management')  # Redirect after successful update
             
             elif action == 'delete':
                 uid = request.POST.get('uid')
+                
+                if not uid:
+                    context['error_message'] = '양식에 알맞게 입력해주세요'
+                    students = Student.objects.filter(school=school)
+                    context['students'] = students
+                    context['show_data'] = True
+                    return render(request, 'management.html', context)
+                
                 try:
                     student = Student.objects.get(uid=uid)
                 except Student.DoesNotExist:
@@ -99,6 +136,7 @@ def management(request):
 @requires_csrf_token
 def custom_csrf_failure(request, reason=""):
     return redirect(request.META.get('HTTP_REFERER', '/'))
+
 
 
 
