@@ -6,6 +6,9 @@ from django.views.decorators.csrf import requires_csrf_token
 
 school_passwords = {
     "서초구 치매안심센터": "0000",
+    "동대문구 치매안심센터": "0000",
+    "성동구 치매안심센터": "0000",
+    "성북구 치매안심센터": "0000",
     
     # Add other schools and passwords as needed
 }
