@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Student
+from .models import Student, GameRecord
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import requires_csrf_token
@@ -142,5 +142,16 @@ def custom_csrf_failure(request, reason=""):
 
 
 
+def view(request):
+    uid = request.GET.get('uid', '')
+    if uid:
+        game_records = GameRecord.objects.filter(uid__icontains=uid)
+    else:
+        game_records = GameRecord.objects.all()
 
+    context = {
+        'game_records': game_records,
+    }
+
+    return render(request, 'view.html', context)
 

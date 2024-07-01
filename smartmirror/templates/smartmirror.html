@@ -54,6 +54,11 @@
 
             <h2>사용자 정보 수정</h2>
             <p>사용자 정보를 수정할 수 있습니다</p>
+
+            <div style="text-align: center;">
+                <a href="{% url 'smartmirror:view' %}" class="btn">유저 활동 조회</a>
+            </div>
+
             <table class = "table" border="1">
                 <tr>
                     <th>UID</th>
@@ -108,7 +113,6 @@
         </main>
     {% endif %}
 
-    <br><br><br>
 
     <script>
         $(document).ready(function() {
