@@ -38,7 +38,7 @@
                         </div>
                         <div>
                             <td><input type="number" id="id_grade" name="grade" placeholder="생년월일 : 년도"></td>
-                            <td><input type="number" id="id_class_num" name="class_num" placeholder="생년월일 : 월"></td>
+                            <td><input type="number" id="id_class" name="class" placeholder="생년월일 : 월"></td>
                             <td><input type="number" id="id_number" name="number" placeholder="생년월일 : 일"></td>
                             <td>
                                 <label for="male">남자</label>
@@ -78,7 +78,7 @@
                         <td><input type="text" name="name" value="{{ student.name }}"></td>
                         <td><input type="text" name="school" value="{{ student.school }}"></td>
                         <td><input type="number" name="grade" value="{{ student.grade }}"></td>
-                        <td><input type="number" name="class_num" value="{{ student.class_num }}"></td>
+                        <td><input type="number" name="class_num" value="{{ student.class }}"></td>
                         <td><input type="number" name="number" value="{{ student.number }}"></td>
                         <td>
                             <input type="radio" name="gender" value="남자" {% if student.gender %}checked{% endif %}> 남자
