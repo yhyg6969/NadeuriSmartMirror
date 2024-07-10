@@ -14,37 +14,33 @@
     </header>
 
     {% if user.is_authenticated %}
-        <main id="studentData" class="studentData">
+        <main id="userData" class="userData">
             <h2>사용자 정보 추가</h2>
             <p>사용자를 추가해 주세요</p>
-            <form method="post" class="student_table">
+            <form method="post" class="user_table">
                 {% csrf_token %}
                 <table>
-                    <tr  style="display: none" !important;>
+                    <tr style="display: none" !important;>
                         <th>UID</th>
                         <th>이름</th>
                         <th>소속기관</th>
-                        <th>생년월일 : 년도</th>
-                        <th>생년월일 : 월</th>
-                        <th>생년월일 : 일</th>
+                        <th>생년월일</th>
                         <th>성별</th>
                         <th>액션</th>
                     </tr>
                     <tr>
                         <div>
-                            <td><input type="text" id="id_uid" name="uid" placeholder="UID (8자리)"></td>
-                            <td><input type="text" id="id_name" name="name" placeholder="이름"></td>
-                            <td><input type="text" id="id_school" name="school" placeholder="소속기관"></td>    
+                            <td><input type="text" id="id_uid" name="uid" placeholder="UID"></td>
+                            <td><input type="text" id="id_user_name" name="user_name" placeholder="이름"></td>
+                            <td><input type="text" id="id_center_name" name="center_name" placeholder="소속기관"></td>    
                         </div>
                         <div>
-                            <td><input type="number" id="id_grade" name="grade" placeholder="생년월일 : 년도"></td>
-                            <td><input type="number" id="id_class_num" name="class_num" placeholder="생년월일 : 월"></td>
-                            <td><input type="number" id="id_number" name="number" placeholder="생년월일 : 일"></td>
+                            <td><input type="number" id="id_birth" name="birth" placeholder="생년월일 (YYYYMMDD)"></td>
                             <td>
                                 <label for="male">남자</label>
-                                <input type="radio" id="male" name="gender" value="남자">
+                                <input type="radio" id="male" name="gender" value="true">
                                 <label for="female">여자</label>
-                                <input type="radio" id="female" name="gender" value="여자">
+                                <input type="radio" id="female" name="gender" value="false">
                             </td>
                             <td><button type="submit" name="action" value="create" class="save_btn">저장</button></td>
                         </div>
@@ -55,34 +51,26 @@
             <h2>사용자 정보 수정</h2>
             <p>사용자 정보를 수정할 수 있습니다</p>
 
-            <div style="text-align: center;">
-                <a href="{% url 'smartmirror:view' %}" class="btn">유저 활동 조회</a>
-            </div>
-
-            <table class = "table" border="1">
+            <table class="table" border="1">
                 <tr>
                     <th>UID</th>
                     <th>이름</th>
                     <th>소속기관</th>
-                    <th>생년월일 : 년도</th>
-                    <th>생년월일 : 월</th>
-                    <th>생년월일 : 일</th>
+                    <th>생년월일</th>
                     <th>성별</th>
                     <th>액션</th>
                 </tr>
-                {% for student in students %}
+                {% for user in users %}
                 <tr>
                     <form method="post">
                         {% csrf_token %}
-                        <td><input type="text" name="uid" value="{{ student.uid }}"></td>
-                        <td><input type="text" name="name" value="{{ student.name }}"></td>
-                        <td><input type="text" name="school" value="{{ student.school }}"></td>
-                        <td><input type="number" name="grade" value="{{ student.grade }}"></td>
-                        <td><input type="number" name="class_num" value="{{ student.class_num }}"></td>
-                        <td><input type="number" name="number" value="{{ student.number }}"></td>
+                        <td><input type="text" name="uid" value="{{ user.uid }}" readonly></td>
+                        <td><input type="text" name="user_name" value="{{ user.user_name }}"></td>
+                        <td><input type="text" name="center_name" value="{{ user.center_name }}"></td>
+                        <td><input type="number" name="birth" value="{{ user.birth }}"></td>
                         <td>
-                            <input type="radio" name="gender" value="남자" {% if student.gender %}checked{% endif %}> 남자
-                            <input type="radio" name="gender" value="여자" {% if not student.gender %}checked{% endif %}> 여자
+                            <input type="radio" name="gender" value="true" {% if user.gender %}checked{% endif %}> 남자
+                            <input type="radio" name="gender" value="false" {% if not user.gender %}checked{% endif %}> 여자
                         </td>
                         <td>
                             <button type="submit" name="action" value="update" class="btn">저장</button>
@@ -96,30 +84,30 @@
     {% else %}
         <main style="margin-top: 150px;">
             <h2>기관명을 선택 후 비밀번호를 입력해주세요</h2>
-            <form method="post" class="school_password_form">
+            <form method="post" class="center_password_form">
                 {% csrf_token %}
                 <div>
-                    <select name="school" id="school_select" class="dropdown-box">
+                    <select name="center_name" id="center_select" class="dropdown-box">
                         <option class="option" value="" selected disabled>기관을 선택해 주세요</option>
-                        <option class="option" value="서초구 치매안심센터">서초구 치매안심센터</option>
                         <option class="option" value="동대문구 치매안심센터">동대문구 치매안심센터</option>
+                        <option class="option" value="서대문구 치매안심센터">서대문구 치매안심센터</option>
+                        <option class="option" value="서초구 치매안심센터">서초구 치매안심센터</option>
                         <option class="option" value="성동구 치매안심센터">성동구 치매안심센터</option>
                         <option class="option" value="성북구 치매안심센터">성북구 치매안심센터</option>
                     </select>
                     <input type="password" class="input-box" name="password" placeholder="비밀번호를 입력해주세요">
-                    <button type="submit" name="action" value="filter_students">조회</button>
+                    <button type="submit" name="action" value="login">로그인</button>
                 </div>
             </form>
         </main>
     {% endif %}
-
 
     <script>
         $(document).ready(function() {
             var showData = "{{ show_data|escapejs }}"; 
             console.log("Show data: ", showData);  // Debugging log
             if (showData === 'True') {
-                $('#studentData').show();
+                $('#userData').show();
             }
             $('body').show();  // Ensure body is shown after the page is ready
         });
