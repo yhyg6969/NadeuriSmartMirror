@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'main.css' %}">
+<link rel="stylesheet" href="{% static 'management.css' %}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+    body {
+        text-align: center;
+    }
+
+    header {
+        text-align: center;
+    }
+
+    table {
+        margin: 0 auto;
+        /* Center the table */
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: center;
+    }
+
+    form {
+        margin-bottom: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<body>
+    <header>
+        <img src="{% static 'Oikos_logo.png' %}" alt="Oikos_logo" height="100px">
+    </header>
+
+    <br><br><br><br><br><br><br>
+
+    
+    <div>
+        <h2>사용자 상세 정보</h2>
+        <p>UID: {{ user.uid }}</p>
+        <p>이름: {{ user.user_name }}</p>
+        <p>소속기관: {{ user.center_name }}</p>
+        <p>생년월일: {{ user.birth }}</p>
+        <p>성별: {% if user.gender %}남자{% else %}여자{% endif %}</p>
+    </div>
+    
+    <br><br>
+
+    <div>
+        <h2>게임 기록</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>게임 이름</th>
+                    <th>게임 유형</th>
+                    <th>플레이 시간</th>
+                    <th>정답 점수</th>
+                    <th>실패 점수</th>
+                    <th>시작 시간</th>
+                    <th>종료 시간</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for game in games %}
+                <tr>
+                    <td>{{ game.game_name }}</td>
+                    <td>{{ game.game_type }}</td>
+                    <td>{{ game.play_time }}</td>
+                    <td>{{ game.correct_score }}</td>
+                    <td>{{ game.fail_score }}</td>
+                    <td>{{ game.start_ts }}</td>
+                    <td>{{ game.finish_ts }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <br><br>
+    
+    <div>
+        <h2>산책 기록</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>산책 이름</th>
+                    <th>산책 시간</th>
+                    <th>걸음 수</th>
+                    <th>속도</th>
+                    <th>시작 시간</th>
+                    <th>종료 시간</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for walk in walks %}
+                <tr>
+                    <td>{{ walk.walk_name }}</td>
+                    <td>{{ walk.walk_time }}</td>
+                    <td>{{ walk.walk_count }}</td>
+                    <td>{{ walk.velocity }}</td>
+                    <td>{{ walk.start_ts }}</td>
+                    <td>{{ walk.finish_ts }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <br><br>
+    
+    <div>
+        <h2>스트레칭 기록</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>스트레칭 이름</th>
+                    <th>스트레칭 유형</th>
+                    <th>스트레칭 시간</th>
+                    <th>평균 정확도</th>
+                    <th>시작 시간</th>
+                    <th>종료 시간</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for stretch in stretches %}
+                <tr>
+                    <td>{{ stretch.stretch_name }}</td>
+                    <td>{{ stretch.stretch_type }}</td>
+                    <td>{{ stretch.stretch_time }}</td>
+                    <td>{{ stretch.acc_average }}</td>
+                    <td>{{ stretch.start_ts }}</td>
+                    <td>{{ stretch.finish_ts }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+
+</body>
+{% endblock %}

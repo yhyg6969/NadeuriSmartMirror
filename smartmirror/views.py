@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import user_table
+from .models import user_table, game_table, walk_table, stretch_table
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import requires_csrf_token
@@ -132,10 +132,31 @@ def smartmirror(request):
 
     return render(request, 'smartmirror.html', context)
 
+def inquiry(request):
+    uid = request.GET.get('uid')
+    if uid:
+        try:
+            user = user_table.objects.get(uid=uid)
+            games = game_table.objects.filter(uid=uid)
+            walks = walk_table.objects.filter(uid=uid)
+            stretches = stretch_table.objects.filter(uid=uid)
+        except user_table.DoesNotExist:
+            return render(request, 'smartmirror.html', {'error_message': 'User not found.'})
+        
+        context = {
+            'user': user,
+            'games': games,
+            'walks': walks,
+            'stretches': stretches,
+        }
+        
+        return render(request, 'inquiry.html', context)
+    
+    return redirect('smartmirror:smartmirror')
+
 @requires_csrf_token
 def custom_csrf_failure(request, reason=""):
     return redirect(request.META.get('HTTP_REFERER', '/'))
-
 
 
 

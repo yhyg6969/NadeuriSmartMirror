@@ -22,5 +22,9 @@ app_name = 'smartmirror'
 
 urlpatterns = [
     path('', views.smartmirror, name='smartmirror'),
-    #path('view/', views.view, name='view'),
+    path('inquiry/', views.inquiry, name='inquiry'),
+    # Add other paths as needed
 ]
+
+
+
