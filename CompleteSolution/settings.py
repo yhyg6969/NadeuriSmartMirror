@@ -98,6 +98,14 @@ DATABASES = {
         'PASSWORD': 'postgres',
         'HOST': '43.202.145.173',
         'PORT': '5432',
+    },
+    'secondary': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'oikos-db',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': '43.202.145.173',
+        'PORT': '5433',
     }
 }
 
