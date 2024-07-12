@@ -1,0 +1,76 @@
+
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+:root {
+    --bg-color: #ffffff;
+    --bg-subcolor: #FAFAFA;
+    --primary-bg-color: #333740;
+    --primary-color: #289E90;
+    --light-color: #E5F1EF;
+    --text-color: #99A1A1;
+    --text-active: #ffffff;
+    --border-color: #86b8bd;
+}
+
+/* Define styles for the main container */
+main {
+    padding: 20px;
+}
+
+.bubble-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* This will create 3 columns */
+    grid-template-rows: repeat(2, 1fr);
+    /* This will create 2 rows */
+    gap: 20px;
+    /* This will create a gap between the bubbles */
+    justify-items: center;
+    /* This will center the bubbles horizontally */
+    align-items: center;
+    /* This will center the bubbles vertically */
+    margin-top: 30px;
+}
+
+.bubble {
+    position: relative;
+    font-family: 'Pretendard-Regular';
+    color: #000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    border: 2px solid #000;
+    border-radius: 15px;
+    background-color: #fff;
+}
+
+.bubble:nth-child(1) {
+    border-color: #8d6e63;
+}
+
+.bubble:nth-child(2) {
+    border-color: #7e57c2;
+}
+
+.bubble:nth-child(3) {
+    border-color: #26a69a;
+}
+
+.bubble:nth-child(4) {
+    border-color: #ff7043;
+}
+
+.bubble:nth-child(5) {
+    border-color: #78909c;
+}

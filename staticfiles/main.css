@@ -1,0 +1,280 @@
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    }
+
+:root {
+    --bg-color: #ffffff;
+    --bg-subcolor: #FAFAFA;
+    --primary-bg-color: #333740;
+    --primary-color: #289E90;
+    --light-color: #E5F1EF;
+    --text-color: #99A1A1;
+    --text-active: #ffffff;
+    --border-color: #86b8bd;
+}
+
+body {
+    font-family: 'Pretendard-Regular';
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    box-sizing: border-box;
+    overflow: hidden;
+    /* Prevent scroll bars */
+}
+
+header {
+    color: var(--text-color);
+    padding: 10px;
+    text-align: left;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100px;
+    /* Adjust the header height */
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    /* Bottom border */
+}
+
+header div {
+    text-align: right;
+    margin-right: 20px;
+    /* Adjust the right margin for spacing */
+    display: flex;
+    align-items: center;
+}
+
+header div p {
+    margin: 0;
+    padding-right: 10px;
+    /* Adjust the padding between items */
+}
+
+header div i {
+    margin-top: -2px;
+}
+
+
+nav {
+    background-color: var(--bg-subcolor);
+    color: var(--text-color);
+    /* Default font color changed to #27AE60 */
+    padding: 20px;
+    width: 250px;
+    box-sizing: border-box;
+    float: left;
+/*     height: calc(100vh - 100px);
+ */    height: 1000px;
+    /* Adjust the height calculation to fit the screen */
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #ccc;
+    /* Right border */
+}
+
+nav p {
+    padding: 5px 25px;
+    font-size: 14px;
+}
+
+nav a {
+    display: flex;
+    color: var(--text-color);
+    font-size: 18px;
+    text-decoration: none;
+    padding: 12px 25px;
+    text-align: left;
+    margin-bottom: 15px;
+    /* Adjust the margin between items */
+    transition: color 0.3s, background-color 0.3s, border-radius 0.3s;
+    /* Add transition effect */
+}
+
+nav a:hover {
+    font-size: 18px;
+    color: var(--primary-color);
+    /* Change font color to #134C4B on hover */
+    background-color: var(--light-color);
+    /* Change background color to #27AE60 on hover */
+    border-radius: 15px;
+    /* Add rounded corners on hover */
+}
+
+nav a:hover .Title {
+    font-weight: 600;
+}
+
+nav a:last-child {
+    margin-bottom: 0;
+    /* Remove margin for the last item (Logout) */
+    margin-top: auto;
+    /* Pushes Logout to the bottom */
+}
+
+.nav-hover {
+    font-size: 18px;
+    color: var(--primary-color);
+    /* Change font color to #134C4B on hover */
+    background-color: var(--light-color);
+    /* Change background color to #27AE60 on hover */
+    border-radius: 15px;
+    /* Add rounded corners on hover */
+}
+
+.nav-hover .Title {
+    font-weight: 600;
+}
+
+i{
+    font-family: 'Font Awesom Free', 'Font Awesom 5 Brands';
+    height: 1rem;
+    width: 1rem;
+    font-size: 20px;
+    margin-right: 25px;
+    margin-top: 5px;
+    text-align: center;
+}
+
+.subTitle{
+    font-size: 14px;
+    margin-top: 3px;
+}
+
+main {
+    margin-top: 100px;
+    margin-left: 220px;
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.title{
+    font-family: 'Pretendard-Regular';
+    margin-left: 100px;
+    margin-top: 30px;
+}
+
+.title h2{ 
+    color: var(--primary-color);
+    font-weight: 800;
+}
+.title p{ 
+    margin-top: -10px;
+    color: var(--text-color);
+}
+
+
+.calendar-container {
+    position: absolute;
+    top: 100%;
+    left: 5%;
+    width: 90%;
+    margin: 0 80px;
+    font-family: 'Pretendard-Regular';
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 2fr);
+    grid-template-rows: repeat(6, 2fr);
+    gap: 0px;
+    width: 70%;
+    margin: 0 auto;
+    margin-top: 30px;
+
+    /* Center the calendar horizontally */
+}
+
+.day {
+    padding: 10px;
+    text-align: center;
+}
+
+/* .day-number {
+    border: 0.3px solid #ccc;
+    line-height: 30px;
+    border-radius: 15px;
+} */
+
+.day-name{
+    color: var(--primary-color);
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 45px;
+    border-top: #289E90 2px solid;
+    border-bottom: #289E90 1.8px solid;
+    background-color: var(--bg-subcolor);
+}
+
+#currentMonthYear{
+    color: var(--primary-color);
+    padding: 20px;
+    font-size: 26px;
+    border: 2px solid var(--primary-color);
+    border-radius: 30px;
+}
+
+.calendar-top {
+    margin-bottom: 10px;
+    width: 150px;
+    text-align: center;
+    font-size: 18px;
+    /* Use 100% width within the container */
+    margin: 0 auto;
+    /* Center the calendar top horizontally */
+}
+
+.day a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    color: var(--primary-color);
+    margin-top: 10px;
+    font-size: 18px;
+}
+
+
+/* Add styles for the modal */
+.modal-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    position: relative;
+    /* Add this to make the button positioning relative to the modal content */
+}
+
+/* Style for the Close Modal button */
+.close-modal-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    cursor: pointer;
+}

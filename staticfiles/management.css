@@ -1,0 +1,323 @@
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    }
+
+:root {
+    --bg-color: #ffffff;
+    --bg-subcolor: #FAFAFA;
+    --primary-bg-color: #333740;
+    --primary-color: #289E90;
+    --light-color: #E5F1EF;
+    --text-color: #99A1A1;
+    --text-active: #ffffff;
+    --border-color: #86b8bd;
+}
+
+body {
+    overflow-y: scroll;
+    height: 100vh;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+.studentData {
+    height: 1080px;
+}
+
+.studentData h2 {
+    color: #289E90;
+    font-weight: 800;
+}
+
+.studentData p {
+    color: #99A1A1;
+    margin-top: -10px;
+}
+
+main {
+    margin-left: 70px !important;
+    margin-bottom: 500px;
+}
+
+header {
+    background-color: white !important;
+}
+
+.student_table {
+    margin-right: 300px;
+    margin-top: 0px;
+    background-color: #fff;
+    width: 100%;
+    height: 250px;
+}
+
+.student_table input:focus {
+    outline: 2px solid var(--border-color);
+    color: var(--primary-color);
+}
+
+.student_table input {
+    width: 200px;
+    height: 20px;
+    font-size: 20px;
+    padding: 20px;
+    font-family: 'Pretendard-Regular';
+    letter-spacing: -1px;
+    background-color: #F6F7F5;
+    background-color: #F6F7F5;
+    font-weight: 500; 
+    color: var(--primary-color);
+    border: none;
+}
+
+.gender {
+    width: 180px;
+    height: 20px;
+    font-size: 20px;
+    padding: 20px;
+    font-family: 'Pretendard-Regular';
+    letter-spacing: -1px;
+    background-color: #F6F7F5;
+    background-color: #F6F7F5;
+    font-weight: 500; 
+    color: var(--text-color);
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 20px;
+}
+
+.gender input {
+    width: 30px;
+    height: 30px;
+}
+
+.gender_into {
+    position: absolute;
+    font-size: 16px;
+    top: 130%;
+}
+.student_table input::placeholder {
+    color: var(--text-color);
+}
+
+.student_table div {
+    display: flex;
+    margin-top: 30px;
+    width: 1600px;
+} 
+
+.student_table div input {
+    margin-left: 20px;
+}
+
+.last-data {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.save_btn {
+    font-family: 'Pretendard-Regular';
+    width: 100px;
+    height: 50px;
+    /* Adjust the width as needed (1/3 of the original size) */
+    padding: 10px;
+    /* Adjust the padding as needed */
+    background-color: var(--border-color);
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    margin-left: 350px;
+    opacity: 0.8;
+}
+
+
+.btn {
+    font-family: 'Pretendard-Regular';
+    width: 60px;
+    height: 40px;
+    /* Adjust the width as needed (1/3 of the original size) */
+    padding: 10px;
+    /* Adjust the padding as needed */
+    background-color: var(--border-color);
+    opacity: 0.8;
+    color: #fff;
+    font-size: 14px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.save_btn:hover, .save_btn:focus, .btn:hover, .btn:focus {
+    background-color: var(--primary-color);
+    opacity: 1.0;
+}
+
+.ranking-container {
+    font-family: "Pretendard-Regular";
+    width: 500px;
+    max-width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    margin-right: 100px;
+    height: 400px;
+}
+
+th,
+td {
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    font-size: 18px;
+    color: var(--primary-color);
+    text-align: center;
+}
+
+th {
+    color: var(--primary-color);
+    text-align: center;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 20px;
+    padding: 20px;
+    background-color: var(--bg-subcolor);
+    border: #289E90 1.8px solid;
+}
+
+td input {
+    font-family: 'Pretendard-Regular';
+}
+tr {
+    font-family: "Pretendard-Regular";
+}
+
+tr input {
+    border: none;
+    width: 130px;
+    text-align: center;
+}
+
+tr input:focus {
+    outline: 2px solid var(--border-color);
+    color: var(--primary-color);
+}
+
+.table {
+    border: #289E90 1.8px solid;
+    margin-top: 40px;
+}
+
+input[type="checkbox"]{
+    border: #289E90 1.8px solid;
+    background-color: #289E90;
+  }
+
+#check_btn{
+    width: 20px;
+    height: 20px;
+}
+
+.dropdown-box,
+    .input-box {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        width: 500px;
+        height: 70px;
+        font-family: 'Pretendard-Regular';
+        color: var(--border-color);
+        font-size: 22px;
+        letter-spacing: -1px;
+        background-color: #F6F7F5;
+        font-weight: 500;        
+        /* Adjust the width as needed */
+        padding: 10px 30px;
+        margin: 10px 0;
+        /* Adjust the margin as needed */
+        border: none;
+        border-radius: 15px;
+        box-sizing: border-box;
+        transition: border-color 0.3s ease;
+    }
+
+    .password-describe {
+        font-size: 16px;
+        text-align: left;
+        color: var(--text-color);
+        font-family: 'Pretendard-Regular';
+        margin: 10px;
+        line-height: 24px;
+    }
+
+
+    select:focus {
+        background-color: #F6F7F5;
+        margin: 40px;
+    }
+
+    .option{
+        line-height: 50px;
+        font-size: 25px;
+        display: inline-block;
+        height: 50px;
+    }
+
+
+    select:focus,
+    input:focus {
+        outline: 2px solid var(--border-color);
+        color: var(--primary-color);
+    }
+
+    input::placeholder{
+        color: var(--text-color);
+    }
+
+
+    .login-button {
+        font-family: 'Pretendard-Regular';
+        width: 108px;
+        height: 50px;
+        /* Adjust the width as needed (1/3 of the original size) */
+        padding: 10px;
+        /* Adjust the padding as needed */
+        background-color: var(--border-color);
+        color: #fff;
+        font-size: 18px;
+        border: none;
+        border-radius: 15px;
+        cursor: pointer;
+        margin-top: 50px;
+    }
+
+    .login-button:hover
+    {
+        background-color: var(--primary-color);
+    }
+
+    .dropdown-box:focus {
+        border-color: #007bff;
+    }
+
+    .dropdown-list-container {
+        display: none;
+        position: absolute;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        z-index: 1;
+    }
+
+    .dropdown-box:focus + .dropdown-list-container {
+        display: block;
+    }

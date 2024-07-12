@@ -1,0 +1,100 @@
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    }
+
+:root {
+    --bg-color: #ffffff;
+    --bg-subcolor: #FAFAFA;
+    --primary-bg-color: #333740;
+    --primary-color: #289E90;
+    --light-color: #E5F1EF;
+    --text-color: #99A1A1;
+    --text-active: #ffffff;
+    --border-color: #86b8bd;
+}
+
+.table {
+    position: absolute;
+    top: 370%;
+    left: 5%;
+    display: flex;
+    flex-direction : column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #fff;
+    width: 90%;
+    height: 600px;
+}
+
+#top3 {
+    display: flex;
+    align-items: flex-end;
+}
+
+.top3-item {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-right: 20px;
+    padding: 30px 10px;
+    width: 150px;
+    color: white;
+    /* Set font color to white */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    /* Center-align the text */
+}
+
+.top3-item:nth-child(1) {
+    height: 300px;
+    background-color: var(--primary-color);
+}
+
+
+.top3-item:nth-child(2) {
+    height: 400px;
+    background-color: #F99C30;
+}
+
+.top3-item:nth-child(3) {
+    height: 200px;
+    background-color: #2FBFDE;
+}
+
+.ranking-container {
+    font-family: "Pretendard-Regular";
+    width: 500px;
+    max-width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    height: 400px;
+    margin-top: 50px;
+}
+
+th,
+td {
+    border-bottom: 1px solid #ddd;
+    padding: 20px;
+    text-align: left;
+    font-size: 18px;
+    color: var(--primary-color);
+    text-align: center;
+}
+
+th {
+    color: var(--primary-color);
+    text-align: center;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+    padding: 20px;
+    border-top: #289E90 2px solid;
+    border-bottom: #289E90 1.8px solid;
+    background-color: var(--bg-subcolor);
+}

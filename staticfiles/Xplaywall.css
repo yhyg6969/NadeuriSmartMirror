@@ -1,0 +1,83 @@
+.info-bubble {
+    font-family: 'Pretendard-Regular';
+    position: absolute;
+    top: 200%;
+    left: 10%;
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+
+.bubble {
+    position: relative;
+    font-family: 'Pretendard-Regular';
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    width: 350px;
+    /* doubled the size */
+    height: 350px;
+    margin-right: 10px;
+    /* doubled the size */
+    border-radius: 50%;
+    /* ensure border-radius creates a circle */
+}
+
+
+.bubble:nth-child(1) h2{
+    margin-top: 40px;
+    margin-left: 20px;
+}
+
+.bubble:nth-child(1) p{
+    margin-left: 20px;
+}
+
+
+.bubble:nth-child(2) h2{
+    margin-top: 80px;
+    margin-left: 100px;
+}
+
+.bubble:nth-child(2) p{
+    margin-left: 100px;
+}
+
+
+.bubble:nth-child(3) h2{
+    margin-top: 50px;
+    margin-left: 30px;
+}
+
+.bubble:nth-child(3) p{
+    margin-left: 30px;
+}
+
+
+.bubble:nth-child(4) h2{
+    margin-top: 60px;
+}
+
+/* .bubble:hover {
+    filter: brightness(90%);
+}
+ */
+.bubble h2 {
+    letter-spacing: 1px;
+}
+
+.bubble p {
+    font-size: 20px;
+    letter-spacing: 0.5px;
+}

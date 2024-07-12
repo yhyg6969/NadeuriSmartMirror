@@ -1,17 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import requires_csrf_token
+from django.http import HttpResponse
 from .models import user_table, game_table, walk_table, stretch_table
+from datetime import datetime, timezone, timedelta
 
-center_passwords = {
-    "동대문구 치매안심센터": "0000",
-    "서대문구 치매안심센터": "0000",
-    "서초구 치매안심센터": "0000",
-    "성동구 치매안심센터": "0000",
-    "성북구 치매안심센터": "0000",
-    # Add other centers and passwords as needed
-}
 
 def smartmirror(request):
     context = {'users': [], 'error_message': None, 'show_data': False}
@@ -26,6 +20,15 @@ def smartmirror(request):
             if not center_name or not password:
                 context['error_message'] = '양식에 알맞게 입력해주세요'
                 return render(request, 'smartmirror.html', context)
+            
+            center_passwords = {
+                "동대문구 치매안심센터": "0000",
+                "서대문구 치매안심센터": "0000",
+                "서초구 치매안심센터": "0000",
+                "성동구 치매안심센터": "0000",
+                "성북구 치매안심센터": "0000",
+                # Add other centers and passwords as needed
+            }
             
             if center_name not in center_passwords or password != center_passwords[center_name]:
                 context['error_message'] = 'Invalid password for the selected center.'
@@ -154,7 +157,64 @@ def inquiry(request):
     
     return redirect('smartmirror:smartmirror')
 
-@requires_csrf_token
+def popup_modal(request):
+    uid = request.GET.get('uid')
+    year = request.GET.get('year')
+    month = request.GET.get('month')
+    day = request.GET.get('day')
+    
+    if not uid or not year or not month or not day:
+        return HttpResponse('Missing parameters.', status=400)
+    
+    try:
+        user = user_table.objects.using('secondary').get(uid=uid)
+    except user_table.DoesNotExist:
+        return HttpResponse('User not found.', status=404)
+    
+    # Convert year, month, day to integers
+    year = int(year)
+    month = int(month)
+    day = int(day)
+    
+    # Calculate start and end datetime objects for the selected day
+    start_datetime = datetime(year, month, day, 0, 0, 0, tzinfo=timezone.utc)
+    end_datetime = start_datetime + timedelta(days=1)
+
+    # Convert datetime objects to timestamps
+    start_ts = int(start_datetime.timestamp())
+    end_ts = int(end_datetime.timestamp()) - 1
+
+    # Filter game records for the selected date
+    game_records = game_table.objects.using('secondary').filter(
+        uid=uid,
+        start_ts__gte=start_ts,
+        start_ts__lt=end_ts,
+    )
+
+    # Filter walk records for the selected date
+    walk_records = walk_table.objects.using('secondary').filter(
+        uid=uid,
+        start_ts__gte=start_ts,
+        start_ts__lt=end_ts,
+    )
+
+    # Filter stretch records for the selected date
+    stretch_records = stretch_table.objects.using('secondary').filter(
+        uid=uid,
+        start_ts__gte=start_ts,
+        start_ts__lt=end_ts,
+    )
+
+    context = {
+        'user': user,
+        'game_records': game_records,
+        'walk_records': walk_records,
+        'stretch_records': stretch_records,
+        'selected_date': start_datetime.date(),  # Pass the selected date object
+    }
+    
+    return render(request, 'popup_modal2.html', context)
+
 def custom_csrf_failure(request, reason=""):
     return redirect(request.META.get('HTTP_REFERER', '/'))
 

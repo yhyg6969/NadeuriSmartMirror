@@ -23,7 +23,7 @@ app_name = 'smartmirror'
 urlpatterns = [
     path('', views.smartmirror, name='smartmirror'),
     path('inquiry/', views.inquiry, name='inquiry'),
-    # Add other paths as needed
+    path('inquiry/popup_modal/', views.popup_modal, name='popup_modal'),
 ]
 
 

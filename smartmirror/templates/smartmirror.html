@@ -33,7 +33,17 @@
                     <div>
                         <td><input type="text" id="id_uid" name="uid" placeholder="UID"></td>
                         <td><input type="text" id="id_user_name" name="user_name" placeholder="이름"></td>
-                        <td><input type="text" id="id_center_name" name="center_name" placeholder="소속기관"></td>
+                        <td>                         
+                            <select name="center_name" id="id_center_name" class="dropdown-box">
+                                <option class="option" value="" selected disabled>기관을 선택해 주세요</option>
+                                <option class="option" value="동대문구 치매안심센터">동대문구 치매안심센터</option>
+                                <option class="option" value="서대문구 치매안심센터">서대문구 치매안심센터</option>
+                                <option class="option" value="서초구 치매안심센터">서초구 치매안심센터</option>
+                                <option class="option" value="성동구 치매안심센터">성동구 치매안심센터</option>
+                                <option class="option" value="성북구 치매안심센터">성북구 치매안심센터</option>
+                            </select>
+                            <!-- <input type="text" id="id_center_name" name="center_name" placeholder="소속기관"> -->
+                        </td>
                     </div>
                     <div>
                         <td><input type="number" id="id_birth" name="birth" placeholder="생년월일 (YYYYMMDD)"></td>

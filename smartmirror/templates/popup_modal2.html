@@ -1,0 +1,43 @@
+{% load static %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'popup_modal.css' %}">
+{% endblock %}
+
+<body>
+    <div class="modal-container" id="modalContainer">
+        <div class="modal-content">
+            {% if error_message %}
+            <p>{{ error_message }}</p>
+            {% else %}
+            <p id="modalContent">
+                    날짜: {{ selected_date }}<br>
+                    <br>
+                    게임 기록:<br>
+                    {% for game in game_records %}
+                        게임 이름: {{ game.game_name }}, 게임 유형: {{ game.game_type }}, 플레이 시간: {{ game.play_time }},
+                        정답 점수: {{ game.correct_score }}, 실패 점수: {{ game.fail_score }},
+                        시작 시간: {{ game.start_ts|date:"Y-m-d H:i:s" }}, 종료 시간: {{ game.finish_ts|date:"Y-m-d H:i:s" }}<br>
+                    {% endfor %}
+                    <br>
+                    산책 기록:<br>
+                    {% for walk in walk_records %}
+                        산책 이름: {{ walk.walk_name }}, 산책 시간: {{ walk.walk_time }}, 걸음 수: {{ walk.walk_count }},
+                        속도: {{ walk.velocity }},
+                        시작 시간: {{ walk.start_ts|date:"Y-m-d H:i:s" }}, 종료 시간: {{ walk.finish_ts|date:"Y-m-d H:i:s" }}<br>
+                    {% endfor %}
+                    <br>
+                    스트레칭 기록:<br>
+                    {% for stretch in stretch_records %}
+                        스트레칭 이름: {{ stretch.stretch_name }}, 스트레칭 유형: {{ stretch.stretch_type }},
+                        스트레칭 시간: {{ stretch.stretch_time }}, 평균 정확도: {{ stretch.acc_average }},
+                        시작 시간: {{ stretch.start_ts|date:"Y-m-d H:i:s" }}, 종료 시간: {{ stretch.finish_ts|date:"Y-m-d H:i:s" }}<br>
+                    {% endfor %}
+            </p>
+            {% endif %}
+            <button class="close-modal-btn" onclick="closeModal()">닫기</button>
+        </div>
+    </div>
+
+    <script src="{% static 'smartmirror.js' %}"></script>
+</body>

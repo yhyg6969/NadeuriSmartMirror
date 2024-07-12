@@ -1,5 +1,3 @@
-from django.db import models
-
 # class Student(models.Model):
 #     uid = models.CharField(primary_key=True, max_length=255, db_column='uid')
 #     name = models.CharField(db_column='name')
@@ -28,6 +26,8 @@ from django.db import models
 #     class Meta:
 #         managed = False
 #         db_table = 'game_records'
+
+from django.db import models
 
 
 class user_table(models.Model):
