@@ -1,14 +1,11 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-from django.views.decorators.csrf import requires_csrf_token
-from django.http import HttpResponse
 from .models import user_table, game_table, walk_table, stretch_table
 from datetime import datetime, timezone, timedelta
 
-
 def smartmirror(request):
-    context = {'users': [], 'error_message': None, 'show_data': False}
+    context = {'users': [], 'show_data': False}
     
     if request.method == 'POST':
         action = request.POST.get('action')
@@ -69,6 +66,15 @@ def smartmirror(request):
                     context['show_data'] = True
                     return render(request, 'smartmirror.html', context)
                 
+                # Check if the UID already exists
+                if user_table.objects.using('secondary').filter(uid=uid).exists():
+                    context['error_message'] = '중복된 UID 입니다.'
+                    context['popup_alert'] = True  # Flag to show popup alert
+                    users = user_table.objects.using('secondary').filter(center_name=center_name)
+                    context['users'] = users
+                    context['show_data'] = True
+                    return render(request, 'smartmirror.html', context)
+
                 user_table.objects.using('secondary').create(uid=uid, user_name=user_name, center_name=center_name, birth=birth, gender=gender)
                 return redirect('smartmirror:smartmirror')
             
@@ -86,8 +92,11 @@ def smartmirror(request):
                     user = user_table.objects.using('secondary').get(uid=uid)
                 except user_table.DoesNotExist:
                     context['error_message'] = 'User with given UID does not exist.'
-                    return redirect('smartmirror:smartmirror')
-                
+                    users = user_table.objects.using('secondary').filter(center_name=center_name)
+                    context['users'] = users
+                    context['show_data'] = True
+                    return render(request, 'smartmirror.html', context)
+
                 user.user_name = request.POST.get('user_name')
                 user.center_name = center_name
                 user.birth = request.POST.get('birth')
@@ -100,6 +109,19 @@ def smartmirror(request):
                     context['show_data'] = True
                     return render(request, 'smartmirror.html', context)
                 
+                # Check if the new UID already exists (only if it's being changed)
+                new_uid = request.POST.get('new_uid')
+                if new_uid and new_uid != uid and user_table.objects.using('secondary').filter(uid=new_uid).exists():
+                    context['error_message'] = '중복된 UID 입니다.'
+                    context['popup_alert'] = True  # Flag to show popup alert
+                    users = user_table.objects.using('secondary').filter(center_name=center_name)
+                    context['users'] = users
+                    context['show_data'] = True
+                    return render(request, 'smartmirror.html', context)
+                
+                if new_uid:
+                    user.uid = new_uid
+
                 user.save(using='secondary')
                 return redirect('smartmirror:smartmirror')
             
@@ -117,7 +139,11 @@ def smartmirror(request):
                     user = user_table.objects.using('secondary').get(uid=uid)
                 except user_table.DoesNotExist:
                     context['error_message'] = 'User with given UID does not exist.'
-                    return redirect('smartmirror:smartmirror')
+                    users = user_table.objects.using('secondary').filter(center_name=center_name)
+                    context['users'] = users
+                    context['show_data'] = True
+                    return render(request, 'smartmirror.html', context)
+                
                 user.delete(using='secondary')
                 return redirect('smartmirror:smartmirror')
             
@@ -217,6 +243,7 @@ def popup_modal(request):
 
 def custom_csrf_failure(request, reason=""):
     return redirect(request.META.get('HTTP_REFERER', '/'))
+
 
 
 

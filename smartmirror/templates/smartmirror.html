@@ -8,7 +8,6 @@
 {% endblock %}
 
 {% block content %}
-
 <body>
     <header>
         <img src="{% static 'Oikos_logo.png' %}" alt="Oikos_logo" height="100px" style="margin-left: 50px;">
@@ -61,6 +60,10 @@
 
         <h2>사용자 정보 수정</h2>
         <p>사용자 정보를 수정할 수 있습니다</p>
+
+        {% if error_message %}
+        <div class="alert alert-danger">{{ error_message }}</div>
+        {% endif %}
 
         <table class="table" border="1">
             <tr>
