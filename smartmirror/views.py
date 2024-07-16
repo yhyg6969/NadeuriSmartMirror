@@ -24,6 +24,9 @@ def smartmirror(request):
                 "서초구 치매안심센터": "0000",
                 "성동구 치매안심센터": "0000",
                 "성북구 치매안심센터": "0000",
+                "광진구 치매안심센터": "0000",
+                "영등포구 치매안심센터": "0000",
+                "금천구 치매안심센터": "0000",
                 # Add other centers and passwords as needed
             }
             
@@ -112,7 +115,7 @@ def smartmirror(request):
                 # Check if the new UID already exists (only if it's being changed)
                 new_uid = request.POST.get('new_uid')
                 if new_uid and new_uid != uid and user_table.objects.using('secondary').filter(uid=new_uid).exists():
-                    context['error_message'] = '중복된 UID 입니다.'
+                    context['error_message'] = '중복된 UID 입니다'
                     context['popup_alert'] = True  # Flag to show popup alert
                     users = user_table.objects.using('secondary').filter(center_name=center_name)
                     context['users'] = users
@@ -216,6 +219,18 @@ def popup_modal(request):
         start_ts__gte=start_ts,
         start_ts__lt=end_ts,
     )
+    
+    for game in game_records:
+        game.minutes = game.play_time // 60
+        game.seconds = game.play_time % 60
+        game.start_time = datetime.fromtimestamp(game.start_ts)
+        game.finish_time = datetime.fromtimestamp(game.finish_ts)
+
+        # Calculate total activity time for game_type 4
+        if game.game_type == 4:
+            activity_duration = game.finish_time - game.start_time
+            game.activity_minutes = int(activity_duration.total_seconds() // 60)
+
 
     # Filter walk records for the selected date
     walk_records = walk_table.objects.using('secondary').filter(
@@ -224,6 +239,11 @@ def popup_modal(request):
         start_ts__lt=end_ts,
     )
 
+    for walk in walk_records:
+        walk.minutes = walk.walk_time // 60
+        walk.seconds = walk.walk_time % 60
+        walk.start_time = datetime.fromtimestamp(walk.start_ts)
+
     # Filter stretch records for the selected date
     stretch_records = stretch_table.objects.using('secondary').filter(
         uid=uid,
@@ -231,6 +251,12 @@ def popup_modal(request):
         start_ts__lt=end_ts,
     )
 
+    for stretch in stretch_records:
+        stretch.minutes = stretch.stretch_time // 60
+        stretch.seconds = stretch.stretch_time % 60
+        stretch.start_time = datetime.fromtimestamp(stretch.start_ts)
+
+    
     context = {
         'user': user,
         'game_records': game_records,
@@ -243,7 +269,6 @@ def popup_modal(request):
 
 def custom_csrf_failure(request, reason=""):
     return redirect(request.META.get('HTTP_REFERER', '/'))
-
 
 
 

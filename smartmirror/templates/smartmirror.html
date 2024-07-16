@@ -6,8 +6,9 @@
 <link rel="stylesheet" href="{% static 'management.css' %}">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 {% endblock %}
-
+alert alert-danger
 {% block content %}
+
 <body>
     <header>
         <img src="{% static 'Oikos_logo.png' %}" alt="Oikos_logo" height="100px" style="margin-left: 50px;">
@@ -17,6 +18,7 @@
     <main id="userData" class="userData">
         <h2>사용자 정보 추가</h2>
         <p>사용자를 추가해 주세요</p>
+        
         <form method="post" class="user_table">
             {% csrf_token %}
             <table>
@@ -30,7 +32,7 @@
                 </tr>
                 <tr>
                     <div>
-                        <td><input type="text" id="id_uid" name="uid" placeholder="UID"></td>
+                        <td><input type="text" id="id_uid" name="uid" placeholder="UID" autofocus></td>
                         <td><input type="text" id="id_user_name" name="user_name" placeholder="이름"></td>
                         <td>                         
                             <select name="center_name" id="id_center_name" class="dropdown-box">
@@ -40,30 +42,33 @@
                                 <option class="option" value="서초구 치매안심센터">서초구 치매안심센터</option>
                                 <option class="option" value="성동구 치매안심센터">성동구 치매안심센터</option>
                                 <option class="option" value="성북구 치매안심센터">성북구 치매안심센터</option>
+                                <option class="option" value="영등포구 치매안심센터">영등포구 치매안심센터</option>
+                                <option class="option" value="금천구 치매안심센터">금천구 치매안심센터</option>
+                                <option class="option" value="광진구 치매안심센터">광진구 치매안심센터</option>
                             </select>
                             <!-- <input type="text" id="id_center_name" name="center_name" placeholder="소속기관"> -->
                         </td>
                     </div>
                     <div>
                         <td><input type="number" id="id_birth" name="birth" placeholder="생년월일 (YYYYMMDD)"></td>
-                        <td>
-                            <label for="male">남자</label>
+                        <td class="genter_table">
                             <input type="radio" id="male" name="gender" value="true">
-                            <label for="female">여자</label>
+                            <label for="male">남자</label>
                             <input type="radio" id="female" name="gender" value="false">
+                            <label for="female">여자</label>
                         </td>
                         <td><button type="submit" name="action" value="create" class="save_btn">저장</button></td>
                     </div>
                 </tr>
             </table>
+            {% if error_message %}
+            <div class="alert alert-danger">{{ error_message }}</div>
+            {% endif %}
         </form>
 
-        <h2>사용자 정보 수정</h2>
+        <h2 >사용자 정보 수정</h2>
         <p>사용자 정보를 수정할 수 있습니다</p>
 
-        {% if error_message %}
-        <div class="alert alert-danger">{{ error_message }}</div>
-        {% endif %}
 
         <table class="table" border="1">
             <tr>
@@ -76,14 +81,14 @@
                 <th>조회</th> 
             </tr>
             {% for user in users %}
-            <tr>
+            <tr class="user-info">
                 <form method="post">
                     {% csrf_token %}
                     <td><input type="text" name="uid" value="{{ user.uid }}" readonly></td>
                     <td><input type="text" name="user_name" value="{{ user.user_name }}"></td>
                     <td><input type="text" name="center_name" value="{{ user.center_name }}"></td>
                     <td><input type="number" name="birth" value="{{ user.birth }}"></td>
-                    <td>
+                    <td class="genter_table">
                         <input type="radio" name="gender" value="true" {% if user.gender %}checked{% endif %}> 남자
                         <input type="radio" name="gender" value="false" {% if not user.gender %}checked{% endif %}> 여자
                     </td>
@@ -92,7 +97,7 @@
                         <button type="submit" name="action" value="delete" class="btn">삭제</button>
                     </td>
                     <td>
-                        <button type="button" class="btn inquiry-btn" data-uid="{{ user.uid }}">조회</button>
+                        <button type="button" class="btn inquiry-btn search" data-uid="{{ user.uid }}">조회</button>
                     </td>
                 </form>
             </tr>
@@ -100,22 +105,25 @@
         </table>
     </main>
     {% else %}
-    <main style="margin-top: 150px;">
-        <h2>기관명을 선택 후 비밀번호를 입력해주세요</h2>
+    <main class="login" style="margin-top: 150px;">
+        <h2>오이코스<br>스마트 미러 관리자 페이지</h2>
         <form method="post" class="center_password_form">
             {% csrf_token %}
             <div>
-                <select name="center_name" id="center_select" class="dropdown-box">
+                <select name="center_name" id="center_select" class="dropdown-box login-dropbox">
                     <option class="option" value="" selected disabled>기관을 선택해 주세요</option>
                     <option class="option" value="동대문구 치매안심센터">동대문구 치매안심센터</option>
                     <option class="option" value="서대문구 치매안심센터">서대문구 치매안심센터</option>
                     <option class="option" value="서초구 치매안심센터">서초구 치매안심센터</option>
                     <option class="option" value="성동구 치매안심센터">성동구 치매안심센터</option>
                     <option class="option" value="성북구 치매안심센터">성북구 치매안심센터</option>
+                    <option class="option" value="영등포구 치매안심센터">영등포구 치매안심센터</option>
+                    <option class="option" value="금천구 치매안심센터">금천구 치매안심센터</option>
+                    <option class="option" value="광진구 치매안심센터">광진구 치매안심센터</option>
                 </select>
                 <input type="password" class="input-box" name="password" placeholder="비밀번호를 입력해주세요">
-                <button type="submit" name="action" value="login">로그인</button>
             </div>
+            <button class="inquiry-btn" type="submit" name="action" value="login">로그인</button>
         </form>
     </main>
     {% endif %}

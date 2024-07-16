@@ -8,32 +8,132 @@
     <div class="modal-container" id="modalContainer">
         <div class="modal-content">
             {% if error_message %}
-            <p>{{ error_message }}</p>
+                <p>{{ error_message }}</p>
             {% else %}
-            <p id="modalContent">
-                    날짜: {{ selected_date }}<br>
+                <p id="modalContent">
+                    <p class="dateTitle">활동 날짜 | {{ selected_date }}<br><br></p>
+                    
+                    <div class="dateTitle">
+                        {% for game in game_records %}
+                            {% if game.game_type == 4 %}
+                                <p>총 활동 시간 | {{ game.activity_minutes }} 분</p>
+                            {% endif %}
+                        {% endfor %}
+                    </div><br>
+                    <br><strong>      <인지 게임></strong>
+                    
+                    <!-- Table for other game records -->
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>시작 시간</th>
+                                <th>게임 이름</th>
+                                <th>게임 유형</th>
+                                <th>점수</th>
+                                <th>오답</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for game in game_records %}
+                                {% if game.game_type != 4 %}
+                                    <tr>
+                                        <td>{{ game.start_time|date:"Y-m-d H:i" }}</td>
+                                        <td>{{ game.game_name }}</td>
+                                        <td>
+                                            {% if game.game_type == 0 %}
+                                                터치 게임
+                                            {% elif game.game_type == 1 %}
+                                                모션 게임
+                                            {% elif game.game_type == 2 %}
+                                                발판 게임
+                                            {% else %}
+                                                알 수 없음
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ game.correct_score }}점</td>
+                                        <td>
+                                            {% if game.fail_score == 999 %}
+                                                없습니다
+                                            {% else %}
+                                                {{ game.fail_score }}점
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% empty %}
+                                <tr>
+                                    <td colspan="6">기록이 없습니다.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                     <br>
-                    게임 기록:<br>
-                    {% for game in game_records %}
-                        게임 이름: {{ game.game_name }}, 게임 유형: {{ game.game_type }}, 플레이 시간: {{ game.play_time }},
-                        정답 점수: {{ game.correct_score }}, 실패 점수: {{ game.fail_score }},
-                        시작 시간: {{ game.start_ts|date:"Y-m-d H:i:s" }}, 종료 시간: {{ game.finish_ts|date:"Y-m-d H:i:s" }}<br>
-                    {% endfor %}
+                
+                    <br><strong><힐링 걷기></strong>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>활동일</th>
+                                <th>산책 이름</th>
+                                <th>산책 시간</th>
+                                <th>걸음 수</th>
+                                <th>속도</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for walk in walk_records %}
+                                <tr>
+                                    <td>{{ walk.start_time|date:"Y-m-d H:i" }}</td>
+                                    <td>{{ walk.walk_name }}</td>
+                                    <td>{{ walk.minutes }} 분 {{ walk.seconds }} 초</td>
+                                    <td>{{ walk.walk_count }}보</td>
+                                    <td>{{ walk.velocity }}</td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="5">기록이 없습니다.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                     <br>
-                    산책 기록:<br>
-                    {% for walk in walk_records %}
-                        산책 이름: {{ walk.walk_name }}, 산책 시간: {{ walk.walk_time }}, 걸음 수: {{ walk.walk_count }},
-                        속도: {{ walk.velocity }},
-                        시작 시간: {{ walk.start_ts|date:"Y-m-d H:i:s" }}, 종료 시간: {{ walk.finish_ts|date:"Y-m-d H:i:s" }}<br>
-                    {% endfor %}
-                    <br>
-                    스트레칭 기록:<br>
-                    {% for stretch in stretch_records %}
-                        스트레칭 이름: {{ stretch.stretch_name }}, 스트레칭 유형: {{ stretch.stretch_type }},
-                        스트레칭 시간: {{ stretch.stretch_time }}, 평균 정확도: {{ stretch.acc_average }},
-                        시작 시간: {{ stretch.start_ts|date:"Y-m-d H:i:s" }}, 종료 시간: {{ stretch.finish_ts|date:"Y-m-d H:i:s" }}<br>
-                    {% endfor %}
-            </p>
+                
+                    <br><strong><실버 스트레칭></strong>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>활동일</th>
+                                <th>스트레칭 이름</th>
+                                <th>스트레칭 유형</th>
+                                <th>스트레칭 시간</th>
+                                <th>평균 정확도</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for stretch in stretch_records %}
+                                <tr>
+                                    <td>{{ stretch.start_time|date:"Y-m-d H:i" }}</td>
+                                    <td>{{ stretch.stretch_name }}</td>
+                                    <td>
+                                        {% if stretch.stretch_type == 0 %}
+                                            전신 스트레칭
+                                        {% elif stretch.stretch_type == 1 %}
+                                            손가락 운동
+                                        {% else %}
+                                            알 수 없음
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ stretch.minutes }} 분 {{ stretch.seconds }} 초</td>
+                                    <td>{{ stretch.acc_average|floatformat:2 }}%</td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="5">기록이 없습니다.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </p>
             {% endif %}
             <button class="close-modal-btn" onclick="closeModal()">닫기</button>
         </div>

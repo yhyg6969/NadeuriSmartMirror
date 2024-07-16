@@ -6,76 +6,278 @@
 <link rel="stylesheet" href="{% static 'management.css' %}">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
-    body {
+    /* body {
         text-align: center;
     }
     header {
         text-align: center;
-    }
+    } */
     table {
-        margin: 0 auto;
-        /* Center the table */
-        border-collapse: collapse;
+/*         margin: 0 auto;
+ */        border-collapse: collapse;
     }
     th, td {
         border: 1px solid black;
-        padding: 8px;
         text-align: center;
+        color: var(--primary-bg-color) !important;
     }
     form {
         margin-bottom: 20px;
     }
+    .rap {
+        max-width: 820px;
+        padding: 0 1.4rem;
+        margin: 0 auto; /* Centering the element */
+        margin-top: .3rem;
+        text-align: center; /* Center text inside the div */
+
+    }
+
+    .dateHead {
+        margin-bottom: .4rem;
+    }
+    .dateHead div {
+        background: #289E90;
+        color: #fff;
+        text-align: center;
+    }
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        grid-gap: 5px;
+    }
+    .grid div {
+        padding: .6rem;
+        font-size: .9rem;
+        cursor: pointer;
+    }
+    .dateBoard div {
+        color: #222;
+        font-weight: bold;
+        min-height: 6rem;
+        padding: .6rem .8rem;
+        border-radius: .6rem;
+        border: 1px solid #eee;
+    }
+
+    .dateTitle {
+        color: #289E90;
+        font-weight: 600;
+        font-size: 20px;
+    }
+
+    .noColor {
+        background: #eee;
+    }
+    .header {
+        display: flex;
+        justify-content: space-between;
+        padding: 1rem 2rem;
+    }
+    .btn2 {
+        display: block;
+        width: 15px;
+        height: 15px;
+        border: 2px solid #99A1A1;
+        border-width: 3px 3px 0 0;
+        cursor: pointer;
+    }
+
+    .btn2:hover {
+        border: 2px solid #289E90;
+        display: block;
+        width: 15px;
+        height: 15px;
+        border-width: 3px 3px 0 0;
+        cursor: pointer;
+    }
+
+    .prevDay {
+        transform: rotate(-135deg);
+    }
+    .nextDay {
+        transform: rotate(45deg);
+    }
+    .dateBoard div p {
+        font-weight: normal;
+        margin-top: .2rem;
+    }
+
+    .user-name {
+        color: #289E90;
+        font-weight: 600;
+        font-size: 22px;
+        margin-top: 30px;
+        text-align: center;
+        /* margin-left: 80px; */
+    }
+    @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+    * {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        box-sizing: border-box;  
+        font-family: Pretendard;
+    }
+
+    .dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: #289E90; /* Color of the dot */
+    border-radius: 50%;
+    margin-left: 5px; /* Spacing between date and dot */
+    }   
 </style>
 {% endblock %}
 
 {% block content %}
-
 <body>
     <header>
-        <img src="{% static 'Oikos_logo.png' %}" alt="Oikos_logo" height="100px">
+        <img src="{% static 'Oikos_logo.png' %}" alt="Oikos_logo" height="100px" style="margin-left: 50px;">
     </header>
 
     <br><br><br><br><br><br><br>
 
     <div>
-        <h2>사용자 상세 정보</h2>
-        <p>UID: {{ user.uid }}</p>
-        <p>이름: {{ user.user_name }}</p>
-        <p>소속기관: {{ user.center_name }}</p>
-        <p>생년월일: {{ user.birth }}</p>
-        <p>성별: {% if user.gender %}남자{% else %}여자{% endif %}</p>
+        <h2 class="user-name">{{ user.user_name }}님 활동 내역입니다</h2>
+<!--         <p>UID: {{ user.uid }}</p>
+ -->        <input type="hidden" id="uid" value="{{ user.uid }}">
     </div>
     
     <br><br>
 
-    <main>
-        <div class="title">
-            <h2>이번 달 운동 기록</h2>
-            <p>이번 달 운동 기록을 살펴보아요</p>
+    <div class='rap'>
+        <div class="header">
+            <div class="btn2 prevDay"></div>
+            <h2 class='dateTitle'></h2>
+            <div class="btn2 nextDay"></div>
         </div>
-
-        <input type="hidden" id="uid" value="{{ user.uid }}">
-        <input type="hidden" id="totalActivityTimeMinutes" value="{{ total_activity_time_minutes }}">
-        <input type="hidden" id="totalActivityTimeSeconds" value="{{ total_activity_time_seconds }}">
-
-        <div class="calendar-container">
-            <div class="calendar-top">
-                <h2 id="currentMonthYear"></h2>
-            </div>
-            <div class="calendar" id="calendar"></div>
+        
+        <div class="grid dateHead">
+            <div>일</div>
+            <div>월</div>
+            <div>화</div>
+            <div>수</div>
+            <div>목</div>
+            <div>금</div>
+            <div>토</div>
         </div>
+    
+        <div class="grid dateBoard"></div>
+    </div>
 
-        <!-- Modal Container -->
-        <div class="modal-container" id="modalContainer">
-            <div class="modal-content">
-                <p id="modalContent">This is the modal content. You can customize this section.</p>
-                <button class="close-modal-btn" onclick="closeModal()">닫기</button>
-            </div>
+    <div class="modal-container" id="modalContainer" style="display: none;">
+        <div class="modal-content">
+            <p id="modalContent">모달 내용이 여기에 표시됩니다.</p>
+            <button class="close-modal-btn" onclick="closeModal()">닫기</button>
         </div>
+    </div>
 
-        <script src="{% static 'smartmirror.js' %}"></script>
-
-    </main>
+    <script>
+        const data = [
+            { date: '2022-10-15', content: '테스트1' },
+            { date: '2022-10-03', content: '테스트2' },
+            { date: '2022-10-15', content: '테스트3' },
+            { date: '2022-10-26', content: '테스트4' },
+            { date: '2022-10-21', content: '테스트5' },
+        ];
+        
+        const calendarList = data.reduce((acc, v) => {
+            return { ...acc, [v.date]: [...(acc[v.date] || []), v.content] };
+        }, {});
+        
+        // Example records object, modify it according to your needs
+        const records = {
+            '2022-10-15': true,
+            '2022-10-03': true,
+            '2022-10-21': true,
+            // Add more dates with records as necessary
+        };
+    
+        Number.prototype.pad = function() {
+            return this > 9 ? this : '0' + this;
+        };
+        
+        const makeCalendar = (date) => {
+            const currentYear = new Date(date).getFullYear();
+            const currentMonth = new Date(date).getMonth() + 1;
+            const firstDay = new Date(date.setDate(1)).getDay();
+            const lastDay = new Date(currentYear, currentMonth, 0).getDate();
+            const limitDay = firstDay + lastDay;
+            const nextDay = Math.ceil(limitDay / 7) * 7;
+    
+            let htmlDummy = '';
+    
+            for (let i = 0; i < firstDay; i++) {
+                htmlDummy += `<div class="noColor"></div>`;
+            }
+    
+            for (let i = 1; i <= lastDay; i++) {
+                const dateStr = `${currentYear}-${currentMonth.pad()}-${i.pad()}`;
+                const hasRecord = records[dateStr] ? '<span class="dot"></span>' : '';
+                htmlDummy += `
+                    <div class="date-cell" data-date="${dateStr}">
+                        ${i} ${hasRecord}
+                        <p>${calendarList[dateStr]?.join('</p><p>') || ''}</p>
+                    </div>
+                `;
+            }
+    
+            for (let i = limitDay; i < nextDay; i++) {
+                htmlDummy += `<div class="noColor"></div>`;
+            }
+    
+            document.querySelector(`.dateBoard`).innerHTML = htmlDummy;
+            document.querySelector(`.dateTitle`).innerText = `${currentYear}년 ${currentMonth}월`;
+    
+            // 날짜 셀 클릭 이벤트 추가
+            document.querySelectorAll('.date-cell').forEach(cell => {
+                cell.addEventListener('click', () => {
+                    const selectedDate = cell.getAttribute('data-date');
+                    showModal(selectedDate); // 모달 열기
+                });
+            });
+        };
+    
+        // Function to show the modal
+        function showModal(selectedDate) {
+            const uid = document.getElementById('uid').value;
+            const dateObj = new Date(selectedDate);
+            const year = dateObj.getFullYear();
+            const month = (dateObj.getMonth() + 1).pad();
+            const day = dateObj.getDate().pad();
+    
+            const url = `/smartmirror/inquiry/popup_modal/?year=${year}&month=${month}&day=${day}&uid=${uid}`;
+            
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('modalContent').innerHTML = data;
+                    document.getElementById('modalContainer').style.display = 'flex'; // 모달 보이기
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    
+        const closeModal = () => {
+            document.getElementById('modalContainer').style.display = 'none'; // 모달 숨기기
+        };
+    
+        // Set initial date to current date
+        const date = new Date();
+        
+        makeCalendar(date);
+        
+        document.querySelector(`.prevDay`).onclick = () => {
+            makeCalendar(new Date(date.setMonth(date.getMonth() - 1)));
+        };
+        
+        document.querySelector(`.nextDay`).onclick = () => {
+            makeCalendar(new Date(date.setMonth(date.getMonth() + 1)));
+        };
+    </script>
+    
+    
 </body>
-{% endblock %}
 
+{% endblock %}
