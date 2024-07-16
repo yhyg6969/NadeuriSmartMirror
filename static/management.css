@@ -16,25 +16,54 @@
     --border-color: #86b8bd;
 }
 
+.alert-danger {
+    color: #d31b2d !important;
+    font-size: 22px !important;
+    margin-left: 20px !important;
+}
 body {
     overflow-y: scroll;
     height: 100vh;
+    margin-bottom: 1800px;
 }
 
 body::-webkit-scrollbar {
     display: none;
 }
 
-.studentData {
-    height: 1080px;
+.studentData, .userData {
+    height: 100vh;
+    margin-bottom: 200px;
 }
 
-.studentData h2 {
+.userData {
+    width: 1920px;
+}
+.studentData h2, .userData h2 , .login h2 {
     color: #289E90;
     font-weight: 800;
+    margin-top: 60px;
 }
 
-.studentData p {
+.login {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    height: 450px;
+}
+
+.login form div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 200px;
+    width: 300px;
+}
+
+.studentData p, .userData p {
     color: #99A1A1;
     margin-top: -10px;
 }
@@ -48,23 +77,24 @@ header {
     background-color: white !important;
 }
 
-.student_table {
+.student_table, .user_table {
     margin-right: 300px;
-    margin-top: 0px;
+    margin-top: -30px;
     background-color: #fff;
     width: 100%;
-    height: 250px;
+    height: 150px;
+    margin-bottom: 100px;
 }
 
-.student_table input:focus {
+.student_table input:focus, .user_table input:focus {
     outline: 2px solid var(--border-color);
     color: var(--primary-color);
 }
 
-.student_table input {
+.student_table input, .user_table input{
     width: 200px;
     height: 20px;
-    font-size: 20px;
+    font-size: 18px;
     padding: 20px;
     font-family: 'Pretendard-Regular';
     letter-spacing: -1px;
@@ -75,10 +105,20 @@ header {
     border: none;
 }
 
+.genter_table {
+    width: 200px;
+}
+
+.genter_table input {
+    width: 15px !important;
+    height: 15px  !important;
+}
+
+
 .gender {
     width: 180px;
     height: 20px;
-    font-size: 20px;
+    font-size: 18px;
     padding: 20px;
     font-family: 'Pretendard-Regular';
     letter-spacing: -1px;
@@ -103,11 +143,11 @@ header {
     font-size: 16px;
     top: 130%;
 }
-.student_table input::placeholder {
+.student_table input::placeholder, .user_table input::placeholder{
     color: var(--text-color);
 }
 
-.student_table div {
+.student_table div, .user_table div {
     display: flex;
     margin-top: 30px;
     width: 1600px;
@@ -123,7 +163,7 @@ header {
     position: relative;
 }
 
-.save_btn {
+.save_btn, .inquiry-btn {
     font-family: 'Pretendard-Regular';
     width: 100px;
     height: 50px;
@@ -136,8 +176,16 @@ header {
     border: none;
     border-radius: 15px;
     cursor: pointer;
-    margin-left: 350px;
-    opacity: 0.8;
+/*     margin-left: 350px;
+ */    opacity: 0.8;
+}
+
+.inquiry-btn {
+    margin-top: 30px;
+}
+
+.search {
+    margin-top: 0 !important;
 }
 
 
@@ -157,7 +205,7 @@ header {
     cursor: pointer;
 }
 
-.save_btn:hover, .save_btn:focus, .btn:hover, .btn:focus {
+.save_btn:hover, .save_btn:focus, .btn:hover, .btn:focus, .login-btn:hover, .login-btn:focus {
     background-color: var(--primary-color);
     opacity: 1.0;
 }
@@ -176,7 +224,7 @@ th,
 td {
     border-bottom: 1px solid #ddd;
     padding: 10px;
-    text-align: center;
+    text-align: left;
     font-size: 18px;
     color: var(--primary-color);
     text-align: center;
@@ -214,12 +262,23 @@ tr input:focus {
 .table {
     border: #289E90 1.8px solid;
     margin-top: 40px;
+    width: 1500px;
 }
 
 input[type="checkbox"]{
     border: #289E90 1.8px solid;
     background-color: #289E90;
-  }
+}
+
+.user-info input{
+    font-size: 17px;
+    width: 160px;
+    height: 70px;
+}
+
+.user-info input:focus{
+    outline: none;
+}
 
 #check_btn{
     width: 20px;
@@ -231,11 +290,11 @@ input[type="checkbox"]{
         -webkit-appearance: none;
         -moz-appearance: none;
         appearance: none;
-        width: 500px;
+        width: 350px;
         height: 70px;
         font-family: 'Pretendard-Regular';
-        color: var(--border-color);
-        font-size: 22px;
+        color: var(--text-color);
+        font-size: 18px;
         letter-spacing: -1px;
         background-color: #F6F7F5;
         font-weight: 500;        
@@ -244,14 +303,18 @@ input[type="checkbox"]{
         margin: 10px 0;
         /* Adjust the margin as needed */
         border: none;
-        border-radius: 15px;
         box-sizing: border-box;
         transition: border-color 0.3s ease;
+        text-align: left;
+    }
+
+    .login-dropbox,  .center_password_form input{
+        border-radius: 15px;
     }
 
     .password-describe {
         font-size: 16px;
-        text-align: left;
+        text-align: center;
         color: var(--text-color);
         font-family: 'Pretendard-Regular';
         margin: 10px;
@@ -306,18 +369,34 @@ input[type="checkbox"]{
 
     .dropdown-box:focus {
         border-color: #007bff;
+        width: 350px;
+        height: 70px;
     }
 
     .dropdown-list-container {
         display: none;
-        position: absolute;
+        position: absolute; /* Changed to absolute */
+        top: 100%; /* Position below the dropdown box */
+        left: 0; /* Align with the left edge of the dropdown box */
         background-color: #fff;
         border: 1px solid #ccc;
-        border-radius: 5px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         z-index: 1;
+        text-align: left;
+        width: 350px; /* Match width of the dropdown box */
     }
 
     .dropdown-box:focus + .dropdown-list-container {
         display: block;
+        text-align: left;
     }
+
+    .option {
+        line-height: 50px;
+        font-size: 25px;
+        display: inline-block;
+        height: 50px;
+        padding: 0 10px;
+        box-sizing: border-box;
+        margin-top: 50px;
+      }
