@@ -94,20 +94,39 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'oikos-db',
-        'USER': 'yhyg6969',
-        'PASSWORD': '0210pkb',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
         'HOST': '43.202.145.173',
         'PORT': '5432',
     },
     'secondary': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'oikos-db',
-        'USER': 'yhyg6969',
-        'PASSWORD': '010pkb',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
         'HOST': '43.202.145.173',
         'PORT': '5433',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'oikos-db',
+#         'USER': 'yhyg6969',
+#         'PASSWORD': '0210pkb',
+#         'HOST': '43.202.145.173',
+#         'PORT': '5432',
+#     },
+#     'secondary': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'oikos-db',
+#         'USER': 'yhyg6969',
+#         'PASSWORD': '010pkb',
+#         'HOST': '43.202.145.173',
+#         'PORT': '5433',
+#     }
+# }
 
 
 # Password validation
