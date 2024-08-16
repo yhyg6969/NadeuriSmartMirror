@@ -41,6 +41,7 @@ def smartmirror(request):
                 "은평구 치매안심센터": "0000",
                 "마포구 치매안심센터": "0000",
                 "종로구 치매안심센터": "0000",
+                "강북구 치매안심센터": "0000",
             }
             
             if center_name not in center_passwords or password != center_passwords[center_name]:

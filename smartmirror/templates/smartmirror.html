@@ -58,6 +58,7 @@
                                 <option class="option" value="은평구 치매안심센터">은평구 치매안심센터</option>
                                 <option class="option" value="마포구 치매안심센터">마포구 치매안심센터</option>
                                 <option class="option" value="종로구 치매안심센터">종로구 치매안심센터</option>
+                                <option class="option" value="강북구 치매안심센터">강북구 치매안심센터</option>
 
                             </select>
                             <!-- <input type="text" id="id_center_name" name="center_name" placeholder="소속기관"> -->
@@ -109,7 +110,7 @@
                     </td>
                     <td>
                         <button type="submit" name="action" value="update" class="btn">저장</button>
-                        <button type="submit" name="action" value="delete" class="btn">삭제</button>
+                        <button type="submit" name="action" value="delete" class="btn" onclick="return confirmDelete();">삭제</button>
                     </td>
                     <td>
                         <button type="button" class="btn inquiry-btn search" data-uid="{{ user.uid }}">조회</button>
@@ -147,7 +148,8 @@
                     <option class="option" value="노원구 치매안심센터">노원구 치매안심센터</option>
                     <option class="option" value="은평구 치매안심센터">은평구 치매안심센터</option>
                     <option class="option" value="마포구 치매안심센터">마포구 치매안심센터</option>
-                    <option class="option" value="종로구 치매안심센터">종로구 치매안심센터</option>                    
+                    <option class="option" value="종로구 치매안심센터">종로구 치매안심센터</option>
+                    <option class="option" value="강북구 치매안심센터">강북구 치매안심센터</option>                    
                 </select>
                 <input type="password" class="input-box" name="password" placeholder="비밀번호를 입력해주세요">
             </div>
@@ -157,6 +159,25 @@
     {% endif %}
 
     <script>
+        $(document).ready(function () {
+            var showData = "{{ show_data|escapejs }}";
+            console.log("Show data: ", showData);  // Debugging log
+            if (showData === 'True') {
+                $('#userData').show();
+            }
+            $('body').show();  // Ensure body is shown after the page is ready
+
+            // Add event listener to inquiry buttons
+            $('.inquiry-btn').on('click', function () {
+                var uid = $(this).data('uid');
+                window.location.href = '{% url "smartmirror:inquiry" %}?uid=' + uid;
+            });
+        });
+
+        function confirmDelete() {
+        return confirm('정말 삭제하시겠습니까?');
+        }
+
         $(document).ready(function () {
             var showData = "{{ show_data|escapejs }}";
             console.log("Show data: ", showData);  // Debugging log
