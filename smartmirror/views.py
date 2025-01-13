@@ -55,6 +55,7 @@ def smartmirror(request):
                 "은평노인종합복지관": "0000",
                 "도봉노인종합복지관": "0000",
                 "금천노인종합복지관": "0000",
+                "성동노인종합복지관": "0000",
             }
             
             if center_name not in center_passwords or password != center_passwords[center_name]:
