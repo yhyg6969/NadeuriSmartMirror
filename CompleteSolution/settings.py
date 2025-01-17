@@ -96,37 +96,18 @@ DATABASES = {
         'NAME': 'oikos-db',
         'USER': 'yhyg6969',
         'PASSWORD': '0210pkb',
-        'HOST': '43.202.145.173',
-        'PORT': '5432',
-    },
-    'secondary': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'oikos-db',
-        'USER': 'yhyg6969',
-        'PASSWORD': '0210pkb',
-        'HOST': '43.202.145.173',
+        'HOST': '3.39.29.129',
         'PORT': '5433',
     }
+    # 'secondary': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': 'oikos-db',
+    #     'USER': 'yhyg6969',
+    #     'PASSWORD': '0210pkb',
+    #     'HOST': '43.202.145.173',
+    #     'PORT': '5433',
+    # }
 }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'oikos-db',
-#         'USER': 'yhyg6969',
-#         'PASSWORD': '0210pkb',
-#         'HOST': '43.202.145.173',
-#         'PORT': '5432',
-#     },
-#     'secondary': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'oikos-db',
-#         'USER': 'yhyg6969',
-#         'PASSWORD': '010pkb',
-#         'HOST': '43.202.145.173',
-#         'PORT': '5433',
-#     }
-# }
 
 
 # Password validation
@@ -171,7 +152,7 @@ STATICFILES_DIRS = [
 if DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-#STATIC_ROOT = '/home/ubuntu/OikosCompleteSolution/static/'
+#STATIC_ROOT = '/home/ubuntu/NadeuriSmartMirror/static/'
 
 
 # Default primary key field type
