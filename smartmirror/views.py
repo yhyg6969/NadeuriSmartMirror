@@ -74,7 +74,7 @@ def smartmirror(request):
             # If the user is valid, log them in
             if user is not None:
                 login(request, user)
-                users = user_table.objects.using('secondary').filter(center_name=center_name)
+                users = user_table.objects.filter(center_name=center_name)
                 context['users'] = users
                 context['show_data'] = True
                 return render(request, 'smartmirror.html', context)
@@ -93,21 +93,21 @@ def smartmirror(request):
                 
                 if not uid or not user_name or not birth:
                     context['error_message'] = '양식에 알맞게 입력해주세요'
-                    users = user_table.objects.using('secondary').filter(center_name=center_name)
+                    users = user_table.objects.filter(center_name=center_name)
                     context['users'] = users
                     context['show_data'] = True
                     return render(request, 'smartmirror.html', context)
                 
                 # Check if the UID already exists
-                if user_table.objects.using('secondary').filter(uid=uid).exists():
+                if user_table.objects.filter(uid=uid).exists():
                     context['error_message'] = '중복된 UID 입니다.'
                     context['popup_alert'] = True  # Flag to show popup alert
-                    users = user_table.objects.using('secondary').filter(center_name=center_name)
+                    users = user_table.objects.filter(center_name=center_name)
                     context['users'] = users
                     context['show_data'] = True
                     return render(request, 'smartmirror.html', context)
 
-                user_table.objects.using('secondary').create(uid=uid, user_name=user_name, center_name=center_name, birth=birth, gender=gender)
+                user_table.objects.create(uid=uid, user_name=user_name, center_name=center_name, birth=birth, gender=gender)
                 return redirect('smartmirror:smartmirror')
             
             elif action == 'update':
@@ -115,16 +115,16 @@ def smartmirror(request):
                 
                 if not uid:
                     context['error_message'] = '양식에 알맞게 입력해주세요'
-                    users = user_table.objects.using('secondary').filter(center_name=center_name)
+                    users = user_table.objects.filter(center_name=center_name)
                     context['users'] = users
                     context['show_data'] = True
                     return render(request, 'smartmirror.html', context)
                 
                 try:
-                    user = user_table.objects.using('secondary').get(uid=uid)
+                    user = user_table.objects.get(uid=uid)
                 except user_table.DoesNotExist:
                     context['error_message'] = 'User with given UID does not exist.'
-                    users = user_table.objects.using('secondary').filter(center_name=center_name)
+                    users = user_table.objects.filter(center_name=center_name)
                     context['users'] = users
                     context['show_data'] = True
                     return render(request, 'smartmirror.html', context)
@@ -136,17 +136,17 @@ def smartmirror(request):
                 
                 if not user.user_name or not user.birth:
                     context['error_message'] = '양식에 알맞게 입력해주세요'
-                    users = user_table.objects.using('secondary').filter(center_name=center_name)
+                    users = user_table.objects.filter(center_name=center_name)
                     context['users'] = users
                     context['show_data'] = True
                     return render(request, 'smartmirror.html', context)
                 
                 # Check if the new UID already exists (only if it's being changed)
                 new_uid = request.POST.get('new_uid')
-                if new_uid and new_uid != uid and user_table.objects.using('secondary').filter(uid=new_uid).exists():
+                if new_uid and new_uid != uid and user_table.objects.filter(uid=new_uid).exists():
                     context['error_message'] = '중복된 UID 입니다'
                     context['popup_alert'] = True  # Flag to show popup alert
-                    users = user_table.objects.using('secondary').filter(center_name=center_name)
+                    users = user_table.objects.filter(center_name=center_name)
                     context['users'] = users
                     context['show_data'] = True
                     return render(request, 'smartmirror.html', context)
@@ -154,7 +154,7 @@ def smartmirror(request):
                 if new_uid:
                     user.uid = new_uid
 
-                user.save(using='secondary')
+                user.save()
                 return redirect('smartmirror:smartmirror')
             
             elif action == 'delete':
@@ -162,32 +162,32 @@ def smartmirror(request):
                 
                 if not uid:
                     context['error_message'] = '양식에 알맞게 입력해주세요'
-                    users = user_table.objects.using('secondary').filter(center_name=center_name)
+                    users = user_table.objects.filter(center_name=center_name)
                     context['users'] = users
                     context['show_data'] = True
                     return render(request, 'smartmirror.html', context)
                 
                 try:
-                    user = user_table.objects.using('secondary').get(uid=uid)
+                    user = user_table.objects.get(uid=uid)
                 except user_table.DoesNotExist:
                     context['error_message'] = 'User with given UID does not exist.'
-                    users = user_table.objects.using('secondary').filter(center_name=center_name)
+                    users = user_table.objects.filter(center_name=center_name)
                     context['users'] = users
                     context['show_data'] = True
                     return render(request, 'smartmirror.html', context)
                 
-                user.delete(using='secondary')
+                user.delete()
                 return redirect('smartmirror:smartmirror')
             
             # After performing any CRUD operation, fetch the updated list of users
-            users = user_table.objects.using('secondary').filter(center_name=center_name)
+            users = user_table.objects.filter(center_name=center_name)
             context['users'] = users
             context['show_data'] = True
     
     # Handle GET request
     if request.user.is_authenticated:
         center_name = request.user.username
-        users = user_table.objects.using('secondary').filter(center_name=center_name)
+        users = user_table.objects.filter(center_name=center_name)
         context['users'] = users
         context['show_data'] = True
 
@@ -197,10 +197,10 @@ def inquiry(request):
     uid = request.GET.get('uid')
     if uid:
         try:
-            user = user_table.objects.using('secondary').get(uid=uid)
-            games = game_table.objects.using('secondary').filter(uid=uid)
-            walks = walk_table.objects.using('secondary').filter(uid=uid)
-            stretches = stretch_table.objects.using('secondary').filter(uid=uid)
+            user = user_table.objects.get(uid=uid)
+            games = game_table.objects.filter(uid=uid)
+            walks = walk_table.objects.filter(uid=uid)
+            stretches = stretch_table.objects.filter(uid=uid)
         except user_table.DoesNotExist:
             return render(request, 'smartmirror.html', {'error_message': 'User not found.'})
         
@@ -225,7 +225,7 @@ def popup_modal(request):
         return HttpResponse('Missing parameters.', status=400)
     
     try:
-        user = user_table.objects.using('secondary').get(uid=uid)
+        user = user_table.objects.get(uid=uid)
     except user_table.DoesNotExist:
         return HttpResponse('User not found.', status=404)
     
@@ -243,7 +243,7 @@ def popup_modal(request):
     end_ts = int(end_datetime.timestamp()) - 1
 
     # Filter game records for the selected date
-    game_records = game_table.objects.using('secondary').filter(
+    game_records = game_table.objects.filter(
         uid=uid,
         start_ts__gte=start_ts,
         start_ts__lt=end_ts,
@@ -262,7 +262,7 @@ def popup_modal(request):
 
 
     # Filter walk records for the selected date
-    walk_records = walk_table.objects.using('secondary').filter(
+    walk_records = walk_table.objects.filter(
         uid=uid,
         start_ts__gte=start_ts,
         start_ts__lt=end_ts,
@@ -274,7 +274,7 @@ def popup_modal(request):
         walk.start_time = datetime.fromtimestamp(walk.start_ts)
 
     # Filter stretch records for the selected date
-    stretch_records = stretch_table.objects.using('secondary').filter(
+    stretch_records = stretch_table.objects.filter(
         uid=uid,
         start_ts__gte=start_ts,
         start_ts__lt=end_ts,
@@ -298,7 +298,3 @@ def popup_modal(request):
 
 def custom_csrf_failure(request, reason=""):
     return redirect(request.META.get('HTTP_REFERER', '/'))
-
-
-
-
