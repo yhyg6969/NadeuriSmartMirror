@@ -40,7 +40,7 @@ body::-webkit-scrollbar {
     width: 1920px;
 }
 .studentData h2, .userData h2 , .login h2 {
-    color: #289E90;
+    color: #013DFD;
     font-weight: 800;
     margin-top: 60px;
 }
@@ -238,7 +238,7 @@ th {
     line-height: 20px;
     padding: 20px;
     background-color: var(--bg-subcolor);
-    border: #289E90 1.8px solid;
+    border: #013DFD 1.8px solid;
 }
 
 td input {
@@ -260,14 +260,14 @@ tr input:focus {
 }
 
 .table {
-    border: #289E90 1.8px solid;
+    border: #013DFD 1.8px solid;
     margin-top: 40px;
     width: 1500px;
 }
 
 input[type="checkbox"]{
-    border: #289E90 1.8px solid;
-    background-color: #289E90;
+    border: #013DFD 1.8px solid;
+    background-color: #013DFD;
 }
 
 .user-info input{
