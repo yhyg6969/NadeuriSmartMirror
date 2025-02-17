@@ -160,6 +160,10 @@ if DEBUG:
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://nadeurisol.com",
+    "https://www.nadeurisol.com",
+]
 
 CSRF_FAILURE_VIEW = 'management.views.custom_csrf_failure'
 
