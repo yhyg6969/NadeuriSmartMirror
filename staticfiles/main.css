@@ -9,7 +9,7 @@
     --bg-color: #ffffff;
     --bg-subcolor: #FAFAFA;
     --primary-bg-color: #333740;
-    --primary-color: #289E90;
+    --primary-color: #013DFD;
     --light-color: #E5F1EF;
     --text-color: #99A1A1;
     --text-active: #ffffff;
@@ -213,8 +213,8 @@ main {
     font-weight: 600;
     font-size: 20px;
     line-height: 45px;
-    border-top: #289E90 2px solid;
-    border-bottom: #289E90 1.8px solid;
+    border-top: #013DFD 2px solid;
+    border-bottom: #013DFD 1.8px solid;
     background-color: var(--bg-subcolor);
 }
 
