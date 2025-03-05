@@ -17,6 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from . import views
+from .views import smartmirror, inquiry, popup_modal, CustomPasswordChangeView
+from django.contrib.auth import views as auth_views
+
+
 app_name = 'smartmirror'
 
 
@@ -24,6 +28,10 @@ urlpatterns = [
     path('', views.smartmirror, name='smartmirror'),
     path('inquiry/', views.inquiry, name='inquiry'),
     path('inquiry/popup_modal/', views.popup_modal, name='popup_modal'),
+    path('change-password/', CustomPasswordChangeView.as_view(), name='change_password'),
+    path('change-password/done/', auth_views.PasswordChangeDoneView.as_view(
+        template_name='password_change_done.html'
+    ), name='password_change_done'),
 ]
 
 

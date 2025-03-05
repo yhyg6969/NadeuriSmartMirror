@@ -91,14 +91,25 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': 'oikos-db',
+    #     'USER': 'yhyg6969',
+    #     'PASSWORD': '0210pkb',
+    #     'HOST': '3.39.29.129',
+    #     'PORT': '5433',
+    # }
+
+    # Test NadeuriDB
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'oikos-db',
+        'NAME': 'SeedeningDB',
         'USER': 'yhyg6969',
         'PASSWORD': '0210pkb',
-        'HOST': '3.39.29.129',
+        'HOST': '52.79.233.81',
         'PORT': '5433',
     }
+
     # 'secondary': {
     #     'ENGINE': 'django.db.backends.postgresql',
     #     'NAME': 'oikos-db',
@@ -166,4 +177,9 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 CSRF_FAILURE_VIEW = 'management.views.custom_csrf_failure'
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+SESSION_COOKIE_AGE = 600  # Auto logout after 10 minutes
+SESSION_SAVE_EVERY_REQUEST = True
 

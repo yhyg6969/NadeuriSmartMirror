@@ -16,7 +16,7 @@
                     <div class="dateTitle">
                         {% for game in game_records %}
                             {% if game.game_type == 4 %}
-                                <p>총 활동 시간 | {{ game.activity_minutes }} 분</p>
+                                <p>총 활동 시간 | {{ game.activity_minutes }} 분 {{ game.activity_seconds }} 초</p>
                             {% endif %}
                         {% endfor %}
                     </div><br>

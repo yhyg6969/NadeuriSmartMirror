@@ -1,53 +1,56 @@
 from django.shortcuts import render, redirect, HttpResponse
+from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-from .models import user_table, game_table, walk_table, stretch_table
+from .models import user_table, game_table, walk_table, stretch_table, center_table
 from datetime import datetime, timezone, timedelta
 
+from django.contrib.auth.views import PasswordChangeView
+from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 def smartmirror(request):
-    context = {'users': [], 'show_data': False}
-    
+    context = {'users': [], 'show_data': False, 'centers': center_table.objects.all()}
+
+    if request.user.is_authenticated:
+        center_name = request.user.username
+        context['users'] = user_table.objects.filter(center_name=center_name)
+        context['show_data'] = True  # Ensure data is displayed after refresh
+
     if request.method == 'POST':
         action = request.POST.get('action')
-        
+
         if action == 'login':
             center_name = request.POST.get('center_name')
             password = request.POST.get('password')
-            
+
             if not center_name or not password:
-                context['error_message'] = '양식에 알맞게 입력해주세요'
+                context['error_message'] = '모든 필드를 입력해주세요.'
                 return render(request, 'smartmirror.html', context)
-            
-            center_passwords = {
-                "나드리 치매안심센터": "0000",
-                "가나다 치매안심센터": "0000",
-                "라마바 치매안심센터": "0000",
-            }
-            
-            if center_name not in center_passwords or password != center_passwords[center_name]:
-                context['error_message'] = 'Invalid password for the selected center.'
+
+            try:
+                center = center_table.objects.get(center_name=center_name)
+            except center_table.DoesNotExist:
+                context['error_message'] = '존재하지 않는 기관입니다.'
                 return render(request, 'smartmirror.html', context)
-            
-            # Create or get the user
+
+            if password != center.center_password:
+                context['error_message'] = '비밀번호가 일치하지 않습니다.'
+                return render(request, 'smartmirror.html', context)
+
+            # Authenticate user
             user, created = User.objects.get_or_create(username=center_name)
-            user.set_password(center_passwords[center_name])
+            user.set_password(password)
             user.save()
-            
-            # Authenticate the user
+
             user = authenticate(request, username=center_name, password=password)
-            
-            # If the user is valid, log them in
             if user is not None:
                 login(request, user)
-                users = user_table.objects.filter(center_name=center_name)
-                context['users'] = users
+                context['users'] = user_table.objects.filter(center_name=center_name)
                 context['show_data'] = True
-                return render(request, 'smartmirror.html', context)
-            else:
-                context['error_message'] = 'Authentication failed.'
-                return render(request, 'smartmirror.html', context)
-        
-        elif request.user.is_authenticated:
+                return redirect('smartmirror:smartmirror')
+
+        elif action in ['create', 'update', 'delete'] and request.user.is_authenticated:
             center_name = request.user.username
 
             if action == 'create':
@@ -55,108 +58,43 @@ def smartmirror(request):
                 user_name = request.POST.get('user_name')
                 birth = request.POST.get('birth')
                 gender = request.POST.get('gender') == 'true'
-                
+
                 if not uid or not user_name or not birth:
-                    context['error_message'] = '양식에 알맞게 입력해주세요'
-                    users = user_table.objects.filter(center_name=center_name)
-                    context['users'] = users
-                    context['show_data'] = True
+                    context['error_message'] = '모든 필드를 입력해주세요.'
                     return render(request, 'smartmirror.html', context)
-                
-                # Check if the UID already exists
+
                 if user_table.objects.filter(uid=uid).exists():
-                    context['error_message'] = '중복된 UID 입니다.'
-                    context['popup_alert'] = True  # Flag to show popup alert
-                    users = user_table.objects.filter(center_name=center_name)
-                    context['users'] = users
-                    context['show_data'] = True
+                    context['error_message'] = '중복된 UID입니다.'
                     return render(request, 'smartmirror.html', context)
 
                 user_table.objects.create(uid=uid, user_name=user_name, center_name=center_name, birth=birth, gender=gender)
-                return redirect('smartmirror:smartmirror')
-            
+
             elif action == 'update':
                 uid = request.POST.get('uid')
-                
-                if not uid:
-                    context['error_message'] = '양식에 알맞게 입력해주세요'
-                    users = user_table.objects.filter(center_name=center_name)
-                    context['users'] = users
-                    context['show_data'] = True
-                    return render(request, 'smartmirror.html', context)
-                
-                try:
-                    user = user_table.objects.get(uid=uid)
-                except user_table.DoesNotExist:
-                    context['error_message'] = 'User with given UID does not exist.'
-                    users = user_table.objects.filter(center_name=center_name)
-                    context['users'] = users
-                    context['show_data'] = True
+                user_name = request.POST.get('user_name')
+                birth = request.POST.get('birth')
+                gender = request.POST.get('gender') == 'true'
+                center_name = request.POST.get('center_name')
+
+                if not uid or not user_name or not birth:
+                    context['error_message'] = '모든 필드를 입력해주세요.'
                     return render(request, 'smartmirror.html', context)
 
-                user.user_name = request.POST.get('user_name')
+                user = user_table.objects.get(uid=uid)
+                user.user_name = user_name
+                user.birth = birth
+                user.gender = gender
                 user.center_name = center_name
-                user.birth = request.POST.get('birth')
-                user.gender = request.POST.get('gender') == 'true'
-                
-                if not user.user_name or not user.birth:
-                    context['error_message'] = '양식에 알맞게 입력해주세요'
-                    users = user_table.objects.filter(center_name=center_name)
-                    context['users'] = users
-                    context['show_data'] = True
-                    return render(request, 'smartmirror.html', context)
-                
-                # Check if the new UID already exists (only if it's being changed)
-                new_uid = request.POST.get('new_uid')
-                if new_uid and new_uid != uid and user_table.objects.filter(uid=new_uid).exists():
-                    context['error_message'] = '중복된 UID 입니다'
-                    context['popup_alert'] = True  # Flag to show popup alert
-                    users = user_table.objects.filter(center_name=center_name)
-                    context['users'] = users
-                    context['show_data'] = True
-                    return render(request, 'smartmirror.html', context)
-                
-                if new_uid:
-                    user.uid = new_uid
-
                 user.save()
-                return redirect('smartmirror:smartmirror')
-            
+
             elif action == 'delete':
                 uid = request.POST.get('uid')
-                
-                if not uid:
-                    context['error_message'] = '양식에 알맞게 입력해주세요'
-                    users = user_table.objects.filter(center_name=center_name)
-                    context['users'] = users
-                    context['show_data'] = True
-                    return render(request, 'smartmirror.html', context)
-                
-                try:
-                    user = user_table.objects.get(uid=uid)
-                except user_table.DoesNotExist:
-                    context['error_message'] = 'User with given UID does not exist.'
-                    users = user_table.objects.filter(center_name=center_name)
-                    context['users'] = users
-                    context['show_data'] = True
-                    return render(request, 'smartmirror.html', context)
-                
-                user.delete()
-                return redirect('smartmirror:smartmirror')
-            
-            # After performing any CRUD operation, fetch the updated list of users
-            users = user_table.objects.filter(center_name=center_name)
-            context['users'] = users
-            context['show_data'] = True
-    
-    # Handle GET request
-    if request.user.is_authenticated:
-        center_name = request.user.username
-        users = user_table.objects.filter(center_name=center_name)
-        context['users'] = users
-        context['show_data'] = True
+                user_table.objects.filter(uid=uid).delete()
+
+            return redirect('smartmirror:smartmirror')
 
     return render(request, 'smartmirror.html', context)
+
 
 def inquiry(request):
     uid = request.GET.get('uid')
@@ -219,11 +157,12 @@ def popup_modal(request):
         game.seconds = game.play_time % 60
         game.start_time = datetime.fromtimestamp(game.start_ts)
         game.finish_time = datetime.fromtimestamp(game.finish_ts)
-
-        # Calculate total activity time for game_type 4
         if game.game_type == 4:
             activity_duration = game.finish_time - game.start_time
-            game.activity_minutes = int(activity_duration.total_seconds() // 60)
+            game.activity_seconds = int(activity_duration.total_seconds())  # Total seconds
+            game.activity_minutes = int(activity_duration.total_seconds() // 60)  # Minutes
+
+
 
 
     # Filter walk records for the selected date
@@ -263,3 +202,29 @@ def popup_modal(request):
 
 def custom_csrf_failure(request, reason=""):
     return redirect(request.META.get('HTTP_REFERER', '/'))
+
+
+
+class CustomPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
+    template_name = 'change_password.html'
+    success_url = reverse_lazy('smartmirror:password_change_done')
+
+    def form_valid(self, form):
+        # Get the current user (assuming the user's username is the center_name in the center_table)
+        center_name = self.request.user.username
+        try:
+            # Find the center record corresponding to the current user
+            center = center_table.objects.get(center_name=center_name)
+            # Update the password field
+            center.center_password = form.cleaned_data['new_password1']  # New password entered by the user
+            center.save()  # Save the updated center record
+        except center_table.DoesNotExist:
+            # Handle the case if the center record is not found
+            messages.error(self.request, "해당 기관을 찾을 수 없습니다.")
+            return redirect('smartmirror:smartmirror')
+
+        # Call the parent form_valid method to save the password for the user and send success message
+        response = super().form_valid(form)
+        messages.success(self.request, "비밀번호가 성공적으로 변경되었습니다.")  # Show the success message
+        return response
+
