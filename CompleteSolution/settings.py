@@ -26,7 +26,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'django-insecure-5scr$$b!fb(!xn9(rrv=bwg()37r*l*$kx*ue7!cu&6$xh0p_)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -182,4 +182,5 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 SESSION_COOKIE_AGE = 600  # Auto logout after 10 minutes
 SESSION_SAVE_EVERY_REQUEST = True
+
 

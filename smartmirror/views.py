@@ -4,6 +4,9 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from .models import user_table, game_table, walk_table, stretch_table, center_table
 from datetime import datetime, timezone, timedelta
+from django.utils import timezone
+from django.utils.timezone import localtime
+from django.utils.dateparse import parse_datetime
 
 from django.contrib.auth.views import PasswordChangeView
 from django.urls import reverse_lazy
@@ -34,7 +37,35 @@ def smartmirror(request):
                 context['error_message'] = '존재하지 않는 기관입니다.'
                 return render(request, 'smartmirror.html', context)
 
+            # Check for account lock
+            lock_time = request.session.get('lock_time')
+            if lock_time:
+                if isinstance(lock_time, str):  # Convert string to datetime if needed
+                    lock_time = parse_datetime(lock_time)
+
+                if lock_time and lock_time > timezone.now():
+                    kst_lock_time = localtime(lock_time)  # Convert to Korean time
+                    context['error_message'] = f'계정이 잠겼습니다. {kst_lock_time.strftime("%Y-%m-%d %H:%M:%S")}까지 기다려주세요.'
+                    return render(request, 'smartmirror.html', context)
+
             if password != center.center_password:
+                # Track failed login attempts
+                if 'failed_attempts' not in request.session:
+                    request.session['failed_attempts'] = 0
+                    request.session['lock_time'] = None
+
+                request.session['failed_attempts'] += 1
+                request.session.modified = True
+
+                # Lock account after 5 failed attempts
+                if request.session['failed_attempts'] >= 5:
+                    lock_duration = 30  # Lock duration in minutes
+                    lock_until = timezone.now() + timedelta(minutes=lock_duration)
+                    request.session['lock_time'] = lock_until.isoformat()  # Store as string
+                    request.session.save()  # Ensure session persists
+                    context['error_message'] = f'비밀번호가 5회 틀렸습니다. {lock_until.strftime("%Y-%m-%d %H:%M:%S")}까지 다시 시도해주세요.'
+                    return render(request, 'smartmirror.html', context)
+
                 context['error_message'] = '비밀번호가 일치하지 않습니다.'
                 return render(request, 'smartmirror.html', context)
 
@@ -48,6 +79,10 @@ def smartmirror(request):
                 login(request, user)
                 context['users'] = user_table.objects.filter(center_name=center_name)
                 context['show_data'] = True
+                # Reset failed login attempts after successful login
+                request.session['failed_attempts'] = 0
+                request.session['lock_time'] = None
+                request.session.save()
                 return redirect('smartmirror:smartmirror')
 
         elif action in ['create', 'update', 'delete'] and request.user.is_authenticated:
@@ -162,9 +197,6 @@ def popup_modal(request):
             game.activity_seconds = int(activity_duration.total_seconds())  # Total seconds
             game.activity_minutes = int(activity_duration.total_seconds() // 60)  # Minutes
 
-
-
-
     # Filter walk records for the selected date
     walk_records = walk_table.objects.filter(
         uid=uid,
@@ -189,7 +221,6 @@ def popup_modal(request):
         stretch.seconds = stretch.stretch_time % 60
         stretch.start_time = datetime.fromtimestamp(stretch.start_ts)
 
-    
     context = {
         'user': user,
         'game_records': game_records,
@@ -202,7 +233,6 @@ def popup_modal(request):
 
 def custom_csrf_failure(request, reason=""):
     return redirect(request.META.get('HTTP_REFERER', '/'))
-
 
 
 class CustomPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
@@ -227,4 +257,3 @@ class CustomPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
         response = super().form_valid(form)
         messages.success(self.request, "비밀번호가 성공적으로 변경되었습니다.")  # Show the success message
         return response
-

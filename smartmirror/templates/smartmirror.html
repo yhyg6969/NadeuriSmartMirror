@@ -22,11 +22,11 @@
     <main id="userData" class="userData">
         <h2>사용자 정보 추가</h2>
         <p>사용자를 추가해 주세요</p>
-        
+
         <form method="post" class="user_table">
             {% csrf_token %}
             <table>
-                <tr style="display: none" !important;>
+                <tr style="display: none;">
                     <th>UID</th>
                     <th>이름</th>
                     <th>소속기관</th>
@@ -35,36 +35,28 @@
                     <th>저장</th>
                 </tr>
                 <tr>
-                    <div>
-                        <td><input type="text" id="id_uid" name="uid" placeholder="UID" autofocus></td>
-                        <td><input type="text" id="id_user_name" name="user_name" placeholder="이름"></td>
-                        <td>                         
-                            <select name="center_name" id="id_center_name" class="dropdown-box">
-                                <option class="option" value="" selected disabled>기관을 선택해 주세요</option>
-                                {% for center in centers %}
-                                    <option class="option" value="{{ center.center_name }}" {% if user.center_name == center.center_name %}selected{% endif %}>{{ center.center_name }}</option>
-                                {% endfor %}
-                            </select>
-                        </td>
-                    </div>
-                    <div>
-                        <td>
-                            <input type="text" id="id_birth" name="birth" placeholder="생년월일 (YYYYMMDD)" 
-                                   pattern="\d{8}" maxlength="8" title="8자리 숫자를 입력하세요 (YYYYMMDD)">
-                        </td>                        
-                        <td class="genter_table">
-                            <input type="radio" id="male" name="gender" value="true">
-                            <label for="male">남자</label>
-                            <input type="radio" id="female" name="gender" value="false">
-                            <label for="female">여자</label>
-                        </td>
-                        <td><button type="submit" name="action" value="create" class="save_btn">저장</button></td>
-                    </div>
+                    <td><input type="text" id="id_uid" name="uid" placeholder="UID" autofocus></td>
+                    <td><input type="text" id="id_user_name" name="user_name" placeholder="이름"></td>
+                    <td>                         
+                        <select name="center_name" id="id_center_name" class="dropdown-box">
+                            <option class="option" value="" selected disabled>기관을 선택해 주세요</option>
+                            {% for center in centers %}
+                                <option class="option" value="{{ center.center_name }}" {% if user.center_name == center.center_name %}selected{% endif %}>{{ center.center_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <input type="text" id="id_birth" name="birth" placeholder="생년월일 (YYYYMMDD)" pattern="\d{8}" maxlength="8" title="8자리 숫자를 입력하세요 (YYYYMMDD)">
+                    </td>                        
+                    <td class="genter_table">
+                        <input type="radio" id="male" name="gender" value="true">
+                        <label for="male">남자</label>
+                        <input type="radio" id="female" name="gender" value="false">
+                        <label for="female">여자</label>
+                    </td>
+                    <td><button type="submit" name="action" value="create" class="save_btn">저장</button></td>
                 </tr>
             </table>
-            {% if error_message %}
-            <div class="alert alert-danger">{{ error_message }}</div>
-            {% endif %}
         </form>
 
         <h2>사용자 정보 수정</h2>
@@ -96,8 +88,7 @@
                         </select>
                     </td>                    
                     <td>
-                        <input type="text" id="id_birth" name="birth" placeholder="{{ user.birth }}"
-                               pattern="\d{8}" maxlength="8" title="8자리 숫자를 입력하세요 (YYYYMMDD)">
+                        <input type="text" id="id_birth" name="birth" value="{{ user.birth }}" pattern="\d{8}" maxlength="8">
                     </td>                    
                     <td class="genter_table">
                         <input type="radio" name="gender" value="true" {% if user.gender %}checked{% endif %}> 남자
@@ -131,6 +122,9 @@
             </div>
             <button class="inquiry-btn" type="submit" name="action" value="login">로그인</button>
         </form>
+        {% if error_message %}
+        <div class="alert alert-danger" style="text-align:center; font-weight:bold;">{{ error_message }}</div>
+        {% endif %}
     </main>
     {% endif %}
 
@@ -139,19 +133,16 @@
     </footer>
 
     <script>
-         function redirectToPasswordChange() {
+        function redirectToPasswordChange() {
             window.location.href = "{% url 'smartmirror:change_password' %}";
         }
 
         $(document).ready(function () {
-            var showData = "{{ show_data|escapejs }}";
-            console.log("Show data: ", showData);  // Debugging log
-            if (showData === 'True') {
+            if ("{{ show_data|escapejs }}" === 'True') {
                 $('#userData').show();
             }
-            $('body').show();  // Ensure body is shown after the page is ready
+            $('body').show();
 
-            // Add event listener to inquiry buttons
             $('.inquiry-btn').on('click', function () {
                 var uid = $(this).data('uid');
                 window.location.href = '{% url "smartmirror:inquiry" %}?uid=' + uid;
@@ -159,23 +150,8 @@
         });
 
         function confirmDelete() {
-        return confirm('정말 삭제하시겠습니까?');
+            return confirm('정말 삭제하시겠습니까?');
         }
-
-        $(document).ready(function () {
-            var showData = "{{ show_data|escapejs }}";
-            console.log("Show data: ", showData);  // Debugging log
-            if (showData === 'True') {
-                $('#userData').show();
-            }
-            $('body').show();  // Ensure body is shown after the page is ready
-
-            // Add event listener to inquiry buttons
-            $('.inquiry-btn').on('click', function () {
-                var uid = $(this).data('uid');
-                window.location.href = '{% url "smartmirror:inquiry" %}?uid=' + uid;
-            });
-        });
     </script>
 
 </body>
