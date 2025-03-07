@@ -91,24 +91,24 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql',
-    #     'NAME': 'oikos-db',
-    #     'USER': 'yhyg6969',
-    #     'PASSWORD': '0210pkb',
-    #     'HOST': '3.39.29.129',
-    #     'PORT': '5433',
-    # }
-
-    # Test NadeuriDB
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'SeedeningDB',
+        'NAME': 'oikos-db',
         'USER': 'yhyg6969',
         'PASSWORD': '0210pkb',
-        'HOST': '52.79.233.81',
+        'HOST': '3.39.29.129',
         'PORT': '5433',
     }
+
+    # Test NadeuriDB
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': 'SeedeningDB',
+    #     'USER': 'yhyg6969',
+    #     'PASSWORD': '0210pkb',
+    #     'HOST': '52.79.233.81',
+    #     'PORT': '5433',
+    # }
 
     # 'secondary': {
     #     'ENGINE': 'django.db.backends.postgresql',
