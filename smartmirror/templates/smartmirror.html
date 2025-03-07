@@ -37,14 +37,10 @@
                 <tr>
                     <td><input type="text" id="id_uid" name="uid" placeholder="UID" autofocus></td>
                     <td><input type="text" id="id_user_name" name="user_name" placeholder="이름"></td>
-                    <td>                         
-                        <select name="center_name" id="id_center_name" class="dropdown-box">
-                            <option class="option" value="" selected disabled>기관을 선택해 주세요</option>
-                            {% for center in centers %}
-                                <option class="option" value="{{ center.center_name }}" {% if user.center_name == center.center_name %}selected{% endif %}>{{ center.center_name }}</option>
-                            {% endfor %}
-                        </select>
-                    </td>
+                    <td>
+                        <span>{{ user.username }}</span>
+                        <input type="hidden" name="center_name" value="{{ user.username }}">
+                    </td>                    
                     <td>
                         <input type="text" id="id_birth" name="birth" placeholder="생년월일 (YYYYMMDD)" pattern="\d{8}" maxlength="8" title="8자리 숫자를 입력하세요 (YYYYMMDD)">
                     </td>                        
