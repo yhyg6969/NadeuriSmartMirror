@@ -79,14 +79,14 @@
                     <input type="hidden" name="uid" value="{{ user.uid }}">
                     <td>{{ forloop.counter }}</td>
                     <td><input type="text" name="user_name" value="{{ user.user_name }}"></td>
-                    <td>
+                    <!-- <td>
                         <select name="center_name" id="id_center_name" class="dropdown-box">
                             <option class="option" value="" selected disabled>기관을 선택해 주세요</option>
                             {% for center in centers %}
                                 <option class="option" value="{{ center.center_name }}" {% if user.center_name == center.center_name %}selected{% endif %}>{{ center.center_name }}</option>
                             {% endfor %}
                         </select>
-                    </td>                    
+                    </td>                     -->
                     <td>
                         <input type="text" id="id_birth" name="birth" value="{{ user.birth }}" pattern="\d{8}" maxlength="8">
                     </td>                    
