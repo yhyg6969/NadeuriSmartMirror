@@ -93,7 +93,7 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'oikos-db',
+        'NAME': 'SeedeningDB',
         'USER': 'yhyg6969',
         'PASSWORD': '0210pkb',
         'HOST': '3.39.29.129',
