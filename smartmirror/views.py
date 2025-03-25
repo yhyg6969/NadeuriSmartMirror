@@ -174,7 +174,7 @@ def popup_modal(request):
     day = int(day)
     
     # Calculate start and end datetime objects for the selected day
-    start_datetime = datetime(year, month, day, 0, 0, 0, tzinfo=datetime.timezone.utc)
+    start_datetime = dt.datetime(year, month, day, 0, 0, 0, tzinfo=dt.timezone.utc)
     end_datetime = start_datetime + timedelta(days=1)
 
     # Convert datetime objects to timestamps
