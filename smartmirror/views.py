@@ -3,7 +3,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from .models import user_table, game_table, walk_table, stretch_table, center_table
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta
+import datetime as dt
 from django.utils import timezone
 from django.utils.timezone import localtime
 from django.utils.dateparse import parse_datetime
@@ -83,7 +84,7 @@ def smartmirror(request):
                 request.session['failed_attempts'] = 0
                 request.session['lock_time'] = None
                 request.session.save()
-                return redirect('smartmirror:smartmirror')
+                return redirect('smartmirror:smartmirror') 
 
         elif action in ['create', 'update', 'delete'] and request.user.is_authenticated:
             center_name = request.user.username
@@ -173,7 +174,7 @@ def popup_modal(request):
     day = int(day)
     
     # Calculate start and end datetime objects for the selected day
-    start_datetime = datetime(year, month, day, 0, 0, 0, tzinfo=timezone.utc)
+    start_datetime = datetime(year, month, day, 0, 0, 0, tzinfo=datetime.timezone.utc)
     end_datetime = start_datetime + timedelta(days=1)
 
     # Convert datetime objects to timestamps
