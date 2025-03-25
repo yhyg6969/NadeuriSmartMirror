@@ -52,10 +52,12 @@
                                         </td>
                                         <td>{{ game.correct_score }}점</td>
                                         <td>
-                                            {% if game.fail_score == 999 %}
-                                                없습니다
-                                            {% else %}
-                                                {{ game.fail_score }}점
+                                            {% if game.game_type != 1 %}
+                                                {% if game.fail_score == 999 %}
+                                                    없습니다
+                                                {% else %}
+                                                    {{ game.fail_score }}점
+                                                {% endif %}
                                             {% endif %}
                                         </td>
                                     </tr>
@@ -65,7 +67,7 @@
                                     <td colspan="6">기록이 없습니다.</td>
                                 </tr>
                             {% endfor %}
-                        </tbody>
+                        </tbody>                        
                     </table>
                     <br>
                 
@@ -98,7 +100,7 @@
                     </table>
                     <br> -->
                 
-                    <br><strong><실버 스트레칭></strong>
+                    <!-- <br><strong><실버 스트레칭></strong>
                     <table>
                         <thead>
                             <tr>
@@ -132,7 +134,7 @@
                                 </tr>
                             {% endfor %}
                         </tbody>
-                    </table>
+                    </table> -->
                 </p>
             {% endif %}
             <button class="close-modal-btn" onclick="closeModal()">닫기</button>
