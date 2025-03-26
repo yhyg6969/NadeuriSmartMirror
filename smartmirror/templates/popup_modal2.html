@@ -14,12 +14,9 @@
                     <p class="dateTitle">활동 날짜 | {{ selected_date }}<br><br></p>
                     
                     <div class="dateTitle">
-                        {% for game in game_records %}
-                            {% if game.game_type == 4 %}
-                                <p>총 활동 시간 | {{ game.activity_minutes }} 분 {{ game.activity_seconds }} 초</p>
-                            {% endif %}
-                        {% endfor %}
-                    </div><br>
+                        <p>총 활동 시간 | {{ total_playtime }}</p>
+                    </div>
+                    <br>
                     <br><strong>      <인지 게임></strong>
                     
                     <!-- Table for other game records -->
