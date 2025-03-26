@@ -10,14 +10,15 @@
             {% if error_message %}
                 <p>{{ error_message }}</p>
             {% else %}
-                <div id="modalContent">
+                <p id="modalContent">
+                    <br>
                     <p class="dateTitle">활동 날짜 | {{ selected_date }}<br><br></p>
                     
                     <div class="dateTitle">
                         <p>총 활동 시간 | {{ total_play_minutes }} 분 {{ total_play_seconds }} 초</p>
                     </div>
                     <br>
-                    <strong>      <인지 게임></strong>
+                    <br><strong>      <인지 게임></strong>
                     
                     <!-- Table for other game records -->
                     <table>
@@ -67,12 +68,11 @@
                         </tbody>                        
                     </table>
                     <br>
-                </div>
+                </p>
             {% endif %}
             <button class="close-modal-btn" onclick="closeModal()">닫기</button>
         </div>
     </div>
-    
 
     <script src="{% static 'smartmirror.js' %}"></script>
 </body>
