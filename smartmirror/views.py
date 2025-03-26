@@ -182,26 +182,43 @@ def popup_modal(request):
     walk_records = walk_table.objects.filter(uid=uid, start_ts__gte=start_ts, start_ts__lt=end_ts)
     stretch_records = stretch_table.objects.filter(uid=uid, start_ts__gte=start_ts, start_ts__lt=end_ts)
 
+    total_play_time = 0  # To accumulate total play time
+
     for game in game_records:
-        game.minutes = game.play_time // 60
-        game.seconds = game.play_time % 60
-        game.start_time = datetime.fromtimestamp(game.start_ts)
-        game.finish_time = datetime.fromtimestamp(game.finish_ts)
+        game.start_time = datetime.fromtimestamp(game.start_ts, tz=timezone.utc)
+        game.finish_time = datetime.fromtimestamp(game.finish_ts, tz=timezone.utc)
+
+        # Calculate total play time if not already stored
+        if hasattr(game, 'play_time'):
+            game.minutes = game.play_time // 60
+            game.seconds = game.play_time % 60
+            total_play_time += game.play_time  # Accumulate total play time
+        else:
+            game.play_time = (game.finish_time - game.start_time).total_seconds()
+            game.minutes = int(game.play_time // 60)
+            game.seconds = int(game.play_time % 60)
+            total_play_time += game.play_time  # Accumulate total play time
+
+        # Debugging prints (Check values in logs)
+        print(f"Game {game.id}: Start {game.start_time}, Finish {game.finish_time}, Play Time {game.play_time}")
 
         if game.game_type == 4:
-            activity_duration = game.finish_time - game.start_time
-            game.activity_seconds = int(activity_duration.total_seconds())
+            game.activity_seconds = int(game.play_time)
             game.activity_minutes = game.activity_seconds // 60
 
+    # Convert total play time to minutes and seconds
+    total_play_minutes = int(total_play_time // 60)
+    total_play_seconds = int(total_play_time % 60)
+
     for walk in walk_records:
+        walk.start_time = datetime.fromtimestamp(walk.start_ts, tz=timezone.utc)
         walk.minutes = walk.walk_time // 60
         walk.seconds = walk.walk_time % 60
-        walk.start_time = datetime.fromtimestamp(walk.start_ts)
 
     for stretch in stretch_records:
+        stretch.start_time = datetime.fromtimestamp(stretch.start_ts, tz=timezone.utc)
         stretch.minutes = stretch.stretch_time // 60
         stretch.seconds = stretch.stretch_time % 60
-        stretch.start_time = datetime.fromtimestamp(stretch.start_ts)
 
     context = {
         'user': user,
@@ -209,6 +226,8 @@ def popup_modal(request):
         'walk_records': walk_records,
         'stretch_records': stretch_records,
         'selected_date': start_datetime.date(),
+        'total_play_minutes': total_play_minutes,  # Send total play time to template
+        'total_play_seconds': total_play_seconds,
     }
     
     return render(request, 'popup_modal2.html', context)
