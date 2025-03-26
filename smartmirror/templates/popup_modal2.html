@@ -4,17 +4,16 @@
 <link rel="stylesheet" href="{% static 'popup_modal.css' %}">
 <style>
     .modal-container {
-        display: flex;
-        justify-content: center;
-        align-items: flex-start; /* 모달이 상단에서 시작 */
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 1000;
-        overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Ensure modal starts at the top */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
     }
 
     .modal-content {
@@ -22,26 +21,9 @@
         max-height: 80vh;
         width: 60%;
         overflow-y: auto;
-        padding: 20px; /* 내부 여백 추가 */
-        margin-top: 10vh; /* 모달이 너무 위에 붙지 않도록 */
         border-radius: 10px;
-        scroll-padding-top: 20px; /* 스크롤 시 여백 추가 */
     }
 
-    .close-modal-btn {
-        display: block;
-        margin: 10px auto;
-        padding: 10px 20px;
-        background: #007bff;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .close-modal-btn:hover {
-        background: #0056b3;
-    }
 </style>
 {% endblock %}
 
