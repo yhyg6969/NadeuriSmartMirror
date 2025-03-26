@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from .models import user_table, game_table, walk_table, stretch_table, center_table
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import datetime as dt
 from django.utils import timezone
 from django.utils.timezone import localtime
@@ -154,83 +154,70 @@ def inquiry(request):
     
     return redirect('smartmirror:smartmirror')
 
+
 def popup_modal(request):
     uid = request.GET.get('uid')
     year = request.GET.get('year')
     month = request.GET.get('month')
     day = request.GET.get('day')
     
-    if not uid or not year or not month or not day:
+    if not all([uid, year, month, day]):
         return HttpResponse('Missing parameters.', status=400)
     
     try:
         user = user_table.objects.get(uid=uid)
     except user_table.DoesNotExist:
         return HttpResponse('User not found.', status=404)
-    
-    # Convert year, month, day to integers
-    year = int(year)
-    month = int(month)
-    day = int(day)
-    
-    # Calculate start and end datetime objects for the selected day
-    start_datetime = dt.datetime(year, month, day, 0, 0, 0, tzinfo=dt.timezone.utc)
-    end_datetime = start_datetime + timedelta(days=1)
 
-    # Convert datetime objects to timestamps
+    try:
+        year, month, day = map(int, [year, month, day])
+        start_datetime = datetime(year, month, day, 0, 0, 0, tzinfo=timezone.utc)
+        end_datetime = start_datetime + timedelta(days=1)
+    except ValueError:
+        return HttpResponse('Invalid date format.', status=400)
+
     start_ts = int(start_datetime.timestamp())
     end_ts = int(end_datetime.timestamp()) - 1
 
-    # Filter game records for the selected date
-    game_records = game_table.objects.filter(
-        uid=uid,
-        start_ts__gte=start_ts,
-        start_ts__lt=end_ts,
-    )
-    
+    # Fetch records with optimized query (fetch only required fields)
+    game_records = game_table.objects.filter(uid=uid, start_ts__gte=start_ts, start_ts__lt=end_ts).values()
+    walk_records = walk_table.objects.filter(uid=uid, start_ts__gte=start_ts, start_ts__lt=end_ts).values()
+    stretch_records = stretch_table.objects.filter(uid=uid, start_ts__gte=start_ts, start_ts__lt=end_ts).values()
+
+    # Process game records
     for game in game_records:
-        game.minutes = game.play_time // 60
-        game.seconds = game.play_time % 60
-        game.start_time = datetime.fromtimestamp(game.start_ts)
-        game.finish_time = datetime.fromtimestamp(game.finish_ts)
-        if game.game_type == 4:
-            activity_duration = game.finish_time - game.start_time
-            game.activity_seconds = int(activity_duration.total_seconds())  # Total seconds
-            game.activity_minutes = int(activity_duration.total_seconds() // 60)  # Minutes
+        game['minutes'] = game['play_time'] // 60
+        game['seconds'] = game['play_time'] % 60
+        game['start_time'] = datetime.fromtimestamp(game['start_ts'])
+        game['finish_time'] = datetime.fromtimestamp(game['finish_ts'])
 
-    # Filter walk records for the selected date
-    walk_records = walk_table.objects.filter(
-        uid=uid,
-        start_ts__gte=start_ts,
-        start_ts__lt=end_ts,
-    )
+        if game['game_type'] == 4:
+            activity_duration = game['finish_time'] - game['start_time']
+            game['activity_seconds'] = int(activity_duration.total_seconds())
+            game['activity_minutes'] = game['activity_seconds'] // 60
 
+    # Process walk records
     for walk in walk_records:
-        walk.minutes = walk.walk_time // 60
-        walk.seconds = walk.walk_time % 60
-        walk.start_time = datetime.fromtimestamp(walk.start_ts)
+        walk['minutes'] = walk['walk_time'] // 60
+        walk['seconds'] = walk['walk_time'] % 60
+        walk['start_time'] = datetime.fromtimestamp(walk['start_ts'])
 
-    # Filter stretch records for the selected date
-    stretch_records = stretch_table.objects.filter(
-        uid=uid,
-        start_ts__gte=start_ts,
-        start_ts__lt=end_ts,
-    )
-
+    # Process stretch records
     for stretch in stretch_records:
-        stretch.minutes = stretch.stretch_time // 60
-        stretch.seconds = stretch.stretch_time % 60
-        stretch.start_time = datetime.fromtimestamp(stretch.start_ts)
+        stretch['minutes'] = stretch['stretch_time'] // 60
+        stretch['seconds'] = stretch['stretch_time'] % 60
+        stretch['start_time'] = datetime.fromtimestamp(stretch['start_ts'])
 
     context = {
         'user': user,
         'game_records': game_records,
         'walk_records': walk_records,
         'stretch_records': stretch_records,
-        'selected_date': start_datetime.date(),  # Pass the selected date object
+        'selected_date': start_datetime.date(),
     }
     
     return render(request, 'popup_modal2.html', context)
+
 
 def custom_csrf_failure(request, reason=""):
     return redirect(request.META.get('HTTP_REFERER', '/'))
