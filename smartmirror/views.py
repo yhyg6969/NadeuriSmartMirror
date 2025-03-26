@@ -154,10 +154,6 @@ def inquiry(request):
     return redirect('smartmirror:smartmirror')
 
 
-from datetime import datetime, timezone, timedelta
-from django.http import HttpResponse
-from django.shortcuts import render
-from .models import user_table, game_table, walk_table, stretch_table
 
 def popup_modal(request):
     uid = request.GET.get('uid')
