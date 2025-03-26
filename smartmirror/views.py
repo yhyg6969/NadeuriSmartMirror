@@ -154,6 +154,11 @@ def inquiry(request):
     return redirect('smartmirror:smartmirror')
 
 
+from datetime import datetime, timezone, timedelta
+from django.http import HttpResponse
+from django.shortcuts import render
+from .models import user_table, game_table, walk_table, stretch_table
+
 def popup_modal(request):
     uid = request.GET.get('uid')
     year = request.GET.get('year')
@@ -200,9 +205,9 @@ def popup_modal(request):
             total_play_time += game.play_time  # Accumulate total play time
 
         # Debugging prints (Check values in logs)
-        print(f"Game {game.id}: Start {game.start_time}, Finish {game.finish_time}, Play Time {game.play_time}")
+        print(f"Game {game.record_id}: Start {game.start_time}, Finish {game.finish_time}, Play Time {game.play_time}")
 
-        if game.game_type == 4:
+        if game.game_type == "4":  # Ensure correct type comparison
             game.activity_seconds = int(game.play_time)
             game.activity_minutes = game.activity_seconds // 60
 
@@ -231,6 +236,7 @@ def popup_modal(request):
     }
     
     return render(request, 'popup_modal2.html', context)
+
 
 
 
