@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 from .models import user_table, game_table, walk_table, stretch_table, center_table
 from datetime import datetime, timedelta, timezone
 import datetime as dt
-from django.utils import timezone
 from django.utils.timezone import localtime
 from django.utils.dateparse import parse_datetime
 
@@ -179,34 +178,30 @@ def popup_modal(request):
     start_ts = int(start_datetime.timestamp())
     end_ts = int(end_datetime.timestamp()) - 1
 
-    # Fetch records with optimized query (fetch only required fields)
-    game_records = game_table.objects.filter(uid=uid, start_ts__gte=start_ts, start_ts__lt=end_ts).values()
-    walk_records = walk_table.objects.filter(uid=uid, start_ts__gte=start_ts, start_ts__lt=end_ts).values()
-    stretch_records = stretch_table.objects.filter(uid=uid, start_ts__gte=start_ts, start_ts__lt=end_ts).values()
+    game_records = game_table.objects.filter(uid=uid, start_ts__gte=start_ts, start_ts__lt=end_ts)
+    walk_records = walk_table.objects.filter(uid=uid, start_ts__gte=start_ts, start_ts__lt=end_ts)
+    stretch_records = stretch_table.objects.filter(uid=uid, start_ts__gte=start_ts, start_ts__lt=end_ts)
 
-    # Process game records
     for game in game_records:
-        game['minutes'] = game['play_time'] // 60
-        game['seconds'] = game['play_time'] % 60
-        game['start_time'] = datetime.fromtimestamp(game['start_ts'])
-        game['finish_time'] = datetime.fromtimestamp(game['finish_ts'])
+        game.minutes = game.play_time // 60
+        game.seconds = game.play_time % 60
+        game.start_time = datetime.fromtimestamp(game.start_ts)
+        game.finish_time = datetime.fromtimestamp(game.finish_ts)
 
-        if game['game_type'] == 4:
-            activity_duration = game['finish_time'] - game['start_time']
-            game['activity_seconds'] = int(activity_duration.total_seconds())
-            game['activity_minutes'] = game['activity_seconds'] // 60
+        if game.game_type == 4:
+            activity_duration = game.finish_time - game.start_time
+            game.activity_seconds = int(activity_duration.total_seconds())
+            game.activity_minutes = game.activity_seconds // 60
 
-    # Process walk records
     for walk in walk_records:
-        walk['minutes'] = walk['walk_time'] // 60
-        walk['seconds'] = walk['walk_time'] % 60
-        walk['start_time'] = datetime.fromtimestamp(walk['start_ts'])
+        walk.minutes = walk.walk_time // 60
+        walk.seconds = walk.walk_time % 60
+        walk.start_time = datetime.fromtimestamp(walk.start_ts)
 
-    # Process stretch records
     for stretch in stretch_records:
-        stretch['minutes'] = stretch['stretch_time'] // 60
-        stretch['seconds'] = stretch['stretch_time'] % 60
-        stretch['start_time'] = datetime.fromtimestamp(stretch['start_ts'])
+        stretch.minutes = stretch.stretch_time // 60
+        stretch.seconds = stretch.stretch_time % 60
+        stretch.start_time = datetime.fromtimestamp(stretch.start_ts)
 
     context = {
         'user': user,
@@ -217,6 +212,7 @@ def popup_modal(request):
     }
     
     return render(request, 'popup_modal2.html', context)
+
 
 
 def custom_csrf_failure(request, reason=""):
