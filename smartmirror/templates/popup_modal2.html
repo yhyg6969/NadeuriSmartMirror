@@ -6,7 +6,7 @@
 
 <body>
     <div class="modal-container" id="modalContainer">
-        <div class="modal-content">
+        <div class="modal-content" style="max-height: 80vh; overflow-y: auto;">
             {% if error_message %}
                 <p>{{ error_message }}</p>
             {% else %}
@@ -67,71 +67,6 @@
                         </tbody>                        
                     </table>
                     <br>
-                
-                    <!-- <br><strong><힐링 걷기></strong>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>활동일</th>
-                                <th>산책 이름</th>
-                                <th>산책 시간</th>
-                                <th>걸음 수</th>
-                                <th>속도</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for walk in walk_records %}
-                                <tr>
-                                    <td>{{ walk.start_time|date:"Y-m-d H:i" }}</td>
-                                    <td>{{ walk.walk_name }}</td>
-                                    <td>{{ walk.minutes }} 분 {{ walk.seconds }} 초</td>
-                                    <td>{{ walk.walk_count }}보</td>
-                                    <td>{{ walk.velocity }}</td>
-                                </tr>
-                            {% empty %}
-                                <tr>
-                                    <td colspan="5">기록이 없습니다.</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                    <br> -->
-                
-                    <!-- <br><strong><실버 스트레칭></strong>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>활동일</th>
-                                <th>스트레칭 이름</th>
-                                <th>스트레칭 유형</th>
-                                <th>스트레칭 시간</th>
-                                <th>평균 정확도</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for stretch in stretch_records %}
-                                <tr>
-                                    <td>{{ stretch.start_time|date:"Y-m-d H:i" }}</td>
-                                    <td>{{ stretch.stretch_name }}</td>
-                                    <td>
-                                        {% if stretch.stretch_type == 0 %}
-                                            전신 스트레칭
-                                        {% elif stretch.stretch_type == 1 %}
-                                            손가락 운동
-                                        {% else %}
-                                            알 수 없음
-                                        {% endif %}
-                                    </td>
-                                    <td>{{ stretch.minutes }} 분 {{ stretch.seconds }} 초</td>
-                                    <td>{{ stretch.acc_average|floatformat:2 }}%</td>
-                                </tr>
-                            {% empty %}
-                                <tr>
-                                    <td colspan="5">기록이 없습니다.</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table> -->
                 </p>
             {% endif %}
             <button class="close-modal-btn" onclick="closeModal()">닫기</button>
