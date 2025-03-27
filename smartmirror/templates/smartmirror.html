@@ -23,6 +23,11 @@
         <h2>사용자 정보 추가</h2>
         <p>사용자를 추가해 주세요</p>
 
+        {% if error_message %}
+        <div class="alert alert-danger" style="text-align:center; font-weight:bold;">{{ error_message }}</div>
+        {% endif %}
+
+
         <form method="post" class="user_table">
             {% csrf_token %}
             <table>
@@ -134,14 +139,17 @@
         }
 
         $(document).ready(function () {
-            if ("{{ show_data|escapejs }}" === 'True') {
-                $('#userData').show();
-            }
-            $('body').show();
+            $(".save_btn").click(function (event) {
+                var uid = $("#id_uid").val().trim();
+                var userName = $("#id_user_name").val().trim();
+                var birth = $("#id_birth").val().trim();
+                var gender = $("input[name='gender']:checked").val();
 
-            $('.inquiry-btn').on('click', function () {
-                var uid = $(this).data('uid');
-                window.location.href = '{% url "smartmirror:inquiry" %}?uid=' + uid;
+                if (!uid || !userName || !birth || !gender) {
+                    event.preventDefault();  // 폼 제출 방지
+                    alert("모든 필드를 입력해주세요.");  // 안내 메시지 표시
+                    return false;
+                }
             });
         });
 

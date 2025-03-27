@@ -85,17 +85,13 @@ def smartmirror(request):
                 request.session.save()
                 return redirect('smartmirror:smartmirror') 
 
-        elif action in ['create', 'update', 'delete'] and request.user.is_authenticated:
-            center_name = request.user.username
-
-            if action == 'create':
+            elif action == 'create':
                 uid = request.POST.get('uid')
                 user_name = request.POST.get('user_name')
                 birth = request.POST.get('birth')
                 gender = request.POST.get('gender') == 'true'
-                center_name = request.user.username  # Fix center name to logged-in user's center
 
-                if not uid or not user_name or not birth:
+                if not uid or not user_name or not birth or gender is None:
                     context['error_message'] = '모든 필드를 입력해주세요.'
                     return render(request, 'smartmirror.html', context)
 
@@ -104,6 +100,7 @@ def smartmirror(request):
                     return render(request, 'smartmirror.html', context)
 
                 user_table.objects.create(uid=uid, user_name=user_name, center_name=center_name, birth=birth, gender=gender)
+
 
             elif action == 'update':
                 uid = request.POST.get('uid')
