@@ -208,6 +208,7 @@ def popup_modal(request):
             game.activity_minutes = game.activity_seconds // 60
 
     # Convert total play time to minutes and seconds
+    total_play_hours = int(total_play_time // 3600)
     total_play_minutes = int(total_play_time // 60)
     total_play_seconds = int(total_play_time % 60)
 
@@ -227,6 +228,7 @@ def popup_modal(request):
         'walk_records': walk_records,
         'stretch_records': stretch_records,
         'selected_date': start_datetime.date(),
+        'total_play_hours': total_play_hours, 
         'total_play_minutes': total_play_minutes,  # Send total play time to template
         'total_play_seconds': total_play_seconds,
     }
