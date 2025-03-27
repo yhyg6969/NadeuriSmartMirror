@@ -10,7 +10,7 @@
             {% if error_message %}
                 <p>{{ error_message }}</p>
             {% else %}
-                <p id="modalContent">
+                <div id="modalContent">
                     <br>
                     <p class="dateTitle">활동 날짜 | {{ selected_date }}<br><br></p>
                     
@@ -68,7 +68,7 @@
                         </tbody>                        
                     </table>
                     <br>
-                </p>
+                </div>
             {% endif %}
             <button class="close-modal-btn" onclick="closeModal()">닫기</button>
         </div>

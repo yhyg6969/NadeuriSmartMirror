@@ -29,8 +29,8 @@
      /* Semi-transparent background */
      z-index: 1001;
     background-color: var(--bg-subcolor);
-    overflow: scroll;
-    padding-top: 200px;
+    overflow: auto;
+    padding-top: 50px;
  }
 
  .modal-content {
@@ -46,7 +46,13 @@
     border: 2px solid var(--primary-color);
     border-radius: 15px;
     font-size: 18px;
+    max-height: 90vh; /* Increase height */
+    overflow-y: auto; /* Ensure content scrolls */
  }
+
+ #modalContent {
+    overflow: auto;
+}
 
  .modal-date{
     color: var(--primary-color);
