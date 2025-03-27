@@ -5,21 +5,20 @@
 {% endblock %}
 
 <body>
-    <div class="modal-container" id="modalContainer" style="padding-top: 10px;">
-        <div class="modal-content" style="max-height: 80vh; overflow-y: auto;">
+    <div class="modal-container" id="modalContainer">
+        <div class="modal-content">
             {% if error_message %}
                 <p>{{ error_message }}</p>
             {% else %}
                 <div id="modalContent">
-                    <br>
                     <p class="dateTitle">활동 날짜 | {{ selected_date }}<br><br></p>
-                    
+
                     <div class="dateTitle">
                         <p>총 활동 시간 | {{ total_play_minutes }} 분 {{ total_play_seconds }} 초</p>
                     </div>
                     <br>
-                    <br><strong>      <인지 게임></strong>
-                    
+                    <br><strong> <인지 게임></strong>
+
                     <!-- Table for other game records -->
                     <table>
                         <thead>
