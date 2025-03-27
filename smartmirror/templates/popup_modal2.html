@@ -49,7 +49,9 @@
                                         </td>
                                         <td>{{ game.correct_score }}점</td>
                                         <td>
-                                            {% if game.game_type != 1 %}
+                                            {% if game.game_type == 1 %}
+                                                -  <!-- 모션 게임일 때 오답은 '-' 표시 -->
+                                            {% else %}
                                                 {% if game.fail_score == 999 %}
                                                     없습니다
                                                 {% else %}
