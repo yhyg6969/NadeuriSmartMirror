@@ -27,7 +27,6 @@
         <div class="alert alert-danger" style="text-align:center; font-weight:bold;">{{ error_message }}</div>
         {% endif %}
 
-
         <form method="post" class="user_table">
             {% csrf_token %}
             <table>
@@ -67,7 +66,6 @@
             <tr>
                 <th>번호</th>
                 <th>이름</th>
-                <!-- <th>소속기관</th> -->
                 <th>생년월일</th>
                 <th>성별</th>
                 <th>저장</th>
@@ -80,14 +78,6 @@
                     <input type="hidden" name="uid" value="{{ user.uid }}">
                     <td>{{ forloop.counter }}</td>
                     <td><input type="text" name="user_name" value="{{ user.user_name }}"></td>
-                    <!-- <td>
-                        <select name="center_name" id="id_center_name" class="dropdown-box">
-                            <option class="option" value="" selected disabled>기관을 선택해 주세요</option>
-                            {% for center in centers %}
-                                <option class="option" value="{{ center.center_name }}" {% if user.center_name == center.center_name %}selected{% endif %}>{{ center.center_name }}</option>
-                            {% endfor %}
-                        </select>
-                    </td>                     -->
                     <td>
                         <input type="text" id="id_birth" name="birth" value="{{ user.birth }}" pattern="\d{8}" maxlength="8">
                     </td>                    
@@ -139,6 +129,7 @@
         }
 
         $(document).ready(function () {
+            // 저장 버튼 클릭 시 폼 유효성 검사
             $(".save_btn").click(function (event) {
                 var uid = $("#id_uid").val().trim();
                 var userName = $("#id_user_name").val().trim();
@@ -147,12 +138,19 @@
 
                 if (!uid || !userName || !birth || !gender) {
                     event.preventDefault();  // 폼 제출 방지
-                    alert("모든 필드를 입력해주세요.");  // 안내 메시지 표시
+                    alert("모든 필드를 입력해주세요.");
                     return false;
                 }
             });
+
+            // 조회 버튼 클릭 시 정보를 전달하고 inquiry 페이지로 이동
+            $('.inquiry-btn').on('click', function () {
+                var uid = $(this).data('uid');
+                window.location.href = '{% url "smartmirror:inquiry" %}?uid=' + encodeURIComponent(uid);
+            });
         });
 
+        // 삭제 확인 함수
         function confirmDelete() {
             return confirm('정말 삭제하시겠습니까?');
         }
