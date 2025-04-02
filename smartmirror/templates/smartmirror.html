@@ -130,28 +130,6 @@
             window.location.href = "{% url 'smartmirror:change_password' %}";
         }
 
-        $(document).ready(function () {
-            // 저장 버튼 클릭 시 폼 유효성 검사
-            $(".save_btn").click(function (event) {
-                var uid = $("#id_uid").val().trim();
-                var userName = $("#id_user_name").val().trim();
-                var birth = $("#id_birth").val().trim();
-                var gender = $("input[name='gender']:checked").val();
-
-                if (!uid || !userName || !birth || !gender) {
-                    event.preventDefault();  // 폼 제출 방지
-                    alert("모든 필드를 입력해주세요.");
-                    return false;
-                }
-            });
-
-            // 조회 버튼 클릭 시 정보를 전달하고 inquiry 페이지로 이동
-            $('.inquiry-btn').on('click', function () {
-                var uid = $(this).data('uid');
-                window.location.href = '{% url "smartmirror:inquiry" %}?uid=' + encodeURIComponent(uid);
-            });
-        });
-
         // 삭제 확인 함수
          function confirmDelete() {
             return confirm('정말 삭제하시겠습니까?');
@@ -175,7 +153,8 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    window.location.href = "{% url 'smartmirror:smartmirror' %}"; // 로그인 성공 시 페이지 이동
+                    // 로그인 성공 시, 서버에서 받은 redirect_url로 이동 (uid 포함)
+                    window.location.href = data.redirect_url;
                 } else {
                     document.getElementById("error_message").innerText = data.message;
                     document.getElementById("error_message").style.display = "block";
@@ -183,6 +162,20 @@
             })
             .catch(error => console.error("Error:", error));
         });
+
+        $(document).ready(function () {
+            $(".inquiry-btn").on("click", function () {
+                var uid = $(this).data("uid");
+
+                // uid 값이 존재하는 경우에만 조회 실행
+                if (uid && uid !== "None") {
+                    window.location.href = '{% url "smartmirror:inquiry" %}?uid=' + encodeURIComponent(uid);
+                } else {
+                    console.warn("조회할 UID가 없습니다.");  // 콘솔에 경고만 출력
+                }
+            });
+        });
+
     </script>
 
 </body>
