@@ -100,7 +100,7 @@
     {% else %}
     <main class="login" style="margin-top: 150px;">
         <h2>나드리<br>스마트 미러 관리자 페이지</h2>
-        <form method="post" class="center_password_form">
+        <form id="loginForm" class="center_password_form">
             {% csrf_token %}
             <div>
                 <select name="center_name" id="center_select" class="dropdown-box login-dropbox">
@@ -109,13 +109,15 @@
                         <option class="option" value="{{ center.center_name }}">{{ center.center_name }}</option>
                     {% endfor %}
                 </select>
-                <input type="password" class="input-box" name="password" placeholder="비밀번호를 입력해주세요">
+                <input type="password" class="input-box" id="password" name="password" placeholder="비밀번호를 입력해주세요">
             </div>
-            <button class="inquiry-btn" type="submit" name="action" value="login">로그인</button>
+            <button class="inquiry-btn" type="submit">로그인</button>
         </form>
-        {% if error_message %}
+        
+        <div id="error_message" class="alert alert-danger" style="display: none; text-align: center; font-weight: bold;"></div>
+        <!-- {% if error_message %}
         <div class="alert alert-danger" style="text-align:center; font-weight:bold;">{{ error_message }}</div>
-        {% endif %}
+        {% endif %} -->
     </main>
     {% endif %}
 
@@ -151,9 +153,36 @@
         });
 
         // 삭제 확인 함수
-        function confirmDelete() {
+         function confirmDelete() {
             return confirm('정말 삭제하시겠습니까?');
         }
+
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // 기본 폼 제출 방지
+
+            var center_name = document.getElementById("center_select").value;
+            var password = document.getElementById("password").value;
+            var csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+
+            fetch("{% url 'smartmirror:smartmirror' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrfToken
+                },
+                body: JSON.stringify({ center_name: center_name, password: password, action: "login" })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = "{% url 'smartmirror:smartmirror' %}"; // 로그인 성공 시 페이지 이동
+                } else {
+                    document.getElementById("error_message").innerText = data.message;
+                    document.getElementById("error_message").style.display = "block";
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        });
     </script>
 
 </body>

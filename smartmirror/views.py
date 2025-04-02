@@ -7,7 +7,8 @@ from datetime import datetime, timedelta, timezone
 import datetime as dt
 from django.utils.timezone import localtime
 from django.utils.dateparse import parse_datetime
-
+from django.http import JsonResponse
+import json
 from django.contrib.auth.views import PasswordChangeView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -21,111 +22,105 @@ def smartmirror(request):
         context['show_data'] = True  # Ensure data is displayed after refresh
 
     if request.method == 'POST':
-        action = request.POST.get('action')
+        try:
+            data = json.loads(request.body)  # JSON 데이터 파싱
+            action = data.get('action')
 
-        if action == 'login':
-            center_name = request.POST.get('center_name')
-            password = request.POST.get('password')
+            if action == 'login':
+                center_name = data.get('center_name')
+                password = data.get('password')
 
-            if not center_name or not password:
-                context['error_message'] = '모든 필드를 입력해주세요.'
-                return render(request, 'smartmirror.html', context)
+                if not center_name or not password:
+                    return JsonResponse({"success": False, "message": "모든 필드를 입력해주세요."})
 
-            try:
-                center = center_table.objects.get(center_name=center_name)
-            except center_table.DoesNotExist:
-                context['error_message'] = '존재하지 않는 기관입니다.'
-                return render(request, 'smartmirror.html', context)
+                try:
+                    center = center_table.objects.get(center_name=center_name)
+                except center_table.DoesNotExist:
+                    return JsonResponse({"success": False, "message": "존재하지 않는 기관입니다."})
 
-            # Check for account lock
-            lock_time = request.session.get('lock_time')
-            if lock_time:
-                if isinstance(lock_time, str):  # Convert string to datetime if needed
-                    lock_time = parse_datetime(lock_time)
+                # Check for account lock
+                lock_time = request.session.get('lock_time')
+                if lock_time:
+                    if isinstance(lock_time, str):  # Convert string to datetime if needed
+                        lock_time = parse_datetime(lock_time)
 
-                if lock_time and lock_time > timezone.now():
-                    kst_lock_time = localtime(lock_time)  # Convert to Korean time
-                    context['error_message'] = f'계정이 잠겼습니다. {kst_lock_time.strftime("%Y-%m-%d %H:%M:%S")}까지 기다려주세요.'
-                    return render(request, 'smartmirror.html', context)
+                    if lock_time and lock_time > timezone.now():
+                        kst_lock_time = localtime(lock_time)  # Convert to Korean time
+                        return JsonResponse({
+                            "success": False,
+                            "message": f"계정이 잠겼습니다. {kst_lock_time.strftime('%Y-%m-%d %H:%M:%S')}까지 기다려주세요."
+                        })
 
-            if password != center.center_password:
-                # Track failed login attempts
-                if 'failed_attempts' not in request.session:
+                if password != center.center_password:
+                    request.session['failed_attempts'] = request.session.get('failed_attempts', 0) + 1
+                    request.session.modified = True
+
+                    # Lock account after 5 failed attempts
+                    if request.session['failed_attempts'] >= 5:
+                        lock_duration = 30  # Lock duration in minutes
+                        lock_until = timezone.now() + timedelta(minutes=lock_duration)
+                        request.session['lock_time'] = lock_until.isoformat()  # Store as string
+                        return JsonResponse({
+                            "success": False,
+                            "message": f"비밀번호가 5회 틀렸습니다. {lock_until.strftime('%Y-%m-%d %H:%M:%S')}까지 다시 시도해주세요."
+                        })
+
+                    return JsonResponse({"success": False, "message": "비밀번호가 일치하지 않습니다."})
+
+                # Authenticate user
+                user, created = User.objects.get_or_create(username=center_name)
+                user.set_password(password)
+                user.save()
+
+                user = authenticate(request, username=center_name, password=password)
+                if user is not None:
+                    login(request, user)
                     request.session['failed_attempts'] = 0
                     request.session['lock_time'] = None
-
-                request.session['failed_attempts'] += 1
-                request.session.modified = True
-
-                # Lock account after 5 failed attempts
-                if request.session['failed_attempts'] >= 5:
-                    lock_duration = 30  # Lock duration in minutes
-                    lock_until = timezone.now() + timedelta(minutes=lock_duration)
-                    request.session['lock_time'] = lock_until.isoformat()  # Store as string
-                    request.session.save()  # Ensure session persists
-                    context['error_message'] = f'비밀번호가 5회 틀렸습니다. {lock_until.strftime("%Y-%m-%d %H:%M:%S")}까지 다시 시도해주세요.'
-                    return render(request, 'smartmirror.html', context)
-
-                context['error_message'] = '비밀번호가 일치하지 않습니다.'
-                return render(request, 'smartmirror.html', context)
-
-            # Authenticate user
-            user, created = User.objects.get_or_create(username=center_name)
-            user.set_password(password)
-            user.save()
-
-            user = authenticate(request, username=center_name, password=password)
-            if user is not None:
-                login(request, user)
-                context['users'] = user_table.objects.filter(center_name=center_name)
-                context['show_data'] = True
-                # Reset failed login attempts after successful login
-                request.session['failed_attempts'] = 0
-                request.session['lock_time'] = None
-                request.session.save()
-                return redirect('smartmirror:smartmirror') 
+                    request.session.save()
+                    return JsonResponse({"success": True, "message": "로그인 성공"})
 
             elif action == 'create':
-                uid = request.POST.get('uid')
-                user_name = request.POST.get('user_name')
-                birth = request.POST.get('birth')
-                gender = request.POST.get('gender') == 'true'
+                uid = data.get('uid')
+                user_name = data.get('user_name')
+                birth = data.get('birth')
+                gender = data.get('gender') == 'true'
 
                 if not uid or not user_name or not birth or gender is None:
-                    context['error_message'] = '모든 필드를 입력해주세요.'
-                    return render(request, 'smartmirror.html', context)
+                    return JsonResponse({"success": False, "message": "모든 필드를 입력해주세요."})
 
                 if user_table.objects.filter(uid=uid).exists():
-                    context['error_message'] = '중복된 UID입니다.'
-                    return render(request, 'smartmirror.html', context)
+                    return JsonResponse({"success": False, "message": "중복된 UID입니다."})
 
                 user_table.objects.create(uid=uid, user_name=user_name, center_name=center_name, birth=birth, gender=gender)
-
+                return JsonResponse({"success": True, "message": "사용자 생성 완료"})
 
             elif action == 'update':
-                uid = request.POST.get('uid')
-                user_name = request.POST.get('user_name')
-                birth = request.POST.get('birth')
-                gender = request.POST.get('gender') == 'true'
+                uid = data.get('uid')
+                user_name = data.get('user_name')
+                birth = data.get('birth')
+                gender = data.get('gender') == 'true'
 
                 if not uid or not user_name or not birth:
-                    context['error_message'] = '모든 필드를 입력해주세요.'
-                    return render(request, 'smartmirror.html', context)
+                    return JsonResponse({"success": False, "message": "모든 필드를 입력해주세요."})
 
                 user = user_table.objects.get(uid=uid)
                 user.user_name = user_name
                 user.birth = birth
                 user.gender = gender
-                # Remove `center_name` update
                 user.save()
+                return JsonResponse({"success": True, "message": "사용자 정보 수정 완료"})
 
             elif action == 'delete':
-                uid = request.POST.get('uid')
+                uid = data.get('uid')
                 user_table.objects.filter(uid=uid).delete()
+                return JsonResponse({"success": True, "message": "사용자 삭제 완료"})
 
-            return redirect('smartmirror:smartmirror')
+        except json.JSONDecodeError:
+            return JsonResponse({"success": False, "message": "잘못된 요청 형식입니다."})
 
     return render(request, 'smartmirror.html', context)
+
 
 
 def inquiry(request):
