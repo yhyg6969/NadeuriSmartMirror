@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .models import user_table, game_table, walk_table, stretch_table, center_table
 from datetime import datetime, timedelta, timezone
@@ -13,9 +13,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 import json
 
+
 def smartmirror(request):
     context = {'users': [], 'show_data': False, 'centers': center_table.objects.all()}
-
     print("🔍 smartmirror view accessed")
 
     if request.user.is_authenticated:
@@ -28,17 +28,15 @@ def smartmirror(request):
         content_type = request.META.get('CONTENT_TYPE', '')
         print(f"📥 POST request with Content-Type: {content_type}")
 
-        # --- JSON 요청: 로그인 처리 ---
+        # 🔐 JSON 요청 – 로그인 처리
         if 'application/json' in content_type:
             try:
                 data = json.loads(request.body)
                 action = data.get('action')
-                print(f"🔍 Received JSON action: {action}")
 
                 if action == 'login':
                     center_name = data.get('center_name')
                     password = data.get('password')
-                    print(f"🔍 Login attempt - center_name: {center_name}, password: {password}")
 
                     if not center_name or not password:
                         return JsonResponse({"success": False, "message": "모든 필드를 입력해주세요."})
@@ -73,6 +71,7 @@ def smartmirror(request):
 
                         return JsonResponse({"success": False, "message": "비밀번호가 일치하지 않습니다."})
 
+                    # 로그인 성공 처리
                     user, created = User.objects.get_or_create(username=center_name)
                     user.set_password(password)
                     user.save()
@@ -84,67 +83,85 @@ def smartmirror(request):
                         request.session['lock_time'] = None
                         request.session.save()
 
-                        user_obj = user_table.objects.filter(center_name=center_name).first()
-                        uid = user_obj.uid if user_obj else None
                         redirect_url = reverse('smartmirror:smartmirror')
-                        if uid:
-                            redirect_url += f'?uid={uid}'
+                        default_password = (password == "000000")  # ✅ 기본 비밀번호 여부 체크
 
-                        return JsonResponse({"success": True, "message": "로그인 성공", "redirect_url": redirect_url})
+                        return JsonResponse({
+                            "success": True,
+                            "message": "로그인 성공",
+                            "redirect_url": redirect_url,
+                            "default_password": default_password
+                        })
             except Exception as e:
                 print(f"❌ Error in JSON handling: {e}")
                 return JsonResponse({"success": False, "message": "잘못된 요청 형식입니다."})
 
-        # --- 일반 폼 요청 처리: 사용자 추가/수정/삭제 ---
+        # 📝 일반 폼 요청 (Create, Update, Delete)
         else:
             action = request.POST.get('action')
             print(f"🔧 HTML Form POST action: {action}")
 
             if action == 'create':
-                uid = request.POST.get('uid')
-                user_name = request.POST.get('user_name')
-                birth = request.POST.get('birth')
-                gender = request.POST.get('gender') == 'true'
-                center_name = request.POST.get('center_name')
+                uid = request.POST.get('uid', '').strip()
+                user_name = request.POST.get('user_name', '').strip()
+                center_name = request.POST.get('center_name', '').strip()
+                birth = request.POST.get('birth', '').strip()
+                gender_str = request.POST.get('gender')
+                gender = True if gender_str == 'true' else False
 
-                print(f"✅ Create user: {uid}, {user_name}, {birth}, {gender}, {center_name}")
-                user_table.objects.create(
-                    uid=uid,
-                    user_name=user_name,
-                    birth=birth,
-                    gender=gender,
-                    center_name=center_name
-                )
-                return redirect('smartmirror:smartmirror')
+                if user_table.objects.filter(uid=uid).exists():
+                    context['error_message'] = f"이미 존재하는 UID ({uid})입니다. 다른 번호를 입력해 주세요."
+                else:
+                    new_user = user_table(
+                        uid=uid,
+                        user_name=user_name,
+                        center_name=center_name,
+                        birth=birth,
+                        gender=gender
+                    )
+                    new_user.save()
+                    print(f"✅ Created user: {uid} - {user_name}")
+
+                if request.user.is_authenticated:
+                    context['users'] = user_table.objects.filter(center_name=request.user.username)
+                    context['show_data'] = True
+                return render(request, 'smartmirror.html', context)
 
             elif action == 'update':
-                uid = request.POST.get('uid')
-                user_name = request.POST.get('user_name')
-                birth = request.POST.get('birth')
-                gender = request.POST.get('gender') == 'true'
+                uid = request.POST.get('uid', '').strip()
+                user_name = request.POST.get('user_name', '').strip()
+                birth = request.POST.get('birth', '').strip()
+                gender_str = request.POST.get('gender')
+                gender = True if gender_str == 'true' else False
 
-                print(f"✅ Update user: {uid}, {user_name}, {birth}, {gender}")
                 try:
-                    user = user_table.objects.get(uid=uid)
-                    user.user_name = user_name
-                    user.birth = birth
-                    user.gender = gender
-                    user.save()
+                    user_obj = user_table.objects.get(uid=uid)
+                    user_obj.user_name = user_name
+                    user_obj.birth = birth
+                    user_obj.gender = gender
+                    user_obj.save()
+                    print(f"✅ Updated user: {uid}")
                 except user_table.DoesNotExist:
-                    print("❌ User not found")
-                return redirect('smartmirror:smartmirror')
+                    context['error_message'] = f"존재하지 않는 사용자입니다 (UID: {uid})"
+
+                context['users'] = user_table.objects.filter(center_name=request.user.username)
+                context['show_data'] = True
+                return render(request, 'smartmirror.html', context)
 
             elif action == 'delete':
-                uid = request.POST.get('uid')
-                print(f"🗑️ Delete user: {uid}")
+                uid = request.POST.get('uid', '').strip()
                 try:
-                    user = user_table.objects.get(uid=uid)
-                    user.delete()
-                except user_table.DoesNotExist:
-                    print("❌ User not found for deletion")
-                return redirect('smartmirror:smartmirror')
+                    user_table.objects.filter(uid=uid).delete()
+                    print(f"🗑 Deleted user: {uid}")
+                except Exception as e:
+                    context['error_message'] = f"삭제 중 오류 발생: {str(e)}"
+
+                context['users'] = user_table.objects.filter(center_name=request.user.username)
+                context['show_data'] = True
+                return render(request, 'smartmirror.html', context)
 
     return render(request, 'smartmirror.html', context)
+
 
 
 
@@ -260,23 +277,22 @@ def custom_csrf_failure(request, reason=""):
 
 class CustomPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
     template_name = 'change_password.html'
-    success_url = reverse_lazy('smartmirror:password_change_done')
+    success_url = reverse_lazy('smartmirror:smartmirror')  # 로그인 페이지로 변경
 
     def form_valid(self, form):
-        # Get the current user (assuming the user's username is the center_name in the center_table)
         center_name = self.request.user.username
         try:
-            # Find the center record corresponding to the current user
             center = center_table.objects.get(center_name=center_name)
-            # Update the password field
-            center.center_password = form.cleaned_data['new_password1']  # New password entered by the user
-            center.save()  # Save the updated center record
+            center.center_password = form.cleaned_data['new_password1']
+            center.save()
         except center_table.DoesNotExist:
-            # Handle the case if the center record is not found
             messages.error(self.request, "해당 기관을 찾을 수 없습니다.")
             return redirect('smartmirror:smartmirror')
 
-        # Call the parent form_valid method to save the password for the user and send success message
-        response = super().form_valid(form)
-        messages.success(self.request, "비밀번호가 성공적으로 변경되었습니다.")  # Show the success message
-        return response
+        # 비밀번호 저장
+        super().form_valid(form)
+
+        # ✅ 비밀번호 변경 후 로그아웃 처리
+        logout(self.request)
+        messages.success(self.request, "비밀번호가 성공적으로 변경되었습니다. 다시 로그인해 주세요.")
+        return redirect('smartmirror:smartmirror')  # 로그인 페이지로 리디렉션
