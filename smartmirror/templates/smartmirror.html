@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="{% static 'main.css' %}">
 <link rel="stylesheet" href="{% static 'management.css' %}">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 {% endblock %}
 
 {% block content %}
@@ -79,8 +80,8 @@
                     <td>{{ forloop.counter }}</td>
                     <td><input type="text" name="user_name" value="{{ user.user_name }}"></td>
                     <td>
-                        <input type="text" id="id_birth" name="birth" value="{{ user.birth }}" pattern="\d{8}" maxlength="8">
-                    </td>                    
+                        <input type="text" name="birth" value="{{ user.birth }}" pattern="\d{8}" maxlength="8">
+                    </td>
                     <td class="genter_table">
                         <input type="radio" name="gender" value="true" {% if user.gender %}checked{% endif %}> 남자
                         <input type="radio" name="gender" value="false" {% if not user.gender %}checked{% endif %}> 여자
@@ -89,11 +90,13 @@
                         <button type="submit" name="action" value="update" class="btn">저장</button>
                         <button type="submit" name="action" value="delete" class="btn" onclick="return confirmDelete();">삭제</button>
                     </td>
-                    <td>
-                        <button type="button" class="btn inquiry-btn search" data-uid="{{ user.uid }}">조회</button>
-                    </td>
-                </form>                
+                </form>
+                <!-- 조회 버튼은 form 밖으로 이동 -->
+                <td>
+                    <button type="button" class="btn inquiry-btn search" data-uid="{{ user.uid }}">조회</button>
+                </td>
             </tr>
+            
             {% endfor %}
         </table>
     </main>
@@ -129,53 +132,53 @@
         function redirectToPasswordChange() {
             window.location.href = "{% url 'smartmirror:change_password' %}";
         }
-
+    
         // 삭제 확인 함수
-         function confirmDelete() {
+        function confirmDelete() {
             return confirm('정말 삭제하시겠습니까?');
         }
-
-        document.getElementById("loginForm").addEventListener("submit", function(event) {
-            event.preventDefault(); // 기본 폼 제출 방지
-
-            var center_name = document.getElementById("center_select").value;
-            var password = document.getElementById("password").value;
-            var csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
-
-            fetch("{% url 'smartmirror:smartmirror' %}", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": csrfToken
-                },
-                body: JSON.stringify({ center_name: center_name, password: password, action: "login" })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // 로그인 성공 시, 서버에서 받은 redirect_url로 이동 (uid 포함)
-                    window.location.href = data.redirect_url;
-                } else {
-                    document.getElementById("error_message").innerText = data.message;
-                    document.getElementById("error_message").style.display = "block";
-                }
-            })
-            .catch(error => console.error("Error:", error));
-        });
-
-        $(document).ready(function () {
+    
+        document.addEventListener("DOMContentLoaded", function () {
+            const loginForm = document.getElementById("loginForm");
+            if (loginForm) {
+                loginForm.addEventListener("submit", function(event) {
+                    event.preventDefault(); // 기본 폼 제출 방지
+    
+                    var center_name = document.getElementById("center_select").value;
+                    var password = document.getElementById("password").value;
+                    var csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+    
+                    fetch("{% url 'smartmirror:smartmirror' %}", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRFToken": csrfToken
+                        },
+                        body: JSON.stringify({ center_name: center_name, password: password, action: "login" })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            window.location.href = data.redirect_url;
+                        } else {
+                            document.getElementById("error_message").innerText = data.message;
+                            document.getElementById("error_message").style.display = "block";
+                        }
+                    })
+                    .catch(error => console.error("Error:", error));
+                });
+            }
+    
+            // 조회 버튼 이벤트
             $(".inquiry-btn").on("click", function () {
                 var uid = $(this).data("uid");
-
-                // uid 값이 존재하는 경우에만 조회 실행
                 if (uid && uid !== "None") {
                     window.location.href = '{% url "smartmirror:inquiry" %}?uid=' + encodeURIComponent(uid);
                 } else {
-                    console.warn("조회할 UID가 없습니다.");  // 콘솔에 경고만 출력
+                    console.warn("조회할 UID가 없습니다.");
                 }
             });
         });
-
     </script>
 
 </body>

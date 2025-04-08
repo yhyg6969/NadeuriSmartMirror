@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from .models import user_table, game_table, walk_table, stretch_table, center_table
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from django.utils.timezone import localtime, now
 from django.utils.dateparse import parse_datetime
 from django.http import JsonResponse
@@ -189,7 +189,7 @@ def popup_modal(request):
 
     try:
         year, month, day = map(int, [year, month, day])
-        start_datetime = datetime(year, month, day, 0, 0, 0, tzinfo=timezone.utc)
+        start_datetime = datetime(year, month, day, 0, 0, 0, tzinfo=timezone.utc)  # ✅ 수정: datetime.timezone.utc
         end_datetime = start_datetime + timedelta(days=1)
     except ValueError:
         return HttpResponse('Invalid date format.', status=400)
@@ -204,39 +204,36 @@ def popup_modal(request):
     total_play_time = 0  # To accumulate total play time
 
     for game in game_records:
-        game.start_time = datetime.fromtimestamp(game.start_ts, tz=timezone.utc)
-        game.finish_time = datetime.fromtimestamp(game.finish_ts, tz=timezone.utc)
+        game.start_time = datetime.fromtimestamp(game.start_ts, tz=timezone.utc)  # ✅ 수정
+        game.finish_time = datetime.fromtimestamp(game.finish_ts, tz=timezone.utc)  # ✅ 수정
 
-        # Calculate total play time if not already stored
         if hasattr(game, 'play_time'):
             game.minutes = game.play_time // 60
             game.seconds = game.play_time % 60
-            total_play_time += game.play_time  # Accumulate total play time
+            total_play_time += game.play_time
         else:
             game.play_time = (game.finish_time - game.start_time).total_seconds()
             game.minutes = int(game.play_time // 60)
             game.seconds = int(game.play_time % 60)
-            total_play_time += game.play_time  # Accumulate total play time
+            total_play_time += game.play_time
 
-        # Debugging prints (Check values in logs)
         print(f"Game {game.record_id}: Start {game.start_time}, Finish {game.finish_time}, Play Time {game.play_time}")
 
-        if game.game_type == "4":  # Ensure correct type comparison
+        if game.game_type == "4":
             game.activity_seconds = int(game.play_time)
             game.activity_minutes = game.activity_seconds // 60
 
-    # Convert total play time to minutes and seconds
     total_play_hours = int(total_play_time // 3600)
     total_play_minutes = int(total_play_time // 60)
     total_play_seconds = int(total_play_time % 60)
 
     for walk in walk_records:
-        walk.start_time = datetime.fromtimestamp(walk.start_ts, tz=timezone.utc)
+        walk.start_time = datetime.fromtimestamp(walk.start_ts, tz=timezone.utc)  # ✅ 수정
         walk.minutes = walk.walk_time // 60
         walk.seconds = walk.walk_time % 60
 
     for stretch in stretch_records:
-        stretch.start_time = datetime.fromtimestamp(stretch.start_ts, tz=timezone.utc)
+        stretch.start_time = datetime.fromtimestamp(stretch.start_ts, tz=timezone.utc)  # ✅ 수정
         stretch.minutes = stretch.stretch_time // 60
         stretch.seconds = stretch.stretch_time % 60
 
@@ -247,11 +244,12 @@ def popup_modal(request):
         'stretch_records': stretch_records,
         'selected_date': start_datetime.date(),
         'total_play_hours': total_play_hours, 
-        'total_play_minutes': total_play_minutes,  # Send total play time to template
+        'total_play_minutes': total_play_minutes,
         'total_play_seconds': total_play_seconds,
     }
     
     return render(request, 'popup_modal2.html', context)
+
 
 
 
