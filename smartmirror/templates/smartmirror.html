@@ -138,6 +138,15 @@
             return confirm('정말 삭제하시겠습니까?');
         }
     
+        // 특수문자, 기호만 막고 한글/영문/숫자 허용
+        function blockSpecialCharacters(event) {
+            const key = event.key;
+            const regex = /^[\uAC00-\uD7A3a-zA-Z0-9]$/; // 한글, 영문, 숫자만 허용
+            if (!regex.test(key)) {
+                event.preventDefault();
+            }
+        }
+    
         document.addEventListener("DOMContentLoaded", function () {
             const loginForm = document.getElementById("loginForm");
             if (loginForm) {
@@ -180,8 +189,21 @@
                     console.warn("조회할 UID가 없습니다.");
                 }
             });
+    
+            // 👇 특수문자 막기 이벤트 바인딩
+            const uidInput = document.getElementById("id_uid");
+            const nameInput = document.getElementById("id_user_name");
+    
+            if (uidInput) {
+                uidInput.addEventListener("keypress", blockSpecialCharacters);
+            }
+    
+            if (nameInput) {
+                nameInput.addEventListener("keypress", blockSpecialCharacters);
+            }
         });
     </script>
+    
     
 
 </body>

@@ -11,6 +11,7 @@ from django.contrib.auth.views import PasswordChangeView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
+from django.contrib.auth.hashers import make_password, check_password
 import json
 
 
@@ -28,7 +29,7 @@ def smartmirror(request):
         content_type = request.META.get('CONTENT_TYPE', '')
         print(f"📥 POST request with Content-Type: {content_type}")
 
-        # 🔐 JSON 요청 – 로그인 처리
+        # ✅ JSON 요청 – 로그인 처리
         if 'application/json' in content_type:
             try:
                 data = json.loads(request.body)
@@ -46,6 +47,7 @@ def smartmirror(request):
                     except center_table.DoesNotExist:
                         return JsonResponse({"success": False, "message": "존재하지 않는 기관입니다."})
 
+                    # ✅ 잠금 시간 확인
                     lock_time = request.session.get('lock_time')
                     if lock_time:
                         if isinstance(lock_time, str):
@@ -57,7 +59,8 @@ def smartmirror(request):
                                 "message": f"계정이 잠겼습니다. {kst_lock_time.strftime('%Y-%m-%d %H:%M:%S')}까지 기다려주세요."
                             })
 
-                    if password != center.center_password:
+                    # ✅ 비밀번호 확인
+                    if not check_password(password, center.center_password):
                         request.session['failed_attempts'] = request.session.get('failed_attempts', 0) + 1
                         request.session.modified = True
 
@@ -71,7 +74,10 @@ def smartmirror(request):
 
                         return JsonResponse({"success": False, "message": "비밀번호가 일치하지 않습니다."})
 
-                    # 로그인 성공 처리
+                    # ✅ 기본 비밀번호 여부 확인
+                    is_default_password = password == "000000"
+
+                    # ✅ Django User 생성/갱신
                     user, created = User.objects.get_or_create(username=center_name)
                     user.set_password(password)
                     user.save()
@@ -84,17 +90,18 @@ def smartmirror(request):
                         request.session.save()
 
                         redirect_url = reverse('smartmirror:smartmirror')
-                        default_password = (password == "000000")  # ✅ 기본 비밀번호 여부 체크
 
                         return JsonResponse({
                             "success": True,
                             "message": "로그인 성공",
                             "redirect_url": redirect_url,
-                            "default_password": default_password
+                            "default_password": is_default_password  # ✅ 클라이언트에서 추가 처리 가능
                         })
+
             except Exception as e:
                 print(f"❌ Error in JSON handling: {e}")
                 return JsonResponse({"success": False, "message": "잘못된 요청 형식입니다."})
+
 
         # 📝 일반 폼 요청 (Create, Update, Delete)
         else:
@@ -109,17 +116,19 @@ def smartmirror(request):
                 gender_str = request.POST.get('gender')
                 gender = True if gender_str == 'true' else False
 
-                if user_table.objects.filter(uid=uid).exists():
+                # 입력값 확인
+                if not uid or not user_name or not birth or gender_str is None:
+                    context['error_message'] = "모든 필드를 입력해 주세요."
+                elif user_table.objects.filter(uid=uid).exists():
                     context['error_message'] = f"이미 존재하는 UID ({uid})입니다. 다른 번호를 입력해 주세요."
                 else:
-                    new_user = user_table(
+                    user_table.objects.create(
                         uid=uid,
                         user_name=user_name,
                         center_name=center_name,
                         birth=birth,
                         gender=gender
                     )
-                    new_user.save()
                     print(f"✅ Created user: {uid} - {user_name}")
 
                 if request.user.is_authenticated:
@@ -161,8 +170,6 @@ def smartmirror(request):
                 return render(request, 'smartmirror.html', context)
 
     return render(request, 'smartmirror.html', context)
-
-
 
 
 
@@ -277,22 +284,26 @@ def custom_csrf_failure(request, reason=""):
 
 class CustomPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
     template_name = 'change_password.html'
-    success_url = reverse_lazy('smartmirror:smartmirror')  # 로그인 페이지로 변경
+    success_url = reverse_lazy('smartmirror:smartmirror')
 
     def form_valid(self, form):
         center_name = self.request.user.username
         try:
             center = center_table.objects.get(center_name=center_name)
-            center.center_password = form.cleaned_data['new_password1']
+            
+            # ✅ 비밀번호 해시 (SHA256 이상 + salt)
+            raw_password = form.cleaned_data['new_password1']
+            hashed_password = make_password(raw_password)
+            center.center_password = hashed_password
             center.save()
         except center_table.DoesNotExist:
             messages.error(self.request, "해당 기관을 찾을 수 없습니다.")
             return redirect('smartmirror:smartmirror')
 
-        # 비밀번호 저장
+        # ✅ Django 사용자 비밀번호도 변경
         super().form_valid(form)
 
         # ✅ 비밀번호 변경 후 로그아웃 처리
         logout(self.request)
         messages.success(self.request, "비밀번호가 성공적으로 변경되었습니다. 다시 로그인해 주세요.")
-        return redirect('smartmirror:smartmirror')  # 로그인 페이지로 리디렉션
+        return redirect('smartmirror:smartmirror')
