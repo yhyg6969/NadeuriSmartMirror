@@ -64,6 +64,7 @@ class center_table(models.Model):
     center_id = models.AutoField(primary_key=True, db_column='center_uid')
     center_name = models.CharField(max_length=255, db_column='center_name')
     center_password = models.CharField(max_length=255, db_column='center_password')
+    center_salt = models.CharField(max_length=255, db_column='center_salt')
 
     class Meta:
         managed = False

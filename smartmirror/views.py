@@ -11,7 +11,7 @@ from django.contrib.auth.views import PasswordChangeView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
-from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth.hashers import make_password, check_password, get_random_string
 import json
 
 
@@ -290,12 +290,19 @@ class CustomPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
         center_name = self.request.user.username
         try:
             center = center_table.objects.get(center_name=center_name)
-            
-            # ✅ 비밀번호 해시 (SHA256 이상 + salt)
+
+            # ✅ 솔트값 생성
+            salt = get_random_string(16)
+
+            # ✅ 비밀번호 해싱 (SHA256 이상) + 명시적 솔트 사용
             raw_password = form.cleaned_data['new_password1']
-            hashed_password = make_password(raw_password)
+            hashed_password = make_password(raw_password, salt=salt)
+
+            # ✅ 저장
             center.center_password = hashed_password
+            center.center_salt = salt
             center.save()
+
         except center_table.DoesNotExist:
             messages.error(self.request, "해당 기관을 찾을 수 없습니다.")
             return redirect('smartmirror:smartmirror')
