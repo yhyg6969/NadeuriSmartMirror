@@ -9,6 +9,7 @@ from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.hashers import make_password, check_password, get_random_string
+from django.core.serializers.json import DjangoJSONEncoder
 
 from .models import (
     user_table, center_table,
@@ -17,6 +18,13 @@ from .models import (
 
 from datetime import datetime, timedelta, timezone
 import json
+
+from collections import defaultdict
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('smartmirror:smartmirror')
 
 
 def smartmirror(request):
@@ -153,6 +161,7 @@ def smartmirror(request):
     return render(request, 'smartmirror.html', context)
 
 
+
 def inquiry(request):
     uid = request.GET.get('uid')
     if uid:
@@ -161,18 +170,23 @@ def inquiry(request):
         except user_table.DoesNotExist:
             return render(request, 'smartmirror.html', {'error_message': '사용자를 찾을 수 없습니다.'})
 
+        tables = [paps_table, sprocket_table, teblow_table, dtx_table, smartmirror_table]
+        date_set = set()
+
+        for table in tables:
+            for record in table.objects.filter(uid=uid):
+                dt = datetime.fromtimestamp(record.start_ts, tz=timezone.utc).astimezone()
+                date_set.add(dt.strftime('%Y-%m-%d'))
+
         context = {
             'user': user,
-            'paps': paps_table.objects.filter(uid=uid),
-            'sprockets': sprocket_table.objects.filter(uid=uid),
-            'teblows': teblow_table.objects.filter(uid=uid),
-            'dtxs': dtx_table.objects.filter(uid=uid),
-            'smartmirrors': smartmirror_table.objects.filter(uid=uid),
+            'records_by_date': json.dumps(list(date_set), cls=DjangoJSONEncoder),  # JSON으로 변환
         }
 
         return render(request, 'inquiry.html', context)
 
     return redirect('smartmirror:smartmirror')
+
 
 
 def popup_modal(request):

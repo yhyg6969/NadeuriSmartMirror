@@ -2,6 +2,45 @@
 
 {% block extrahead %}
 <link rel="stylesheet" href="{% static 'popup_modal.css' %}">
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 1.2rem; /* 폰트 크기 키움 */
+        min-width: 700px;  /* 너무 작아지지 않도록 최소 너비 */
+    }
+    thead th {
+        background-color: #f2f2f2;
+        padding: 12px 15px; /* 헤더 셀 패딩 키움 */
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+    tbody td {
+        padding: 12px 15px; /* 본문 셀 패딩 키움 */
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+    tbody tr:hover {
+        background-color: #fafafa;
+    }
+    .dateTitle {
+        font-size: 1.3rem; /* 날짜 타이틀도 조금 키움 */
+        font-weight: 600;
+    }
+    /* 모바일 등 작은 화면에서 너무 커지는 것 방지 */
+    @media (max-width: 600px) {
+        table {
+            font-size: 1rem;
+            min-width: auto;
+        }
+        thead th, tbody td {
+            padding: 8px 10px;
+        }
+        .dateTitle {
+            font-size: 1.1rem;
+        }
+    }
+</style>
 {% endblock %}
 
 <body>

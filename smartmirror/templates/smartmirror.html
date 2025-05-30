@@ -17,6 +17,10 @@
         <div class="password-change-btn-container">
             <button class="btn password-change-btn" onclick="redirectToPasswordChange()">비밀번호 변경</button>
         </div>
+        <div class="password-change-btn-container">
+            <button class="btn password-change-btn" onclick="redirectToLogout()">로그아웃</button>
+        </div>
+        {% else %}
         {% endif %}
     </header>
 
@@ -24,6 +28,8 @@
     <main id="userData" class="userData">
         <h2>사용자 정보 추가</h2>
         <p>사용자를 추가해 주세요</p>
+        <br>
+        <br>
 
         {% if error_message %}
         <div class="alert alert-danger" style="text-align:center; font-weight:bold;">{{ error_message }}</div>
@@ -36,7 +42,7 @@
                     <th>UID</th>
                     <th>이름</th>
                     <th>소속기관</th>
-                    <th>생년월일</th>
+                    <th>학생 식별 번호</th>
                     <th>성별</th>
                     <th>저장</th>
                 </tr>
@@ -126,12 +132,16 @@
     {% endif %}
 
     <footer class="footer">
-        WELLTracker 통합 솔루션 ver1.0.0
+        시드닝 통합 관리 페이지
     </footer>
 
     <script>
         function redirectToPasswordChange() {
             window.location.href = "{% url 'smartmirror:change_password' %}";
+        }
+
+        function redirectToLogout() {
+            window.location.href = "{% url 'smartmirror:logout' %}";
         }
     
         function confirmDelete() {

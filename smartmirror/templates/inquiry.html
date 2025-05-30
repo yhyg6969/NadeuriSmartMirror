@@ -110,6 +110,25 @@
         border: 2px solid #FF5733;
         border-radius: 50%;
     }
+
+    .fc-day-today {
+        background-color: #fffae6 !important; /* 연한 노랑 배경 */
+        border: 2px solid #f39c12; /* 선택사항: 오렌지 테두리 */
+    }
+
+    .date-cell .dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background-color: #013DFD;
+        border-radius: 50%;
+        margin-left: 5px;
+    }
+
+    /* 이벤트가 있는 날짜 전체 셀에 색상 입히기 */
+    .date-cell:has(.dot) {
+        background-color: #d1ecf1; /* 연한 파랑 */
+    }
 </style>
 {% endblock %}
 
@@ -143,31 +162,41 @@
         </div>
     </div>
 
+    <!-- JSON 데이터 안전하게 전달 -->
+    {{ calendar_data|json_script:"calendar-data" }}
+    {{ records_by_date|json_script:"records-data" }}
+
     <script>
-        const data = [
-            { date: '2022-10-15', content: '테스트1' },
-            { date: '2022-10-03', content: '테스트2' },
-            { date: '2022-10-15', content: '테스트3' },
-            { date: '2022-10-26', content: '테스트4' },
-            { date: '2022-10-21', content: '테스트5' },
-        ];
-        
-        const calendarList = data.reduce((acc, v) => {
+        const calendarData = JSON.parse('{{ records_by_date|escapejs }}');
+
+        if (Array.isArray(calendarData)) {
+            const reduced = calendarData.reduce((acc, date) => {
+                // 예: 년도별로 그룹화
+                const year = date.slice(0, 4);
+                if (!acc[year]) acc[year] = [];
+                acc[year].push(date);
+                return acc;
+            }, {});
+            console.log(reduced);
+        } else {
+            console.error('calendarData is not an array:', calendarData);
+        }
+
+        const recordsByDate = JSON.parse(document.getElementById('records-data').textContent);
+
+        const calendarList = calendarData.reduce((acc, v) => {
             return { ...acc, [v.date]: [...(acc[v.date] || []), v.content] };
         }, {});
-        
-        // Example records object, modify it according to your needs
-        const records = {
-            '2022-10-15': true,
-            '2022-10-03': true,
-            '2022-10-21': true,
-            // Add more dates with records as necessary
-        };
-    
+
+        const records = {};
+        Object.keys(recordsByDate).forEach(date => {
+            records[date] = true;
+        });
+
         Number.prototype.pad = function() {
             return this > 9 ? this : '0' + this;
         };
-        
+
         const makeCalendar = (date) => {
             const currentYear = new Date(date).getFullYear();
             const currentMonth = new Date(date).getMonth() + 1;
@@ -213,35 +242,31 @@
             });
         };
 
-    
-        // Function to show the modal
         function showModal(selectedDate) {
             const uid = document.getElementById('uid').value;
             const dateObj = new Date(selectedDate);
             const year = dateObj.getFullYear();
             const month = (dateObj.getMonth() + 1).pad();
             const day = dateObj.getDate().pad();
-    
+
             const url = `/smartmirror/inquiry/popup_modal/?year=${year}&month=${month}&day=${day}&uid=${uid}`;
             
             fetch(url)
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById('modalContent').innerHTML = data;
-                    document.getElementById('modalContainer').style.display = 'flex'; // 모달 보이기
+                    document.getElementById('modalContainer').style.display = 'flex';
                 })
                 .catch(error => console.error('Error:', error));
         }
-    
+
         const closeModal = () => {
-            document.getElementById('modalContainer').style.display = 'none'; // 모달 숨기기
+            document.getElementById('modalContainer').style.display = 'none';
         };
-    
-        // Set initial date to current date
+
         const date = new Date();
-        
         makeCalendar(date);
-        
+
         document.querySelector(`.prevDay`).onclick = () => {
             makeCalendar(new Date(date.setMonth(date.getMonth() - 1)));
         };
@@ -250,8 +275,6 @@
             makeCalendar(new Date(date.setMonth(date.getMonth() + 1)));
         };
     </script>
-    
-    
 </body>
 
 {% endblock %}
